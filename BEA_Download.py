@@ -3,6 +3,7 @@ import sys
 import shutil
 import pandas as pd
 import matplotlib.pyplot as plt
+import numpy as np
 
 
 pd.set_option('max_columns', 1000)
@@ -22,7 +23,24 @@ df2 = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/BEA/BEA_Data/BEA_income.cs
 df_inc = df2[['GeoName','Description','2018:Q1','2018:Q2','2018:Q3','2018:Q4']]
 print(df_inc.head())
 
+# drop rows with missing values (NaN)
+df_inc = df_inc.dropna()
+
+# drop rows with non numeric values
+df_inc = df_inc[df_inc['2018:Q1'] != '(D)']
+
+# reset index
+df_inc.reset_index(inplace=True, drop=True)
+
+# convert income data to integer
+df_inc['2018:Q1'] = pd.to_numeric(df_inc['2018:Q1'])
+df_inc['2018:Q2'] = pd.to_numeric(df_inc['2018:Q2'])
+df_inc['2018:Q3'] = pd.to_numeric(df_inc['2018:Q3'])
+df_inc['2018:Q4'] = pd.to_numeric(df_inc['2018:Q4'])
+
 # sum BEA quarterly income data
-df_inc['2018'] = df_inc['2018:Q1'] + df_inc['2018:Q2'] +df_inc['2018:Q3'] + df_inc['2018:Q4']
+df_inc['2018'] = df_inc['2018:Q1'] + df_inc['2018:Q2'] + df_inc['2018:Q3'] + df_inc['2018:Q4']
 print(df_inc.head())
 
+# groupby
+# df_average = df['AL'].groupby(df['Year']).mean()
