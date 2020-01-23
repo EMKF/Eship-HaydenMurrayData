@@ -42,18 +42,37 @@ df_inc['2018:Q4'] = pd.to_numeric(df_inc['2018:Q4'])
 # sum BEA quarterly income data
 df_inc['2018'] = df_inc['2018:Q1'] + df_inc['2018:Q2'] + df_inc['2018:Q3'] + df_inc['2018:Q4']
 
-# subset proprietor emp and inc
-df_emp.sort_values(by=['Description'],ascending = True) 
-# df_emp.query('Description == "Proprietor employment"')
-# df_inc.query('Description == "Nonfarm proprietors employment"')
+# sort description alphabetically
+df_emp.sort_values(by=['Description'],ascending = True, inplace = True)
+df_inc.sort_values(by=['Description'],ascending = True, inplace = True)
 
+# reset index
+df_inc.reset_index(inplace=True, drop=True)
+df_emp.reset_index(inplace=True, drop=True)
+
+# subset proprietor emp and inc
+df_emp = df_emp[6532:6592]
+df_inc = df_inc[2392:2452]
+
+# sort GeoName alphabetically
+df_emp.sort_values(by=['GeoName'],ascending = True, inplace = True)
+df_inc.sort_values(by=['GeoName'],ascending = True, inplace = True)
+
+# reset index
+df_inc.reset_index(inplace=True, drop=True)
+df_emp.reset_index(inplace=True, drop=True)
 
 # check data
-print(df_emp.head())
-print(df_inc.head())
+print(df_emp)
+print(df_inc)
+
+# convert type to integer
+df_inc['2018'] = pd.to_numeric(df_inc['2018'])
+df_emp['2018'] = pd.to_numeric(df_emp['2018'])
 
 # create new dataframe
+# data = (df_inc['2018'] / df_emp['2018']) * 1000 
 
+data = df_emp[['GeoName','2018'], df_inc['2018']]
 
-# groupby
-# df_average = df['AL'].groupby(df['Year']).mean()
+print(data)
