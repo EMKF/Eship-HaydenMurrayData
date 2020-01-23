@@ -70,9 +70,12 @@ print(df_inc)
 df_inc['2018'] = pd.to_numeric(df_inc['2018'])
 df_emp['2018'] = pd.to_numeric(df_emp['2018'])
 
+# merge dataframes
+df_merge = pd.merge(df_emp, df_inc, on='GeoName')
+
 # create new dataframe
-# data = (df_inc['2018'] / df_emp['2018']) * 1000 
+data = (df_inc['2018'] / df_emp['2018']) * 1000
+df_merge['avg_prop_emp_inc'] = (df_merge['2018_y'] / df_merge['2018_x']) * 1000
+df_merge.sort_values(by=['avg_prop_emp_inc'],ascending = True, inplace = True)
+print(df_merge)
 
-data = df_emp[['GeoName','2018'], df_inc['2018']]
-
-print(data)
