@@ -18,34 +18,30 @@ df_tot = pd.read_csv('/Users/hmurray/Downloads/public2018.csv',header=0,encoding
 # look at df
 print(df_tot.head())
 
-# # print frequencies
-# print(df_tot['D3A'].value_counts())
-# print(df_tot['D3B'].value_counts())
-# print(df_tot['ppreg4'].value_counts())
-# print(df_tot['ppstaten'].value_counts())
-# print(df_tot['SL3'].value_counts())
-# print(df_tot['SL4'].value_counts())
-# print(df_tot['FS20_b'].value_counts())
-
-# create student loan data frame
-df = df_tot[['D3A','D3B','ppreg4','ppstaten','SL3','SL4','FS20_b']]
-print(df.head())
+# print frequencies
+print(df_tot['D3A'].value_counts())
+print(df_tot['D3B'].value_counts())
+print(df_tot['ppreg4'].value_counts())
+print(df_tot['ppstaten'].value_counts())
+print(df_tot['SL3'].value_counts())
+print(df_tot['SL4'].value_counts())
+print(df_tot['FS20_b'].value_counts())
 
 # group types of work by ...
-# state_pop = df['D3B'].groupby([df['ppreg4'], df['D3B']]).count()
-# print(state_pop)
+state_pop = df_tot['D3B'].groupby([df_tot['ppreg4'], df_tot['D3B']]).count()
+print(state_pop)
 
-# # crosstab business ownership by region
-# print(pd.crosstab(df['ppreg4'], df['D3A']))
-#
-# # crosstab work status by region
-# print(pd.crosstab(df['ppreg4'], df['D3B']))
-#
-# # crosstab work status by state
-# print(pd.crosstab(df['ppstaten'], df['D3B']))
-#
-# # crosstab work status by state
-# print(pd.crosstab(df['ppstaten'], df['D3B']))
-#
-# #crosstab business ownership by work status
-# print(pd.crosstab(df['D3A'], df['D3B']))
+# crosstab business ownership by region
+print(pd.crosstab(df_tot['ppreg4'], df_tot['D3A']))
+
+# crosstab work status by region
+print(pd.crosstab(df_tot['ppreg4'], df_tot['D3B']))
+
+# crosstab work status by state
+print(pd.crosstab(df_tot['ppstaten'], df_tot['D3B']))
+
+# crosstab work status by state
+print(pd.crosstab(df_tot['ppstaten'], df_tot['D3B']))
+
+#crosstab business ownership by work status
+print(pd.crosstab(df_tot['D3A'], df_tot['D3B']))
