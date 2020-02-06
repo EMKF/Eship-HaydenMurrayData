@@ -43,15 +43,15 @@ sl_eship.reset_index(inplace=True, drop=True)
 
 # debt * age
 ct_sl_age = (pd.crosstab(sl_age['SL4'], sl_age['ppagecat']))
-ct_sl_age.to_csv('/Users/Hmurray/Desktop/ct_sl_age.csv')
+ct_sl_age.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/ct_sl_age.csv')
 print(ct_sl_age)
 
 # debt * income
 ct_sl_inc = (pd.crosstab(sl_inc['SL4'], sl_inc['ppinccat6']))
-ct_sl_inc.to_csv('/Users/Hmurray/Desktop/ct_sl_inc.csv')
+ct_sl_inc.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/ct_sl_inc.csv')
 print(ct_sl_inc)
 
 # debt * eship or ownership
 ct_sl_eship = (pd.crosstab(sl_eship['SL4'], sl_eship['D3A']))
-ct_sl_eship.to_csv('/Users/Hmurray/Desktop/ct_sl_eship.csv')
+ct_sl_eship.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/ct_sl_eship.csv')
 print(ct_sl_eship)
