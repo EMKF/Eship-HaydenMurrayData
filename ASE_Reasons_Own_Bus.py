@@ -21,7 +21,14 @@ df = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Busi
 df = df[['GEO.display-label', 'NAICS.display-label', 'ASECBO.display-label', 'YIBSZFI.display-label', 'REASONOWN.display-label', 'OWNPDEMP_PCT']]
 # Rename columns
 df.rename(columns={"GEO.display-label": "region", "NAICS.display-label": "industry", "ASECBO.display-label": "demographic"\
-    ,"YIBSZFI.display-label": "firm_age", "REASONOWN.display-label": "reason"},inplace=True)
+    ,"YIBSZFI.display-label": "firm_age", "REASONOWN.display-label": "reason", "OWNPDEMP_PCT": "percent"},inplace=True)
+
+# filter responses
+df = df[df['reason'] != 'Other: Not important']
+df = df[df['reason'] != 'Other: Somewhat important']
+df = df[df['reason'] != 'Other: Very important']
+df = df[df['reason'] != 'Total reporting']
+df = df[df['reason'] != 'Item not reported']
 
 # observation filter: all
 df_all = df[df['region'] == 'United States']
