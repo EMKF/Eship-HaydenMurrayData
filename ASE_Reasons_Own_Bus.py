@@ -27,13 +27,13 @@ print(kese_us)
 # Gender OSE
 kese_gender = kese[(kese.demographic == 'Men') | (kese.demographic == 'Women')]
 kese_gender = kese_gender.iloc[:,:26]
-kese_us.to_excel('/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/kese_opp_gender.xlsx', index=False)
+kese_gender.to_excel('/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/kese_opp_gender.xlsx', index=False)
 print(kese_gender)
 
 # Race OSE
 kese_race = kese[(kese.demographic == 'White') | (kese.demographic == 'Black')| (kese.demographic == 'Latino') | (kese.demographic == 'Asian')]
 kese_race = kese_race.iloc[:,:26]
-kese_us.to_excel('/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/kese_opp_race.xlsx', index=False)
+kese_race.to_excel('/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/kese_opp_race.xlsx', index=False)
 print(kese_race)
 
 # ASE - REASONS WHY ENTREPRENEURS OWN THEIR BUSINESS
