@@ -32,7 +32,7 @@ df = df[df['industry'] == 'Total for all sectors']
 df = df[df['sex'] == 'All firms']
 df = df[df['ethnicity'] == 'All firms']
 df = df[df['vet'] == 'All firms']
-df = df[(df.race == 'All firms') | (df.race == 'Minority') | (df.race == 'Nonminority')]
+df = df[(df.race == 'All firms') |  (df.race == 'Minority') | (df.race == 'Nonminority')]
 
 # reset index
 df.reset_index(inplace=True, drop=True)
