@@ -1,3 +1,5 @@
+# data downloaded manually from https://factfinder.census.gov/bkmk/table/1.0/en/PEP/2018/PEPSR6H
+
 import os
 import sys
 import time
