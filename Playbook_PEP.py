@@ -47,3 +47,5 @@ print(white_per)
 # minority percent
 min_per = (min/total)*100
 print(min_per)
+
+#UPDATE HM :) 
