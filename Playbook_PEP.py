@@ -48,4 +48,4 @@ print(white_per)
 min_per = (min/total)*100
 print(min_per)
 
-#UPDATE HM :) 
+#UPDATE HM :)
