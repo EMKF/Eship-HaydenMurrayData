@@ -73,6 +73,19 @@ print(all_plus)
 print(min_plus)
 print(per_250)
 
+# percent of all firms that have 250+ employees
+all_250 = df.iloc[0,7]
+all_250 = int(all_250)
+print(all_250)
+print(all_plus)
+sd_per = (all_plus/all_250)*100
+print(sd_per)
+
+sd_min = df.iloc[10,7]
+sd_min = int(sd_min)
+min_sd_per = (min_plus/sd_min)*100
+print(min_sd_per)
+
 # percent minority firms with 500+ employees
 firms500 = df.iloc[9,7]
 firms500 = int(firms500)

@@ -31,10 +31,10 @@ df.rename(columns={"GEO.display-label": "region", "NAICS.display-label": "indust
 # filters
 df = df[df['region'] == 'United States']
 df = df[df['industry'] == 'Total for all sectors']
-df = df[df['sex'] == 'All firms']
+df = df[(df.sex == 'All firms') | (df.sex == 'Male-owned')]
 df = df[df['ethnicity'] == 'All firms']
 df = df[df['vet'] == 'All firms']
-df = df[(df.race == 'All firms') |  (df.race == 'Minority') | (df.race == 'Nonminority')]
+df = df[(df.race == 'All firms') | (df.race == 'Minority') | (df.race == 'Nonminority') | (df.race == 'White')]
 
 # reset index
 df.reset_index(inplace=True, drop=True)
@@ -45,15 +45,25 @@ total_firms = df.iloc[0,6]
 total_firms = int(total_firms)
 print(total_firms)
 
+# white firms
+white_firms = df.iloc[1,6]
+white_firms = int(white_firms)
+print(white_firms)
+
 # minority firms
-min_firms = df.iloc[1,6]
+min_firms = df.iloc[2,6]
 min_firms = int(min_firms)
 print(min_firms)
 
 # nonminority firms
-nonmin_firms = df.iloc[2,6]
+nonmin_firms = df.iloc[3,6]
 nonmin_firms = int(nonmin_firms)
 print(nonmin_firms)
+
+# male firms
+male_firms = df.iloc[4,6]
+male_firms = int(male_firms)
+print(male_firms)
 
 # percent minority firms
 min_firms_per = (min_firms/total_firms)*100
@@ -63,3 +73,10 @@ print(min_firms_per)
 nonmin_firms_per = (nonmin_firms/total_firms)*100
 print(nonmin_firms_per)
 
+# percent White firms
+white_firms_per = (white_firms/total_firms)*100
+print(white_firms_per)
+
+# percent Male firms
+male_firms_per = (male_firms/total_firms)*100
+print(male_firms_per)
