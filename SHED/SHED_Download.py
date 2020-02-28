@@ -13,35 +13,31 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 # add options to the end of location to avoid using too much memory
-df_tot = pd.read_csv('/Users/hmurray/Downloads/public2018.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+df = pd.read_csv('/Users/hmurray/Downloads/public2018.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+
+# keep vars
+df = df[['D3A', 'D3B', 'SL3', 'SL4', 'FS20_b', 'E4_a', 'E4_b']]
+# Rename columns
+df.rename(columns={"D3A": "Business_Ownership", "D3B": "Full_Part_Time", "SL3": "Total_Student_Loans", "SL4": "Monthly_Student_Loan_Payment"\
+    ,"FS20_b": "Help_with_Student_Loan_Payments", "E4_a": "Emp_Health_Insurance", "E4_b": "Private_Health_Insurance"},inplace=True)
+
+# drop NAN
+df = df.dropna()
+df.reset_index(inplace=True, drop=True)
 
 # look at df
-print(df_tot.head())
+print(df)
 
 # print frequencies
-print(df_tot['D3A'].value_counts())
-print(df_tot['D3B'].value_counts())
-print(df_tot['ppreg4'].value_counts())
-print(df_tot['ppstaten'].value_counts())
-print(df_tot['SL3'].value_counts())
-print(df_tot['SL4'].value_counts())
-print(df_tot['FS20_b'].value_counts())
-
-# group types of work by ...
-state_pop = df_tot['D3B'].groupby([df_tot['ppreg4'], df_tot['D3B']]).count()
-print(state_pop)
-
-# crosstab business ownership by region
-print(pd.crosstab(df_tot['ppreg4'], df_tot['D3A']))
-
-# crosstab work status by region
-print(pd.crosstab(df_tot['ppreg4'], df_tot['D3B']))
-
-# crosstab work status by state
-print(pd.crosstab(df_tot['ppstaten'], df_tot['D3B']))
-
-# crosstab work status by state
-print(pd.crosstab(df_tot['ppstaten'], df_tot['D3B']))
+print(df['Business_Ownership'].value_counts())
+print(df['Full_Part_Time'].value_counts())
+print(df['Total_Student_Loans'].value_counts())
+print(df['Monthly_Student_Loan_Payment'].value_counts())
+print(df['Help_with_Student_Loan_Payments'].value_counts())
 
 #crosstab business ownership by work status
-print(pd.crosstab(df_tot['D3A'], df_tot['D3B']))
+# print(pd.crosstab(df['Business_Ownership'], df['Full_Part_Time']))
+
+print(pd.crosstab(df['Emp_Health_Insurance'], df['Business_Ownership'], normalize='columns'))
+
+print(pd.crosstab(df['Private_Health_Insurance'], df['Business_Ownership'], normalize='columns'))
