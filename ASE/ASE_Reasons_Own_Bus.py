@@ -135,3 +135,5 @@ gender = ['Men', 'Women']
 matplotlib_plot(plot_gender, gender, '/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/gender_ose.png')
 race = ['White', 'Black', 'Latino', 'Asian']
 matplotlib_plot(plot_race, race, '/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/race_ose.png')
+
+sys.exit()
