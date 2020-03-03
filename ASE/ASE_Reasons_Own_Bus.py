@@ -22,7 +22,6 @@ rne.to_excel('/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business
 # NEB - Rate of New Employer Businesses output
 rneb = pd.read_excel('/Users/hmurray/Desktop/NEB/NEB_Data/FINAL_DATA/NEB_Rate.xlsx')
 rneb = rneb[51:52]
-print(rneb)
 rneb.to_excel('/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/rneb_us.xlsx', index=False)
 
 # KESE - OPPORTUNITY SHARE OF ENTREPRENEURS
@@ -111,3 +110,28 @@ df_race_very.to_excel('/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own
 
 
 
+# transpose OSE
+plot_us = kese_us.transpose().iloc[3: ].rename(columns={51:'United States'}).assign(year=range(1996, 2019)).reset_index(drop=True)
+plot_gender = kese_gender.transpose().iloc[3: ].rename(columns={53:'Men', 54:'Women'}).assign(year=range(1996, 2019)).reset_index(drop=True)
+plot_race = kese_race.transpose().iloc[3:26].rename(columns={55:'White', 56:'Black', 57:'Latino', 58:'Asian'}).assign(year=range(1996, 2019)).reset_index(drop=True)
+
+# U.S. ose plot
+def matplotlib_plot(df, outcome_var, save=None):
+    fig = plt.figure(figsize=(12, 8))
+    ax = fig.add_subplot(1, 1, 1)
+    for var in outcome_var:
+        ax.plot('year', var, data=df, label=var)
+        ax.set_ylim([.65, .95])
+        ax.set_xticks(range(1996, 2019, 2))
+    plt.title('Opportunity Share of New Entrepreneurs')
+    # plt.suptitle('Opportunity Share of New Entrepreneurs')
+    plt.legend()
+    if save:
+        plt.savefig(save)
+    plt.show()
+
+matplotlib_plot(plot_us, ['United States'], '/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/us_ose.png')
+gender = ['Men', 'Women']
+matplotlib_plot(plot_gender, gender, '/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/gender_ose.png')
+race = ['White', 'Black', 'Latino', 'Asian']
+matplotlib_plot(plot_race, race, '/Users/hmurray/Desktop/Data_Briefs/ASE/MO_ASE_Reasons_Own_Business/Data_Reasons_Own_Business/race_ose.png')
