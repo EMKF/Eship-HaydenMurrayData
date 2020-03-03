@@ -1,3 +1,5 @@
+# data downloaded manually from https://factfinder.census.gov/bkmk/table/1.0/en/ASE/2016/00CSCBO11
+
 import os
 import sys
 import time
