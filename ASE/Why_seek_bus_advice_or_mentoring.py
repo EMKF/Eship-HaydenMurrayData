@@ -67,9 +67,9 @@ def filterer(df, save=None):
     df = df[(df.firm_age == 'All firms') | (df.firm_age == 'Firms with less than 2 years in business')]
     df.reset_index(inplace=True, drop=True)
     df.drop(df.columns[0:2], axis=1, inplace=True)
+    df.reset_index(inplace=True, drop=True)
     if save:
         df.to_excel(save, index=False)
-    df.reset_index(inplace=True, drop=True)
     print(df.head(50))
 
 filterer(reasons, '/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/mentor_reasons.xlsx')
