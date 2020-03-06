@@ -83,14 +83,15 @@ def filterer(df):
     df.reset_index(inplace=True, drop=True)
     df.drop(df.columns[0:2], axis=1, inplace=True)
     df.reset_index(inplace=True, drop=True)
-    return df
     print(df)
+    return df
+
 
 reasons = filterer(reasons)
 source = filterer(source)
 outcome = filterer(outcome)
 
-# unstack
+# unstack reasons
 reasons['all_firms'] = reasons['percent'].iloc[0:15].reset_index(drop=True)
 reasons['less_2_years'] = reasons['percent'].iloc[15:30].reset_index(drop=True)
 reasons['Hispanic'] = reasons['percent'].iloc[30:45].reset_index(drop=True)
@@ -98,7 +99,49 @@ reasons['White'] = reasons['percent'].iloc[45:60].reset_index(drop=True)
 reasons['Black'] = reasons['percent'].iloc[60:75].reset_index(drop=True)
 reasons['Asian'] = reasons['percent'].iloc[75:90].reset_index(drop=True)
 reasons.drop(reasons.index[15: ], inplace=True)
+reasons.drop(['percent'], axis=1, inplace=True)
 print(reasons)
+#
+# unstack sources
+source['all_firms'] = source['percent'].iloc[0:10].reset_index(drop=True)
+source['less_2_years'] = source['percent'].iloc[10:20].reset_index(drop=True)
+source['Hispanic'] = source['percent'].iloc[20:30].reset_index(drop=True)
+source['White'] = source['percent'].iloc[30:40].reset_index(drop=True)
+source['Black'] = source['percent'].iloc[40:50].reset_index(drop=True)
+source['Asian'] = source['percent'].iloc[50:60].reset_index(drop=True)
+source.drop(source.index[10: ], inplace=True)
+source.drop(['percent'], axis=1, inplace=True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from family", "family", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from friends", "friends", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from professional colleagues", "colleagues", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from employees", "employees", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from legal and professional advisors", "legal and professional advisors", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from customers", "customers", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from suppliers", "suppliers", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from government-supported technical assistance program", "government-supported technical assistance program", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from other source", "other", case = True)
+print(source)
+
+# unstack outcomes
+outcome['all_firms'] = outcome['percent'].iloc[0:2].reset_index(drop=True)
+outcome['less_2_years'] = outcome['percent'].iloc[2:4].reset_index(drop=True)
+outcome['Hispanic'] = outcome['percent'].iloc[4:6].reset_index(drop=True)
+outcome['White'] = outcome['percent'].iloc[6:8].reset_index(drop=True)
+outcome['Black'] = outcome['percent'].iloc[8:10].reset_index(drop=True)
+outcome['Asian'] = outcome['percent'].iloc[10:12].reset_index(drop=True)
+outcome.drop(outcome.index[2: ], inplace=True)
+outcome.drop(['percent'], axis=1, inplace=True)
+outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring led to positive business outcomes or anticipated positive changes in business operations", "positive", case = True)
+outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring did not lead to positive business outcomes or anticipated positive changes in business operations", "not positive", case = True)
+print(outcome)
+
+def saver(df, save=None):
+    if save:
+        df.to_excel(save, index=False)
+
+saver(reasons,'/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/reasons_mentor.xlsx')
+saver(source,'/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/sources_mentor.xlsx')
+saver(outcome,'/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/outcomes_mentor.xlsx')
 
 sys.exit()
 
