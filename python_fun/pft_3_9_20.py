@@ -52,15 +52,6 @@ source.rename(
 source = source[source.source != 'Item not reported']
 source = source[source.source != 'Not applicable']
 source = source[source.source != 'All firms']
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from family", "family", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from friends", "friends", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from professional colleagues", "colleagues", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from employees", "employees", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from legal and professional advisors", "legal and professional advisors", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from customers", "customers", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from suppliers", "suppliers", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from government-supported technical assistance program", "government-supported technical assistance program", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from other source", "other", case = True)
 
 
 
@@ -78,8 +69,7 @@ outcome = outcome[outcome.outcome != 'Item not reported']
 outcome = outcome[outcome.outcome != 'Not applicable']
 outcome = outcome[outcome.outcome != 'All firms']
 outcome = outcome[outcome.outcome != 'Total reporting']
-outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring led to positive business outcomes or anticipated positive changes in business operations", "positive", case = True)
-outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring did not lead to positive business outcomes or anticipated positive changes in business operations", "not positive", case = True)
+
 
 
 # FILTER FUNCTION
@@ -93,47 +83,31 @@ def filterer(df):
     df.reset_index(inplace=True, drop=True)
     df.drop(df.columns[0:2], axis=1, inplace=True)
     df.reset_index(inplace=True, drop=True)
+    # print(df)
     return df
+
+
 reasons = filterer(reasons)
 source = filterer(source)
 outcome = filterer(outcome)
 
-
-
 # unstack reasons
+
+# print(reasons.head())
+
+reasons_temp = reasons.astype({'percent': 'float'}).assign(col_name=lambda x: x['demographic'] + ' ' + x['firm_age']).drop(['demographic', 'firm_age'], 1)
+df = reasons_temp.pivot_table(index=['col_name'], columns='reason', values='percent').reset_index(drop=False).transpose()
+df.columns = df.iloc[0]
+df = df.iloc[1:]
+print(df)
+
 df = pd.DataFrame(columns=['reason'])
 for group in reasons.groupby(['demographic', 'firm_age']) :
     df_temp = group[1][['reason', 'percent']].rename(columns={'percent': ' '.join(group[0])})
     df = df_temp.merge(df, how='left', on='reason')
 print(df.set_index('reason'))
 
-
-
-# unstack sources
-df = pd.DataFrame(columns=['source'])
-for group in source.groupby(['demographic', 'firm_age']) :
-    df_temp = group[1][['source', 'percent']].rename(columns={'percent': ' '.join(group[0])})
-    df = df_temp.merge(df, how='left', on='source')
-print(df.set_index('source'))
-
-
-
-# unstack outcomes
-df = pd.DataFrame(columns=['outcome'])
-for group in outcome.groupby(['demographic', 'firm_age']) :
-    df_temp = group[1][['outcome', 'percent']].rename(columns={'percent': ' '.join(group[0])})
-    df = df_temp.merge(df, how='left', on='outcome')
-print(df.set_index('outcome'))
-
-
-
-def saver(df, save=None):
-    if save:
-        df.to_excel(save, index=False)
-
-saver(reasons,'/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/reasons_mentor.xlsx')
-saver(source,'/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/sources_mentor.xlsx')
-saver(outcome,'/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/outcomes_mentor.xlsx')
+print(reasons.set_index(['demographic', 'firm_age', 'reason']).unstack('reason').transpose())
 
 sys.exit()
 
