@@ -18,6 +18,8 @@ pd.set_option('display.max_rows', 30000)
 pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
+
+
 # REASONS FOR BUSINESS ADVICE OR MENTORING
 reasons = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/ASE_2016_00CSCB35_with_ann.csv')
 # keep vars
@@ -28,7 +30,6 @@ reasons.rename(
     columns={"GEO.display-label": "region", "NAICS.display-label": "industry", "ASECB.display-label": "demographic" \
         , "YIBSZFI.display-label": "firm_age", "SEEKADV.display-label": "reason", "FIRMPDEMP": "count", "FIRMPDEMP_PCT": "percent"},
     inplace=True)
-
 reasons = reasons[reasons.reason != 'All firms']
 reasons = reasons[reasons.reason != 'Other']
 reasons = reasons[reasons.reason != 'Total reporting']
@@ -82,6 +83,7 @@ outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring led to p
 outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring did not lead to positive business outcomes or anticipated positive changes in business operations", "not positive", case = True)
 
 
+
 # FILTER FUNCTION
 def filterer(df):
     df = df[df['region'] == 'United States']
@@ -95,6 +97,7 @@ def filterer(df):
     return df
 
 
+
 reasons = filterer(reasons)
 source = filterer(source)
 outcome = filterer(outcome)
@@ -106,7 +109,11 @@ df = pd.DataFrame(columns=['reason'])
 for group in reasons.groupby(['demographic', 'firm_age']) :
     df_temp = group[1][['reason', 'percent']].rename(columns={'percent': ' '.join(group[0])})
     df = df_temp.merge(df, how='left', on='reason')
-reasons = df
+reasons = df[['reason', 'All firms Firms with less than 2 years in business', 'All firms Firms with 2 to 3 years in business',\
+             'All firms Firms with 4 to 5 years in business', 'All firms Firms with 6 to 10 years in business',\
+             'All firms Firms with 11 to 15 years in business', 'All firms Firms with 16 or more years in business', 'All firms All firms']]
+reasons.columns = reasons.columns.str.replace(r"All firms", "")
+reasons.rename(columns={" ": "All firms"}, inplace=True)
 print(reasons)
 
 
@@ -117,8 +124,13 @@ df = pd.DataFrame(columns=['source'])
 for group in source.groupby(['demographic', 'firm_age']) :
     df_temp = group[1][['source', 'percent']].rename(columns={'percent': ' '.join(group[0])})
     df = df_temp.merge(df, how='left', on='source')
-source = df
+source = df[['source', 'All firms Firms with less than 2 years in business', 'All firms Firms with 2 to 3 years in business',\
+             'All firms Firms with 4 to 5 years in business', 'All firms Firms with 6 to 10 years in business',\
+             'All firms Firms with 11 to 15 years in business', 'All firms Firms with 16 or more years in business', 'All firms All firms']]
+source.columns = source.columns.str.replace(r"All firms", "")
+source.rename(columns={" ": "All firms"}, inplace=True)
 print(source)
+
 
 
 # unstack outcomes
@@ -126,7 +138,11 @@ df = pd.DataFrame(columns=['outcome'])
 for group in outcome.groupby(['demographic', 'firm_age']) :
     df_temp = group[1][['outcome', 'percent']].rename(columns={'percent': ' '.join(group[0])})
     df = df_temp.merge(df, how='left', on='outcome')
-outcome = df
+outcome = df[['outcome', 'All firms Firms with less than 2 years in business','All firms Firms with 2 to 3 years in business',\
+             'All firms Firms with 4 to 5 years in business', 'All firms Firms with 6 to 10 years in business',\
+             'All firms Firms with 11 to 15 years in business', 'All firms Firms with 16 or more years in business', 'All firms All firms']]
+outcome.columns = outcome.columns.str.replace(r"All firms", "")
+outcome.rename(columns={" ": "All firms"}, inplace=True)
 print(outcome)
 
 
