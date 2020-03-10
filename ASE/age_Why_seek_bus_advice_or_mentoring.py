@@ -92,29 +92,27 @@ outcome = filterer(outcome)
 
 
 # unstack reasons
-reasons['all_firms'] = reasons['percent'].iloc[0:15].reset_index(drop=True)
-reasons['less_2_years'] = reasons['percent'].iloc[15:30].reset_index(drop=True)
-reasons['2_to_3_years'] = reasons['percent'].iloc[30:45].reset_index(drop=True)
-reasons['4_to_5_years'] = reasons['percent'].iloc[45:60].reset_index(drop=True)
-reasons['6_to_10_years'] = reasons['percent'].iloc[60:75].reset_index(drop=True)
-reasons['11_to_15_years'] = reasons['percent'].iloc[75:90].reset_index(drop=True)
-reasons['16_or_more_years'] = reasons['percent'].iloc[90:105].reset_index(drop=True)
-reasons.drop(reasons.index[15: ], inplace=True)
-reasons.drop(['percent'], axis=1, inplace=True)
-print(reasons)
+df = pd.DataFrame(columns=['reason'])
+for group in reasons.groupby(['firm_age']) :
+    df_temp = group[1][['reason', 'percent']].rename(columns={'percent': ' '.join(group[0])})
+    df = df_temp.merge(df, how='left', on='reason')
+print(df.set_index('reason'))
+
 
 
 
 # unstack sources
-source['all_firms'] = source['percent'].iloc[0:10].reset_index(drop=True)
-source['less_2_years'] = source['percent'].iloc[10:20].reset_index(drop=True)
-source['2_to_3_years'] = source['percent'].iloc[20:30].reset_index(drop=True)
-source['4_to_5_years'] = source['percent'].iloc[30:40].reset_index(drop=True)
-source['6_to_10_years'] = source['percent'].iloc[40:50].reset_index(drop=True)
-source['11_to_15_years'] = source['percent'].iloc[50:60].reset_index(drop=True)
-source['16_or_more_years'] = source['percent'].iloc[60:70].reset_index(drop=True)
-source.drop(source.index[10: ], inplace=True)
-source.drop(['percent'], axis=1, inplace=True)
+df = pd.DataFrame(columns=['source'])
+for group in source.groupby(['firm_age']) :
+    df_temp = group[1][['source', 'percent']].rename(columns={'percent': ' '.join(group[0])})
+    df = df_temp.merge(df, how='left', on='source')
+print(df.set_index('source'))
+
+
+
+
+sys.exit()
+
 source["source"]= source["source"].str.replace("Business sought advice or mentoring from family", "family", case = True)
 source["source"]= source["source"].str.replace("Business sought advice or mentoring from friends", "friends", case = True)
 source["source"]= source["source"].str.replace("Business sought advice or mentoring from professional colleagues", "colleagues", case = True)

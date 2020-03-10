@@ -105,8 +105,8 @@ df = pd.DataFrame(columns=['reason'])
 for group in reasons.groupby(['demographic', 'firm_age']) :
     df_temp = group[1][['reason', 'percent']].rename(columns={'percent': ' '.join(group[0])})
     df = df_temp.merge(df, how='left', on='reason')
-print(df.set_index('reason'))
-
+reasons = df
+print(reasons)
 
 
 # unstack sources
@@ -114,8 +114,8 @@ df = pd.DataFrame(columns=['source'])
 for group in source.groupby(['demographic', 'firm_age']) :
     df_temp = group[1][['source', 'percent']].rename(columns={'percent': ' '.join(group[0])})
     df = df_temp.merge(df, how='left', on='source')
-print(df.set_index('source'))
-
+source = df
+print(source)
 
 
 # unstack outcomes
@@ -123,8 +123,8 @@ df = pd.DataFrame(columns=['outcome'])
 for group in outcome.groupby(['demographic', 'firm_age']) :
     df_temp = group[1][['outcome', 'percent']].rename(columns={'percent': ' '.join(group[0])})
     df = df_temp.merge(df, how='left', on='outcome')
-print(df.set_index('outcome'))
-
+outcome = df
+print(outcome)
 
 
 def saver(df, save=None):
