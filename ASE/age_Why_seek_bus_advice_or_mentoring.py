@@ -52,6 +52,15 @@ source.rename(
 source = source[source.source != 'Item not reported']
 source = source[source.source != 'Not applicable']
 source = source[source.source != 'All firms']
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from family", "family", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from friends", "friends", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from professional colleagues", "colleagues", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from employees", "employees", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from legal and professional advisors", "legal and professional advisors", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from customers", "customers", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from suppliers", "suppliers", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from government-supported technical assistance program", "government-supported technical assistance program", case = True)
+source["source"]= source["source"].str.replace("Business sought advice or mentoring from other source", "other", case = True)
 
 
 
@@ -69,7 +78,8 @@ outcome = outcome[outcome.outcome != 'Item not reported']
 outcome = outcome[outcome.outcome != 'Not applicable']
 outcome = outcome[outcome.outcome != 'All firms']
 outcome = outcome[outcome.outcome != 'Total reporting']
-
+outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring led to positive business outcomes or anticipated positive changes in business operations", "positive", case = True)
+outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring did not lead to positive business outcomes or anticipated positive changes in business operations", "not positive", case = True)
 
 
 # FILTER FUNCTION
@@ -93,53 +103,33 @@ outcome = filterer(outcome)
 
 # unstack reasons
 df = pd.DataFrame(columns=['reason'])
-for group in reasons.groupby(['firm_age']) :
+for group in reasons.groupby(['demographic', 'firm_age']) :
     df_temp = group[1][['reason', 'percent']].rename(columns={'percent': ' '.join(group[0])})
     df = df_temp.merge(df, how='left', on='reason')
-print(df.set_index('reason'))
+reasons = df
+print(reasons)
 
 
 
 
 # unstack sources
 df = pd.DataFrame(columns=['source'])
-for group in source.groupby(['firm_age']) :
+for group in source.groupby(['demographic', 'firm_age']) :
     df_temp = group[1][['source', 'percent']].rename(columns={'percent': ' '.join(group[0])})
     df = df_temp.merge(df, how='left', on='source')
-print(df.set_index('source'))
-
-
-
-
-sys.exit()
-
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from family", "family", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from friends", "friends", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from professional colleagues", "colleagues", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from employees", "employees", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from legal and professional advisors", "legal and professional advisors", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from customers", "customers", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from suppliers", "suppliers", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from government-supported technical assistance program", "government-supported technical assistance program", case = True)
-source["source"]= source["source"].str.replace("Business sought advice or mentoring from other source", "other", case = True)
+source = df
 print(source)
 
 
-
-
 # unstack outcomes
-outcome['all_firms'] = outcome['percent'].iloc[0:2].reset_index(drop=True)
-outcome['less_2_years'] = outcome['percent'].iloc[2:4].reset_index(drop=True)
-outcome['2_to_3_years'] = outcome['percent'].iloc[4:6].reset_index(drop=True)
-outcome['4_to_5_years'] = outcome['percent'].iloc[6:8].reset_index(drop=True)
-outcome['6_to_10_years'] = outcome['percent'].iloc[8:10].reset_index(drop=True)
-outcome['11_to_15_years'] = outcome['percent'].iloc[10:12].reset_index(drop=True)
-outcome['16_or_more_years'] = outcome['percent'].iloc[12:14].reset_index(drop=True)
-outcome.drop(outcome.index[2: ], inplace=True)
-outcome.drop(['percent'], axis=1, inplace=True)
-outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring led to positive business outcomes or anticipated positive changes in business operations", "positive", case = True)
-outcome["outcome"]= outcome["outcome"].str.replace("Advice or mentoring did not lead to positive business outcomes or anticipated positive changes in business operations", "not positive", case = True)
+df = pd.DataFrame(columns=['outcome'])
+for group in outcome.groupby(['demographic', 'firm_age']) :
+    df_temp = group[1][['outcome', 'percent']].rename(columns={'percent': ' '.join(group[0])})
+    df = df_temp.merge(df, how='left', on='outcome')
+outcome = df
 print(outcome)
+
+
 
 def saver(df, save=None):
     if save:
