@@ -112,7 +112,7 @@ for group in reasons.groupby(['demographic', 'firm_age']) :
 reasons = df[['reason', 'All firms Firms with less than 2 years in business', 'All firms Firms with 2 to 3 years in business',\
              'All firms Firms with 4 to 5 years in business', 'All firms Firms with 6 to 10 years in business',\
              'All firms Firms with 11 to 15 years in business', 'All firms Firms with 16 or more years in business', 'All firms All firms']]
-reasons.columns = reasons.columns.str.replace(r"All firms", "")
+reasons.columns = reasons.columns.str.replace("All firms", "")
 reasons.rename(columns={" ": "All firms"}, inplace=True)
 print(reasons)
 
@@ -127,7 +127,7 @@ for group in source.groupby(['demographic', 'firm_age']) :
 source = df[['source', 'All firms Firms with less than 2 years in business', 'All firms Firms with 2 to 3 years in business',\
              'All firms Firms with 4 to 5 years in business', 'All firms Firms with 6 to 10 years in business',\
              'All firms Firms with 11 to 15 years in business', 'All firms Firms with 16 or more years in business', 'All firms All firms']]
-source.columns = source.columns.str.replace(r"All firms", "")
+source.columns = source.columns.str.replace("All firms", "")
 source.rename(columns={" ": "All firms"}, inplace=True)
 print(source)
 
@@ -141,7 +141,7 @@ for group in outcome.groupby(['demographic', 'firm_age']) :
 outcome = df[['outcome', 'All firms Firms with less than 2 years in business','All firms Firms with 2 to 3 years in business',\
              'All firms Firms with 4 to 5 years in business', 'All firms Firms with 6 to 10 years in business',\
              'All firms Firms with 11 to 15 years in business', 'All firms Firms with 16 or more years in business', 'All firms All firms']]
-outcome.columns = outcome.columns.str.replace(r"All firms", "")
+outcome.columns = outcome.columns.str.replace("All firms", "")
 outcome.rename(columns={" ": "All firms"}, inplace=True)
 print(outcome)
 
