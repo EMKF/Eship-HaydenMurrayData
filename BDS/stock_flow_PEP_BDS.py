@@ -21,16 +21,28 @@ pd.set_option('display.max_rows', 30000)
 pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
-
-
 # state level populations 2005-2010
-state = pd.DataFrame([])
+state05_10 = pd.DataFrame([])
 for num in range(7,13):
     data = 'https://api.census.gov/data/2000/pep/int_population?get=GEONAME,POP,DATE_DESC&for=state:*&DATE_={num}&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
     response = requests.get(data).json()
     df = pd.DataFrame(response[1:], columns=response[0])
-    state = state.append(df, ignore_index=True)
-print(state)
+    state05_10 = state05_10.append(df, ignore_index=True)
+print(state05_10)
+
+# state level populations 2011-2013
+state11_13 = pd.DataFrame([])
+for num in range(4,7):
+    data = 'https://api.census.gov/data/2013/pep/natstprc?get=STNAME,POP&for=state:*&DATE_={num}&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
+    response = requests.get(data).json()
+    df = pd.DataFrame(response[1:], columns=response[0])
+    state11_13 = state11_13.append(df, ignore_index=True)
+state11_13["DATE_"].replace({"4": "2011", "5": "2012", "6": "2013"}, inplace=True)
+print(state11_13)
+sys.exit()
+
+
+
 
 # us level populations 2005-2010
 us = pd.DataFrame([])
@@ -40,6 +52,13 @@ for num in range(7,13):
     df = pd.DataFrame(response[1:], columns=response[0])
     us = us.append(df, ignore_index=True)
 print(us)
+
+
+
+
+
+
+
 
 
 # state11 = pd.DataFrame([])

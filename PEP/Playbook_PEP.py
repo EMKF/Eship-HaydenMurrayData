@@ -18,7 +18,7 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 
 # load PEP data
-pep = pd.read_csv('/Users/hmurray/Desktop/data/PEP/PEP_2018_PEPSR6H.csv')
+pep = pd.read_csv('/Users/hmurray/Desktop/data/PEP/metro_nonmetro/PEP_2018_PEPSR6H.csv')
 
 # filter for United States, both sexes, 2016
 pep = pep[(pep.Geography == 'United States')]
@@ -29,7 +29,7 @@ pep.reset_index(inplace=True, drop=True)
 # sum hispanic, + minority categories
 pep['2016'] = pep['Total'] + pep['Black or African American'] + pep['American Indian and Alaska Native'] + pep['Asian']\
               + pep['Native Hawaiin and Other Pacific Islander'] + pep['Two or More Races']
-pep.to_excel('/Users/hmurray/Desktop/data/PEP/PEP_demo.xlsx', index=False)
+pep.to_excel('/Users/hmurray/Desktop/data/PEP/metro_nonmetro/PEP_demo.xlsx', index=False)
 print(pep)
 
 # save white population
