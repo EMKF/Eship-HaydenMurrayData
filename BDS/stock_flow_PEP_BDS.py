@@ -28,22 +28,28 @@ base_url = 'https://api.census.gov/data/2000/pep/int_population'
 key = '4530f6af9e686fe2f12b443f4c7d9246ffbc503e'
 
 
+# state level populations 2005-2010
+state = pd.DataFrame([])
+for num in range(7,13):
+    data = 'https://api.census.gov/data/2000/pep/int_population?get=GEONAME,POP,DATE_DESC&for=state:*&DATE_={num}&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
+    response = requests.get(data).json()
+    df = pd.DataFrame(response[1:], columns=response[0])
+    state = state.append(df, ignore_index=True)
+print(state)
 
-data = 'https://api.census.gov/data/2000/pep/int_population?get=GEONAME,POP,DATE_DESC&for=state:*&DATE_=1&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'
-response = requests.get(data).json()
-print(response)
-df = pd.DataFrame(response[1:], columns=response[0])
-print(df)
+# us level populations 2005-2010
+us = pd.DataFrame([])
+for num in range(7,13):
+    data = 'https://api.census.gov/data/2000/pep/int_population?get=GEONAME,POP,DATE_DESC&for=us:*&DATE_={num}&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
+    response = requests.get(data).json()
+    df = pd.DataFrame(response[1:], columns=response[0])
+    us = us.append(df, ignore_index=True)
+print(us)
 
 
 
-# #store the response in a dataframe
-# laZipPopulations = pd.DataFrame(columns=['zipcode', 'population'], data=formattedResponse)
-#
-# #save that dataframe to a CSV spreadsheet
-# laZipPopulations.to_csv('laZipPopulations.csv', index=False)
 
-#
+
 # # load 2010-2019 PEP data
 # pep10 = pd.read_csv('/Users/hmurray/Desktop/data/PEP/state_national_estimates/nst-est2019-popchg2010_2019.csv')
 # pep10 = pep10[(pep10['SUMLEV'] == 10) | (pep10['SUMLEV'] == 40)]
