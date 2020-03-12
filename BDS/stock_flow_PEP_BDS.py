@@ -23,11 +23,6 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 
 
-# pull data from Census API
-base_url = 'https://api.census.gov/data/2000/pep/int_population'
-key = '4530f6af9e686fe2f12b443f4c7d9246ffbc503e'
-
-
 # state level populations 2005-2010
 state = pd.DataFrame([])
 for num in range(7,13):
@@ -40,24 +35,38 @@ print(state)
 # us level populations 2005-2010
 us = pd.DataFrame([])
 for num in range(7,13):
-    data = 'https://api.census.gov/data/2000/pep/int_population?get=GEONAME,POP,DATE_DESC&for=us:*&DATE_={num}&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
+    data = 'https://api.census.gov/data/2000/pep/int_population?get=GEONAME,POP,DATE_DESC&for=us:1&DATE_={num}&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
     response = requests.get(data).json()
     df = pd.DataFrame(response[1:], columns=response[0])
     us = us.append(df, ignore_index=True)
 print(us)
 
 
+# state11 = pd.DataFrame([])
+# data = 'https://api.census.gov/data/2011/pep/population?get=GEONAME,POP,DATE_DESC&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'
+# response = requests.get(data).json()
+# df = pd.DataFrame(response[1:], columns=response[0])
+# state11 = state11.append(df, ignore_index=True)
+# print(state11)
 
 
+# state11 = pd.DataFrame([])
+# for num in range(7,13):
+#     data = f'https://api.census.gov/data/{num}/pep/population?get=GEONAME,POP,DATE_DESC&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
+#     response = requests.get(data).json()
+#     df = pd.DataFrame(response[1:], columns=response[0])
+#     state11 = state11.append(df, ignore_index=True)
+# print(state11)
 
-# # load 2010-2019 PEP data
-# pep10 = pd.read_csv('/Users/hmurray/Desktop/data/PEP/state_national_estimates/nst-est2019-popchg2010_2019.csv')
-# pep10 = pep10[(pep10['SUMLEV'] == 10) | (pep10['SUMLEV'] == 40)]
-# pep10.columns = pep10.columns.str.replace("POPESTIMATE", "")
-# print(pep10)
-#
-#
-#
-# # load 2000 - 2010 PEP data
-# pep00 = pd.read_csv('/Users/hmurray/Desktop/data/PEP/state_national_estimates/st-est00int-alldata.csv')
-# print(pep00)
+
+# # state level populations 2011-2018
+# year = [*range(2011, 2019)]
+# dource = 'pep'
+# dname = 'population'
+# cols = 'GEONAME,POP,DATE_DESC'
+# state = ':*'
+# for i in year:
+#     base_url = f'https://api.census.gov/data//{i}/{dource}/{dname}'
+#     data_url = f'{base_url}?get={cols}&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'
+#     response = requests.get(data_url)
+#     print(response)
