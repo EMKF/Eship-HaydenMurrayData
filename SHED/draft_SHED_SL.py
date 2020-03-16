@@ -16,6 +16,11 @@ pd.options.mode.chained_assignment = None
 
 # add options to the end of location to avoid using too much memory
 df_agg = pd.read_csv('/Users/hmurray/Downloads/public2018.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+print(df_agg['B2'].value_counts(normalize=True, sort=False))
+status_own = (pd.crosstab(df_agg['B2'], df_agg['D3A'], normalize='columns')).round(4)*100
+print(status_own)
+sys.exit()
+
 
 # keep vars
 df_agg = df_agg[['ppagecat', 'ppinccat6', 'D3A', 'D3B', 'SL3', 'SL4', 'FS20_b', 'E4_a']]
@@ -126,17 +131,17 @@ valuer2(df2, 'income_categories', '/Users/Hmurray/Desktop/data/SHED/student_loan
 
 # debt * age
 ct_sl_age = (pd.crosstab(df2['Monthly_Student_Loan_Payment'], df2['age_categories'], normalize='columns')).round(4)*100
-ct_sl_age.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/ct_sl_age2.csv')
+ct_sl_age.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/drafts/ct_sl_age2.csv')
 print(ct_sl_age)
 
 # debt * income
 ct_sl_inc = (pd.crosstab(df2['Monthly_Student_Loan_Payment'], df2['income_categories'], normalize='columns')).round(4)*100
-ct_sl_inc.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/ct_sl_inc2.csv')
+ct_sl_inc.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/drafts/ct_sl_inc2.csv')
 print(ct_sl_inc)
 
 # debt * eship or ownership
 ct_sl_eship = (pd.crosstab(df2['Monthly_Student_Loan_Payment'], df2['Business_Ownership'], normalize='index')).round(4)*100
-ct_sl_eship.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/ct_sl_eship2.csv')
+ct_sl_eship.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/drafts/ct_sl_eship2.csv')
 print(ct_sl_eship)
 
 
