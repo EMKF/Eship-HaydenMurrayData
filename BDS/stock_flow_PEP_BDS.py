@@ -30,20 +30,6 @@ for num in range(7,13):
     state05_10 = state05_10.append(df, ignore_index=True)
 print(state05_10)
 
-# state level populations 2011-2013
-state11_13 = pd.DataFrame([])
-for num in range(4,7):
-    data = 'https://api.census.gov/data/2013/pep/natstprc?get=STNAME,POP&for=state:*&DATE_={num}&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
-    response = requests.get(data).json()
-    df = pd.DataFrame(response[1:], columns=response[0])
-    state11_13 = state11_13.append(df, ignore_index=True)
-state11_13["DATE_"].replace({"4": "2011", "5": "2012", "6": "2013"}, inplace=True)
-print(state11_13)
-sys.exit()
-
-
-
-
 # us level populations 2005-2010
 us = pd.DataFrame([])
 for num in range(7,13):
@@ -53,6 +39,18 @@ for num in range(7,13):
     us = us.append(df, ignore_index=True)
 print(us)
 
+# state level populations 2011-2018
+# THIS IS PULLING 2018. NEED TO LOOP OVER PARAMETERS TO PULL IN RANGE OF YEARS
+# THIS IS PULLING 2018. NEED TO LOOP OVER PARAMETERS TO PULL IN RANGE OF YEARS
+# THIS IS PULLING 2018. NEED TO LOOP OVER PARAMETERS TO PULL IN RANGE OF YEARS
+state18 = pd.DataFrame([])
+for num in range(4,5):
+    data = 'https://api.census.gov/data/2018/pep/population?get=GEONAME,POP,DATE_DESC&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
+    response = requests.get(data).json()
+    df = pd.DataFrame(response[1:], columns=response[0])
+    state18 = state18.append(df, ignore_index=True)
+print(state18)
+sys.exit()
 
 
 
@@ -61,31 +59,6 @@ print(us)
 
 
 
-# state11 = pd.DataFrame([])
-# data = 'https://api.census.gov/data/2011/pep/population?get=GEONAME,POP,DATE_DESC&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'
-# response = requests.get(data).json()
-# df = pd.DataFrame(response[1:], columns=response[0])
-# state11 = state11.append(df, ignore_index=True)
-# print(state11)
 
 
-# state11 = pd.DataFrame([])
-# for num in range(7,13):
-#     data = f'https://api.census.gov/data/{num}/pep/population?get=GEONAME,POP,DATE_DESC&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
-#     response = requests.get(data).json()
-#     df = pd.DataFrame(response[1:], columns=response[0])
-#     state11 = state11.append(df, ignore_index=True)
-# print(state11)
 
-
-# # state level populations 2011-2018
-# year = [*range(2011, 2019)]
-# dource = 'pep'
-# dname = 'population'
-# cols = 'GEONAME,POP,DATE_DESC'
-# state = ':*'
-# for i in year:
-#     base_url = f'https://api.census.gov/data//{i}/{dource}/{dname}'
-#     data_url = f'{base_url}?get={cols}&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'
-#     response = requests.get(data_url)
-#     print(response)
