@@ -18,61 +18,89 @@ pd.options.mode.chained_assignment = None
 
 
 
-# pull, subset, add column, and rename stuff
+# pull,
 df_agg = pd.read_csv('/Users/hmurray/Downloads/public2018.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
-df_agg = df_agg[['ppagecat', 'ppinccat6', 'D3A', 'SL4']]
-df_agg.rename(columns={"ppagecat": "age_categories", "ppinccat6": "income_categories", "D3A": "Business_Ownership", \
-                       "SL4": "Monthly_Student_Loan_Payment"},inplace=True)
-df_agg['nan'] = df_agg['Monthly_Student_Loan_Payment']
+
+# subset
+df_agg = df_agg[['ppagecat', 'ppinccat6', 'D3A', 'SL3', 'SL4']]
+
+# rename
+df_agg.rename(columns={"ppagecat": "age_categories", "ppinccat6": "income_categories", "D3A": "Business_Ownership", "SL3": "Total_student_loan", "SL4": "Monthly_Student_Loan_Payment"},inplace=True)
+
+# fill NaN
 df_agg['Monthly_Student_Loan_Payment'].fillna('No student loan debt', inplace=True)
+df_agg['Total_student_loan'].fillna('No student loan debt', inplace=True)
+
+# replace strings
 df_agg['Monthly_Student_Loan_Payment'] = df_agg['Monthly_Student_Loan_Payment'].str.replace("I am currently not required to make any payments on these loans", "None required", case = True)
-df_agg['nan'] = df_agg['nan'].str.replace("I am currently not required to make any payments on these loans", "None required", case = False)
+
+# turn garbage categories to NaN
+def disposer(df, var):
+    df[var].replace('Refused', np.nan, inplace=True)
+    df[var].replace('Other (Please specify)', np.nan, inplace=True)
+    df[var].replace('Don\'t know', np.nan, inplace=True)
+    return df
+disposer(df_agg, 'Monthly_Student_Loan_Payment')
+disposer(df_agg, 'Total_student_loan')
+
 # export the subset df to excel
 df_agg.to_excel('/Users/Hmurray/Desktop/data/SHED/student_loans/manipulater.xlsx', index=False)
+
 # define the order of columns
-business_ownership = ["For a single company or employer","For yourself or your family business","Refused","Other (Please specify)"]
-monthly_payments = ["No student loan debt","$1 to $49","$50 to $99","$100 to $199","$200 to $299","$300 to $399",\
-                "$400 to $499","$500 to $749","$750 to $999","$1,000 or above","none required",\
-                "Refused","Don't know"]
-nan = ["$1 to $49","$50 to $99","$100 to $199","$200 to $299","$300 to $399",\
-                "$400 to $499","$500 to $749","$750 to $999","$1,000 or above","none required",\
-                "Refused","Don't know"]
+business_ownership = ["For a single company or employer","For yourself or your family business"]
+monthly_payments = ["No student loan debt","None required","$1 to $49","$50 to $99","$100 to $199","$200 to $299","$300 to $399",\
+                "$400 to $499","$500 to $749","$750 to $999","$1,000 or above","Refused","Don't know"]
+monthly_nan = ["$1 to $49","$50 to $99","$100 to $199","$200 to $299","$300 to $399",\
+                "$400 to $499","$500 to $749","$750 to $999","$1,000 or above"]
+total = ["No student loan debt", "Less than $5,000", "$5,000 to $9,999","$10,000 to $14,999","$15,000 to $19,999","$20,000 to $24,999",\
+                "$25,000 to $29,999","$30,000 to $39,999","$40,000 to $49,999","$50,000 to $74,999", "$75,000 to $99,999", "$100,000 or above"]
+total_nan = ["Less than $5,000", "$5,000 to $9,999","$10,000 to $14,999","$15,000 to $19,999","$20,000 to $24,999",\
+                "$25,000 to $29,999","$30,000 to $39,999","$40,000 to $49,999","$50,000 to $74,999", "$75,000 to $99,999", "$100,000 or above"]
 age_categories = ["18-24", "25-34", "35-44", "45-54", "55-64", "65-74", "75+"]
 income_categories = ["<$25,000","$25-49,999","$50-74,999","$75-99,999","$100-149,999","$150,000+"]
 
 
 
 # frequencies and plots function
-def valuer1(df, var, order, save=None):
+def valuer(df, var, order, title, save=None):
     print()
     df[var] = pd.Categorical(df[var], categories=order, ordered=False)
     print(df[var].value_counts(normalize=True, sort=False))
     print()
     df[var].value_counts(normalize=True, sort=False).plot(kind='bar')
     if save:
-        plt.xticks(fontsize=10)
-        plt.tight_layout()
+        plt.xticks(fontsize=10, rotation=90)
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+        plt.title(title)
         # plt.gcf().subplots_adjust(bottom=0.20)
         plt.savefig(save)
     plt.show()
-valuer1(df_agg, 'Business_Ownership', business_ownership, '/Users/Hmurray/Desktop/data/SHED/student_loans/Business_Ownership.png')
-valuer1(df_agg, 'Monthly_Student_Loan_Payment', monthly_payments, '/Users/Hmurray/Desktop/data/SHED/student_loans/Monthly_Student_Loan_Payment.png')
-valuer1(df_agg, 'nan', nan, '/Users/Hmurray/Desktop/data/SHED/student_loans/Monthly_Student_Loan_Payment.png')
-valuer1(df_agg, 'age_categories', age_categories, '/Users/Hmurray/Desktop/data/SHED/student_loans/age_categories.png')
-valuer1(df_agg, 'income_categories', income_categories, '/Users/Hmurray/Desktop/data/SHED/student_loans/income_categories.png')
+valuer(df_agg, 'Business_Ownership', business_ownership, 'Labor Status', '/Users/Hmurray/Desktop/data/SHED/student_loans/Business_Ownership.png')
+valuer(df_agg, 'Monthly_Student_Loan_Payment', monthly_payments, 'Average Monthly Student Loan Payment', '/Users/Hmurray/Desktop/data/SHED/student_loans/monthly.png')
+valuer(df_agg, 'Monthly_Student_Loan_Payment', monthly_nan, 'Average Monthly Student Loan Payment','/Users/Hmurray/Desktop/data/SHED/student_loans/monthly_nan.png')
+valuer(df_agg, 'Total_student_loan', total, 'Total Student Loan Debt','/Users/Hmurray/Desktop/data/SHED/student_loans/total.png')
+valuer(df_agg, 'Total_student_loan', total_nan, 'Total Student Loan Debt','/Users/Hmurray/Desktop/data/SHED/student_loans/total_nan.png')
+valuer(df_agg, 'age_categories', age_categories, 'Age','/Users/Hmurray/Desktop/data/SHED/student_loans/age_categories.png')
+valuer(df_agg, 'income_categories', income_categories, 'Income', '/Users/Hmurray/Desktop/data/SHED/student_loans/income_categories.png')
 
 
 # cross tabs
 # HOW DO I SAVE EACH CROSSTAB SEPERATELY???
-def crosstab_all(dataset, attributelist, save=None,):
-    for v in attributelist:
+def crosstab_all(dataset, attributelist):
+    for v in var:
         print()
         name = pd.crosstab(dataset[v],dataset["Business_Ownership"], normalize=True, margins=True)
+        pd.DataFrame(name)
         print(name)
-        print()
 
-attributelist=["Monthly_Student_Loan_Payment",'age_categories','income_categories']
-crosstab_all(df_agg, attributelist, '/Users/Hmurray/Desktop/data/SHED/student_loans/xtab.csv')
+
+total_monthly = (pd.crosstab(df_agg['Monthly_Student_Loan_Payment'], df_agg['Total_student_loan'], normalize='columns')).round(4)*100
+total_monthly.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/total_monthly.csv')
+print(total_monthly)
+
+
+var=['Monthly_Student_Loan_Payment','Total_student_loan','age_categories','income_categories']
+crosstab_all(df_agg, var)
 
 
 

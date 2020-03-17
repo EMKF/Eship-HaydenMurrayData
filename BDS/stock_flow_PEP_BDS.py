@@ -21,6 +21,8 @@ pd.set_option('display.max_rows', 30000)
 pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
+
+
 # state level populations 2005-2010
 state05_10 = pd.DataFrame([])
 for num in range(7,13):

@@ -16,9 +16,10 @@ pd.options.mode.chained_assignment = None
 
 # add options to the end of location to avoid using too much memory
 df_agg = pd.read_csv('/Users/hmurray/Downloads/public2018.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
-print(df_agg['B2'].value_counts(normalize=True, sort=False))
-status_own = (pd.crosstab(df_agg['B2'], df_agg['D3A'], normalize='columns')).round(4)*100
-print(status_own)
+df_agg['SL3'].fillna('No student loan debt', inplace=True)
+df_agg['SL4'].fillna('No student loan debt', inplace=True)
+debt = (pd.crosstab(df_agg['SL3'], df_agg['SL4'], normalize='columns')).round(4)*100
+print(debt)
 sys.exit()
 
 
