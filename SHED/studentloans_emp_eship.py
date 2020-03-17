@@ -34,6 +34,10 @@ df_agg['Total_student_loan'].fillna('No student loan debt', inplace=True)
 # replace strings
 df_agg['Monthly_Student_Loan_Payment'] = df_agg['Monthly_Student_Loan_Payment'].str.replace("I am currently not required to make any payments on these loans", "None required", case = True)
 
+# copy columns to get no student debt crosstabs
+df_agg['monthly_nan'] = df_agg['Monthly_Student_Loan_Payment']
+df_agg['total_nan'] = df_agg['Total_student_loan']
+
 # turn garbage categories to NaN
 def disposer(df, var):
     df[var].replace('Refused', np.nan, inplace=True)
@@ -42,6 +46,8 @@ def disposer(df, var):
     return df
 disposer(df_agg, 'Monthly_Student_Loan_Payment')
 disposer(df_agg, 'Total_student_loan')
+disposer(df_agg, 'monthly_nan')
+disposer(df_agg, 'total_nan')
 
 # export the subset df to excel
 df_agg.to_excel('/Users/Hmurray/Desktop/data/SHED/student_loans/manipulater.xlsx', index=False)
@@ -74,7 +80,7 @@ def valuer(df, var, order, title, save=None):
         plt.title(title)
         # plt.gcf().subplots_adjust(bottom=0.20)
         plt.savefig(save)
-    plt.show()
+    # plt.show()
 valuer(df_agg, 'Business_Ownership', business_ownership, 'Labor Status', '/Users/Hmurray/Desktop/data/SHED/student_loans/Business_Ownership.png')
 valuer(df_agg, 'Monthly_Student_Loan_Payment', monthly_payments, 'Average Monthly Student Loan Payment', '/Users/Hmurray/Desktop/data/SHED/student_loans/monthly.png')
 valuer(df_agg, 'Monthly_Student_Loan_Payment', monthly_nan, 'Average Monthly Student Loan Payment','/Users/Hmurray/Desktop/data/SHED/student_loans/monthly_nan.png')
@@ -92,16 +98,44 @@ def crosstab_all(dataset, attributelist):
         name = pd.crosstab(dataset[v],dataset["Business_Ownership"], normalize=True, margins=True)
         pd.DataFrame(name)
         print(name)
-
-
-total_monthly = (pd.crosstab(df_agg['Monthly_Student_Loan_Payment'], df_agg['Total_student_loan'], normalize='columns')).round(4)*100
-total_monthly.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/total_monthly.csv')
-print(total_monthly)
-
-
 var=['Monthly_Student_Loan_Payment','Total_student_loan','age_categories','income_categories']
 crosstab_all(df_agg, var)
 
 
+
+# monthly by total
+total_monthly = (pd.crosstab(df_agg['Monthly_Student_Loan_Payment'], df_agg['Total_student_loan'], normalize='columns')).round(4)*100
+total_monthly.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/total_monthly.csv')
+print(total_monthly)
+
+# ownership by age
+age_own = (pd.crosstab(df_agg['age_categories'], df_agg['Business_Ownership'], normalize='columns')).round(4)*100
+age_own.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/age_own.csv')
+print(age_own)
+
+# month by own
+month_own = (pd.crosstab(df_agg['monthly_nan'], df_agg['Business_Ownership'], normalize='columns')).round(4)*100
+month_own.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/month_own.csv')
+print(month_own)
+
+# total by own
+total_own = (pd.crosstab(df_agg['total_nan'], df_agg['Business_Ownership'], normalize='columns')).round(4)*100
+total_own.to_csv('/Users/Hmurray/Desktop/data/SHED/student_loans/total_own.csv')
+print(total_own)
+
+# groupby double
+df_agg['Monthly_Student_Loan_Payment'] = pd.Categorical(df_agg['Monthly_Student_Loan_Payment'], categories=monthly_payments, ordered=False)
+df_agg.groupby('Business_Ownership').Monthly_Student_Loan_Payment.value_counts(normalize=True).unstack(0).plot(kind='bar')
+plt.xticks(fontsize=10, rotation=90)
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.title('Monthly Student Loan Payments by Labor Status')
+
+
+df_agg['Total_student_loan'] = pd.Categorical(df_agg['Total_student_loan'], categories=total, ordered=False)
+df_agg.groupby('Business_Ownership').Total_student_loan.value_counts(normalize=True).unstack(0).plot(kind='bar')
+plt.xticks(fontsize=10, rotation=90)
+plt.tight_layout(rect=[0, 0.03, 1, 0.95])
+plt.title('Total Student Loans by Labor Status')
+plt.show()
 
 sys.exit()
