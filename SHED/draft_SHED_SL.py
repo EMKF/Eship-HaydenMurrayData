@@ -15,7 +15,111 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 pd.options.mode.chained_assignment = None
 
 
-# DRAFT 2 (MULTIPLE SCRIPTS IN THIS .py FILE)
+########################################################################################################################
+################################################ DRAFT 3 ###############################################################
+########################################################################################################################
+
+# subset
+df = df_agg[['D3A', 'SL3', 'SL4']]
+nan = df_agg[['D3A', 'SL3', 'SL4']]
+
+# Rename columns
+df.rename(columns={"D3A": "Business_Ownership", "SL3": "Total_Student_Loans", "SL4": "Monthly_Student_Loan_Payment"},inplace=True)
+nan.rename(columns={"D3A": "Business_Ownership", "SL3": "Total_Student_Loans", "SL4": "Monthly_Student_Loan_Payment"},inplace=True)
+
+################################################# ANALYSIS OF NO DEBT #################################################
+
+# fill NaN with no student loan debt
+nan['Total_Student_Loans'].fillna('No student loan debt', inplace=True)
+
+# define order of categories
+business_ownership = ["For a single company or employer","For yourself or your family business"]
+total = ["No student loan debt", "Less than $5,000", "$5,000 to $9,999","$10,000 to $14,999","$15,000 to $19,999","$20,000 to $24,999",\
+        "$25,000 to $29,999","$30,000 to $39,999","$40,000 to $49,999","$50,000 to $74,999", "$75,000 to $99,999", "$100,000 or above"]
+monthly = ["No student loan debt","None required","$1 to $49","$50 to $99","$100 to $199","$200 to $299","$300 to $399",\
+                "$400 to $499","$500 to $749","$750 to $999","$1,000 or above"]
+
+# set order of categories
+nan.loc[:, ("Business_Ownership")] = pd.Categorical(nan.loc[:, ("Business_Ownership")], categories=business_ownership)
+nan.loc[:, ("Total_Student_Loans")] = pd.Categorical(nan.loc[:, ("Total_Student_Loans")], categories=total)
+nan.loc[:, ("Monthly_Student_Loan_Payment")] = pd.Categorical(nan.loc[:, ("Monthly_Student_Loan_Payment")], categories=monthly)
+
+# value counts
+no_debt = nan['Total_Student_Loans'].value_counts(normalize=True, sort=False)
+no_debt = pd.DataFrame(no_debt)
+no_debt = no_debt.iloc[0,0]
+
+# calculate % no debt for each category
+status_no_debt = nan.groupby('Business_Ownership').Total_Student_Loans.value_counts(normalize=True).unstack(0)
+print(status_no_debt)
+status_no_debt.to_excel('/Users/hmurray/Desktop/data/SHED/student_loans/status_no_debt.xlsx')
+
+# calculate % with debt
+# total_debt
+total_debt = 100 - (100*no_debt)
+print(total_debt)
+
+# employee debt
+emp_debt = status_no_debt.iloc[11, 0]
+emp_debt = 100 - (100*emp_debt)
+print(emp_debt)
+
+# entrepreneur debt
+ent_debt = status_no_debt.iloc[11, 1]
+ent_debt = 100 - (100*ent_debt)
+print(ent_debt)
+
+# plot % with debt for labor status
+plot_status_with_debt = {u'For a single company or employer':20.51, u'For yourself or your family business':11.31}
+plt.bar(*zip(*plot_status_with_debt.items()))
+# plt.xlabel("Labor Status")
+plt.ylabel("Percent with Student Debt")
+plt.title("Those with Student Debt are more likely to be Employed by others")
+plt.yticks(np.arange(0, 50, 5))
+plt.tight_layout()
+plt.savefig('/Users/hmurray/Desktop/data/SHED/student_loans/plot_status_with_debt.png')
+
+
+
+########################################################################################################################
+########################################## ANALYSIS OF PAYMENTS ########################################################
+########################################################################################################################
+
+
+
+# fill NaN with no student loan debt
+df['Total_Student_Loans'].fillna('No student loan debt', inplace=True)
+df['Monthly_Student_Loan_Payment'].fillna('No student loan debt', inplace=True)
+
+
+# define order of categories
+business_ownership = ["For a single company or employer","For yourself or your family business"]
+total = ["Less than $5,000", "$5,000 to $9,999","$10,000 to $14,999","$15,000 to $19,999","$20,000 to $24,999",\
+        "$25,000 to $29,999","$30,000 to $39,999","$40,000 to $49,999","$50,000 to $74,999", "$75,000 to $99,999", "$100,000 or above"]
+monthly = ["$1 to $49","$50 to $99","$100 to $199","$200 to $299","$300 to $399",\
+                "$400 to $499","$500 to $749","$750 to $999","$1,000 or above"]
+
+# set order of categories
+df.loc[:, ("Business_Ownership")] = pd.Categorical(nan.loc[:, ("Business_Ownership")], categories=business_ownership)
+df.loc[:, ("Total_Student_Loans")] = pd.Categorical(nan.loc[:, ("Total_Student_Loans")], categories=total)
+df.loc[:, ("Monthly_Student_Loan_Payment")] = pd.Categorical(nan.loc[:, ("Monthly_Student_Loan_Payment")], categories=monthly)
+
+# calculate % no debt for each category
+debt = df.groupby('Business_Ownership').Total_Student_Loans.value_counts(normalize=True).unstack(0)
+print(debt)
+debt.to_excel('/Users/hmurray/Desktop/data/SHED/student_loans/total_owed.xlsx')
+
+month = df.groupby('Business_Ownership').Monthly_Student_Loan_Payment.value_counts(normalize=True).unstack(0)
+print(month)
+month.to_excel('/Users/hmurray/Desktop/data/SHED/student_loans/month.xlsx')
+
+
+
+
+########################################################################################################################
+################################################ DRAFT 2 ###############################################################
+########################################################################################################################
+
 
 
 # pull,
@@ -144,6 +248,9 @@ plt.show()
 sys.exit()
 
 
+########################################################################################################################
+################################################ DRAFT 1 ###############################################################
+########################################################################################################################
 
 
 # DRAFT 1 (SEPERATE SCRIPT FROM ABOVE)
