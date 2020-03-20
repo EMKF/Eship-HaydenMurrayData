@@ -27,7 +27,18 @@ df_overall = df_all[(df_all.employment_type == 'inc_self') | (df_all.employment_
 df_overall = df_overall[(df_overall.gender == 'overall')]
 print(df_overall)
 
+df_gender = df_all[(df_all.employment_type == 'inc_self') | (df_all.employment_type == 'uninc_self') | (df_all.employment_type == 'total')]
+# df_gender = df_gender[(df_overall.gender == 'overall')]
+print(df_gender)
+
 # unstack
 df_overall = df_overall.pivot(index='employment_type', columns='year', values='median_earnings')
 print (df_overall)
-df_overall.to_excel('/Users/hmurray/Desktop/Data_Briefs/ACS/uninc_inc_self_emp/total_in_un.xlsx')
+df_overall.to_excel('/Users/hmurray/Desktop/Data_Briefs/ACS/uninc_inc_self_emp/total_in_un.xlsx', index=False)
+
+# df_gender = df_gender.pivot(index=('employment_type', 'gender'), columns='year', values='median_earnings')
+df_gender = (df_gender.pivot_table(index=['employment_type','gender'],columns='year', values='median_earnings')
+       .reset_index()
+       .rename_axis(None, axis=1))
+print(df_gender)
+df_gender.to_excel('/Users/hmurray/Desktop/Data_Briefs/ACS/uninc_inc_self_emp/gender_in_un.xlsx', index=False)

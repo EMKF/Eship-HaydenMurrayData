@@ -4,7 +4,7 @@ import shutil
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-
+from textwrap import wrap
 
 pd.set_option('max_columns', 1000)
 pd.set_option('max_info_columns', 1000)
@@ -26,8 +26,8 @@ df_agg.replace('Refused', np.nan, inplace=True)
 df_agg.replace('Other (Please specify):', np.nan, inplace=True)
 
 # shorten strings
-df_agg['D3A'] = df_agg['D3A'].str.replace("For a single company or employer", "Single_Company/Employer", case = True)
-df_agg['D3A'] = df_agg['D3A'].str.replace("For yourself or your family business", "Yourself/Family_Business", case = True)
+df_agg['D3A'] = df_agg['D3A'].str.replace("For a single company or employer", "Employed", case = True)
+df_agg['D3A'] = df_agg['D3A'].str.replace("For yourself or your family business", "Family- or Self-Employed", case = True)
 
 # draft
 df = pd.DataFrame()
@@ -80,6 +80,19 @@ crosser(df_agg['EF6B_e'], '/Users/hmurray/Desktop/Data_Briefs/SHED/vulnerability
 print(df_agg['EF6B_e'].value_counts(normalize=True))
 crosser(df_agg['EF6B_f'], '/Users/hmurray/Desktop/Data_Briefs/SHED/vulnerability_bus_own/xtabs/D3A_EF6B_f.xlsx')
 print(df_agg['EF6B_f'].value_counts(normalize=True))
+
+
+# plot for brief
+df_agg['D3A'] = df_agg['D3A'].str.replace("For a single company or employer", "Employed", case = True)
+df_agg['D3A'] = df_agg['D3A'].str.replace("For yourself or your family business", "Family- or Self-Employed", case = True)
+df_agg.groupby('D3A').SL6.value_counts(normalize=True).unstack(0).plot(kind='bar')
+title = 'Would you partially pay or skip student loan payment if $400 emergency expense occurred?'
+plt.title('\n'.join(wrap(title,60)), fontsize=14)
+plt.xticks(fontsize=10, rotation=0)
+plt.tight_layout()
+plt.xlabel('')
+plt.savefig('/Users/hmurray/Desktop/data/SHED/student_loans/skip_pay.png')
+plt.show()
 
 
 
