@@ -20,6 +20,8 @@ pd.options.mode.chained_assignment = None
 
 # pull,
 df_agg = pd.read_csv('/Users/hmurray/Desktop/data/SHED/2018_SHED_data.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+print(df_agg.head())
+sys.exit()
 
 # replace "Refused" with NaN
 df_agg.replace('Refused', np.nan, inplace=True)

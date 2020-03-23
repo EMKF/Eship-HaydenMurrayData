@@ -29,8 +29,8 @@ data['D3A'] = data['D3A'].str.replace("For a single company or employer", "Emplo
 data['D3A'] = data['D3A'].str.replace("For yourself or your family business", "Family- or Self-Employed", case = True)
 
 # subset using startswith()
-df = data[data.columns[pd.Series(data.columns).str.startswith(('D3A', 'E1', 'E2', 'E4'))]]
-print(df.head())
+df = data[data.columns[pd.Series(data.columns).str.startswith(('D3A', 'ppcm1301', 'pph10001', 'FL0', 'E1', 'E2', 'E4'))]]
+# print(df.head())
 
 # crosstabs
 new = pd.DataFrame()
@@ -38,11 +38,23 @@ def crosser(var, save=None):
     print(var.value_counts(normalize=True))
     new = (pd.crosstab([var], df['D3A'], normalize='columns')).round(4) * 100
     print(new)
-    if save:
-        new.to_excel(save, index=True)
+    return new
+    # if save:
+    #     new.to_excel(save, index=True)
 
-names = list(df.columns.values)
-for x in names:
-    crosser(df[x], '/Users/hmurray/Desktop/data/SHED/health_coverage/D3A' + str(x) + '.xlsx')
+# names = list(df.columns.values)
+df1 = pd.DataFrame()
+for x in df:
+    df1 = df1.append(crosser(df[x], '/Users/hmurray/Desktop/data/SHED/health_coverage/D3A' + str(x) + '.xlsx'))
+print(df1)
 
+sys.exit()
 
+######## ADD THIS TO FOR LOOP ABOVE
+In [48]: writer = pd.ExcelWriter('c:/temp/test.xlsx', engine='openpyxl')
+
+In [49]: df.to_excel(writer, index=False)
+
+In [50]: df.to_excel(writer, startrow=len(df)+2, index=False)
+
+In [51]: writer.save()
