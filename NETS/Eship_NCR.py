@@ -14,7 +14,7 @@ pd.set_option('max_info_columns', 1000)
 pd.set_option('expand_frame_repr', False)
 pd.set_option('display.max_rows', 30000)
 pd.set_option('max_colwidth', 4000)
-pd.set_option('display.float_format', lambda x: '%.3f' % x)
+pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
 
@@ -31,50 +31,43 @@ sjc = data.loc[:, data.columns.str.contains('pop') == False]
 
 def renamer(df):
     df.rename( columns={'Unnamed: 0':'region'}, inplace=True )
+    df.sort_values(by=['region'], ascending=True)
     return df
 renamer(act)
 renamer(vel)
 renamer(new)
 
-# check dfs
+def _filter(df):
+    df = df[(df.region == 'District of Columbia') | (df.region == 'United States')| (df.region == 'Virginia')| (df.region == 'Maryland')]
+    df.reset_index(drop=True, inplace=True)
+    df.rename(columns={'region': 'Year'}, inplace=True)
+    df = df.transpose()
+    df.reset_index(inplace=True)
+    df.columns = df.iloc[0]
+    df = df.reindex(df.index.drop(0)).reset_index(drop=True)
+    return df
+
+sjc = _filter(sjc)
+act = _filter(act)
+vel = _filter(vel)
+new = _filter(new)
+
+def calculator(df):
+    df["District of Columbia"] = 100 * df["District of Columbia"]
+    df["Maryland"] = 100 * df["Maryland"]
+    df["Virginia"] = 100 * df["Virginia"]
+    df["United States"] = 100 * df["United States"]
+calculator(act)
+calculator(new)
+
 print(sjc.head())
 print(act.head())
 print(vel.head())
 print(new.head())
-sys.exit()
-
-# filter
-def filterer(df):
-    df1 = data[(data.region == 'District of Columbia') | (data.region == 'United States')| (data.region == 'Virginia')| (data.region == 'Maryland')]
-    df1.reset_index(drop=True, inplace=True)
-    return df1
-
-# rename columns
-df1.rename(columns={'region': 'Year'}, inplace=True)
-
-# transpose
-sjc = df1.transpose()
-sjc.reset_index(inplace=True)
-
-# reset columns
-sjc.columns = ['Year', 'District of Columbia', 'Maryland', 'Virginia', 'United States']
-
-# drop other rows
-sjc = sjc[1:24]
-sjc.reset_index(inplace=True)
-
-# trim year column
-sjc['Year'] = sjc['Year'].map(lambda x: x.lstrip('sjc-').rstrip('aAbBcC'))
-
-### Other data
-
-# # filter
-# neb = neb1[(neb1.Region == 'District of Columbia') | (neb1.Region == 'United States')| (neb1.Region == 'Virginia')| (neb1.Region == 'Maryland')]
-# neb.reset_index(drop=True, inplace=True)
-# print(neb)
 
 
-sys.exit()
+
+
 def plotter(df, var, title, save):
     df.plot(x='Year', y=var)
     plt.title("\n".join(wrap(title, 50)))
@@ -91,4 +84,6 @@ velocity_title = "New Employer Business Velocity"
 newness_title = "New Employer Business Newness"
 
 plotter(sjc, var, sjc_title, '/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/sjc_DC.png')
-plotter(neb['NEW-EMPLOYER BUSINESS ACTUALIZATION'], var, act_title, '/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/act_DC.png')
+plotter(act, var, act_title, '/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/act_DC.png')
+plotter(vel, var, velocity_title, '/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/vel_DC.png')
+plotter(new, var, newness_title, '/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/new_DC.png')
