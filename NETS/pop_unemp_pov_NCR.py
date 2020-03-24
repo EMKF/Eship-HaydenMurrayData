@@ -19,6 +19,29 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
+# pull county level self-employment
+self = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/IRSSelfEmployment.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+
+
+# slice df for total returns and returns with self-employment
+self = self[['county', 'State', 'Returns', 'Returns_with_Self_Tax', 'percent_returns_self_emp']]
+
+# # rename columns
+# self.rename(columns={"N1": "Returns", "N03300": "Returns_with_Self_employment", "A03300": "Self_employment",\
+#                      "DP03_HC01_VC69": "estimate_uninc_se", "DP03_HC03_VC69": "percent_uninc_se"},inplace=True)
+print(self.head())
+
+# filter
+self = self[self['county'] == 11001 | self['county'] == 24031 |self['county'] == 24033 | \
+            self['county'] == 51013 |self['county'] == 51059 |self['county'] == 51107 |self['county'] == 51153]
+
+# self = self[(self.county == '11001') | (self.county == '24031') | (
+#             self.county == '24033') | (self.county == '51013') | \
+#         (self.county == '51059') | (self.county == '51107') | (self.county == '51153')]
+
+print(self.head())
+sys.exit()
+#########################################################################################################################################################################################
 
 # pull sjc  and NEB
 pop = pd.read_excel('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/pop_unemp_pov_NCR.xlsx', sheet_name='Population')
@@ -49,4 +72,5 @@ df = df[['County', 'FIPS*', 'Pop. 2010',  'Pop. 2018' , 'Change 2010-18', 'Unemp
 data = df.iloc[:, np.r_[2, 4:13]]
 print(data)
 data.to_excel('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/python_pop_unemp_pov_NCR.xlsx', index=False)
-sys.exit()
+
+
