@@ -51,10 +51,12 @@ print(df1)
 sys.exit()
 
 ######## ADD THIS TO FOR LOOP ABOVE
-In [48]: writer = pd.ExcelWriter('c:/temp/test.xlsx', engine='openpyxl')
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/SHED/health_coverage/D3A' + str(x) + '.xlsx', engine='xlsxwriter')
 
-In [49]: df.to_excel(writer, index=False)
+# Write each dataframe to a different worksheet.
+df1.to_excel(writer, sheet_name='Sheet1')
+df2.to_excel(writer, sheet_name='Sheet2')
+df3.to_excel(writer, sheet_name='Sheet3')
 
-In [50]: df.to_excel(writer, startrow=len(df)+2, index=False)
-
-In [51]: writer.save()
+# Close the Pandas Excel writer and output the Excel file.
+writer.save()

@@ -5,6 +5,7 @@
 import os
 import sys
 import shutil
+import xlrd
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
@@ -26,21 +27,39 @@ self = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/F
 # slice df for total returns and returns with self-employment
 self = self[['county', 'State', 'Returns', 'Returns_with_Self_Tax', 'percent_returns_self_emp']]
 
-# # rename columns
-# self.rename(columns={"N1": "Returns", "N03300": "Returns_with_Self_employment", "A03300": "Self_employment",\
-#                      "DP03_HC01_VC69": "estimate_uninc_se", "DP03_HC03_VC69": "percent_uninc_se"},inplace=True)
-print(self.head())
+# rename columns
+self.rename(columns={"N1": "Returns", "N03300": "Returns_with_Self_employment", "A03300": "Self_employment",\
+                     "DP03_HC01_VC69": "estimate_uninc_se", "DP03_HC03_VC69": "percent_uninc_se"},inplace=True)
 
-# filter
-self = self[self['county'] == 11001 | self['county'] == 24031 |self['county'] == 24033 | \
-            self['county'] == 51013 |self['county'] == 51059 |self['county'] == 51107 |self['county'] == 51153]
+df = self.groupby(['county'])['Returns', 'Returns_with_Self_Tax'].agg('sum').reset_index()
+df['percent_returns_self_emp'] = (df['Returns_with_Self_Tax']/df['Returns'])*100
 
-# self = self[(self.county == '11001') | (self.county == '24031') | (
-#             self.county == '24033') | (self.county == '51013') | \
-#         (self.county == '51059') | (self.county == '51107') | (self.county == '51153')]
 
-print(self.head())
+# filter, reset index, take a look
+df = df.loc[(df.county == 11001) | (df.county == 24031) | (df.county == 24033) |\
+            (df.county == 51013) | (df.county == 51059) | (df.county == 51107) | (df.county == 51153)]
+df.reset_index(inplace=True)
+print(df)
+
+# Create a Pandas Excel writer using XlsxWriter as the engine.
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/percent_returns_self_emp.xlsx', engine='xlsxwriter')
+
+# Convert the dataframe to an XlsxWriter Excel object.
+df.to_excel(writer, sheet_name='percent_returns_self_emp', index=False)
+
+# Get the xlsxwriter workbook and worksheet objects.
+workbook  = writer.book
+worksheet = writer.sheets['percent_returns_self_emp']
+
+# Apply a conditional format to the cell range.
+# worksheet.conditional_format('A1:E8', {'type': '3_color_scale'})
+
+# Close the Pandas Excel writer and output the Excel file.
+workbook.close()
+writer.save()
+
 sys.exit()
+
 #########################################################################################################################################################################################
 
 # pull sjc  and NEB
@@ -71,6 +90,6 @@ df = pd.concat([pop,unemp,pov],sort=True, axis=1)
 df = df[['County', 'FIPS*', 'Pop. 2010',  'Pop. 2018' , 'Change 2010-18', 'Unemployment 2010', 'Unemployment 2018', 'Median Household Income (2018)', '% of State Median HH Income', 'Percent in Poverty']]
 data = df.iloc[:, np.r_[2, 4:13]]
 print(data)
-data.to_excel('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/python_pop_unemp_pov_NCR.xlsx', index=False)
+
 
 
