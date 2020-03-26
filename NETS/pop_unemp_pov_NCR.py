@@ -20,6 +20,10 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
+#########################################################################################################################
+############################################## IRS SELF-EMPLOYMENT ANALYSIS #############################################
+#########################################################################################################################
+
 # pull county level self-employment
 self = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/IRSSelfEmployment.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
 
@@ -55,12 +59,12 @@ worksheet = writer.sheets['percent_returns_self_emp']
 # worksheet.conditional_format('A1:E8', {'type': '3_color_scale'})
 
 # Close the Pandas Excel writer and output the Excel file.
-workbook.close()
-writer.save()
 
-sys.exit()
 
-#########################################################################################################################################################################################
+
+#########################################################################################################################
+################################################ POP, UNEMP, POV ANALYSIS ###############################################
+#########################################################################################################################
 
 # pull sjc  and NEB
 pop = pd.read_excel('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/pop_unemp_pov_NCR.xlsx', sheet_name='Population')
@@ -92,4 +96,8 @@ data = df.iloc[:, np.r_[2, 4:13]]
 print(data)
 
 
+data.to_excel(writer, sheet_name='pop_unemp_pov', index=False)
+workbook.close()
+writer.save()
 
+sys.exit()
