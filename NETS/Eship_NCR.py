@@ -20,9 +20,9 @@ pd.options.mode.chained_assignment = None
 
 # pull sjc  and NEB
 data = pd.read_csv('/Users/hmurray/Desktop/KESE/KESE_2018_data/KESE_jobs.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
-act = pd.read_excel('/Users/hmurray/Desktop/NEB/NEB_Data/archive/Alley_Formatted_NEB_Data/attempts/Final_Neb_Data_Seperate_Tabs.xlsx', sheet_name='NEW-EMP BUSINESS ACTUALIZATION')
-vel = pd.read_excel('/Users/hmurray/Desktop/NEB/NEB_Data/archive/Alley_Formatted_NEB_Data/attempts/Final_Neb_Data_Seperate_Tabs.xlsx', sheet_name='NEW-EMPLOYER BUSINESS VELOCITY')
-new = pd.read_excel('/Users/hmurray/Desktop/NEB/NEB_Data/archive/Alley_Formatted_NEB_Data/attempts/Final_Neb_Data_Seperate_Tabs.xlsx', sheet_name='EMPLOYER BUSINESS NEWNESS')
+act = pd.read_excel('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/neb_pulls/Final_Neb_Data_Seperate_Tabs.xlsx', sheet_name='NEW-EMP BUSINESS ACTUALIZATION')
+vel = pd.read_excel('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/neb_pulls/Final_Neb_Data_Seperate_Tabs.xlsx', sheet_name='NEW-EMPLOYER BUSINESS VELOCITY')
+new = pd.read_excel('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/neb_pulls/Final_Neb_Data_Seperate_Tabs.xlsx', sheet_name='EMPLOYER BUSINESS NEWNESS')
 
 # format each df
 data.columns = data.columns.str.replace('sjc-', '')
@@ -83,7 +83,7 @@ act_title = "New Employer Business Actualization"
 velocity_title = "New Employer Business Velocity"
 newness_title = "New Employer Business Newness"
 
-plotter(sjc, var, sjc_title, '/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/sjc_DC.png')
-plotter(act, var, act_title, '/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/act_DC.png')
-plotter(vel, var, velocity_title, '/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/vel_DC.png')
-plotter(new, var, newness_title, '/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/new_DC.png')
+plotter(sjc, var, sjc_title, '/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/sjc_DC.png')
+plotter(act, var, act_title, '/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/act_DC.png')
+plotter(vel, var, velocity_title, '/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/vel_DC.png')
+plotter(new, var, newness_title, '/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/new_DC.png')

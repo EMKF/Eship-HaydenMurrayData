@@ -17,7 +17,7 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 # get data
-df = pd.ExcelFile('/Users/hmurray/Desktop/data/BDS/bds_f_metrononmetro_release.xlsx')
+df = pd.ExcelFile('/Users/hmurray/Desktop/data/BDS/metro_nonmetro/python_outputs/bds_f_metrononmetro_release.xlsx')
 metro = pd.read_excel(df, 'Metro')
 nonmetro = pd.read_excel(df, 'Non_Metro')
 
@@ -31,8 +31,8 @@ def filterer(df, save=None):
         df.to_excel(save, index=False)
     return df
 
-metro = filterer(metro, '/Users/hmurray/Desktop/data/BDS/bds_metro.xlsx')
-nonmetro = filterer(nonmetro, '/Users/hmurray/Desktop/data/BDS/bds_nonmetro.xlsx')
+metro = filterer(metro, '/Users/hmurray/Desktop/data/BDS/metro_nonmetro/python_outputs/bds_metro.xlsx')
+nonmetro = filterer(nonmetro, '/Users/hmurray/Desktop/data/BDS/metro_nonmetro/python_outputs/bds_nonmetro.xlsx')
 
 # merge and rename columns
 legacy = pd.merge(metro, nonmetro, on='Year', how='inner')
@@ -60,18 +60,18 @@ legacy2.to_excel('/Users/hmurray/Desktop/data/BDS/bds_metro_nonmetro_table.xlsx'
 # plot births
 legacy2.plot(x='Year', y=['%_metro_births', '%_nonmetro_births'], figsize=(7,5), grid=True)
 plt.title('The proportion of establishment births in metro and nonmetro areas')
-plt.savefig('/Users/hmurray/Desktop/data/BDS/birth_plot.png')
+plt.savefig('/Users/hmurray/Desktop/data/BDS/metro_nonmetro/python_outputs/birth_plot.png')
 plt.show()
 
 # plot exits
 legacy2.plot(x='Year', y=['%_metro_exits', '%_nonmetro_exits'], figsize=(7,5), grid=True)
 plt.title('The proportion of establishment exits in metro and nonmetro areas')
-plt.savefig('/Users/hmurray/Desktop/data/BDS/exit_plot.png')
+plt.savefig('/Users/hmurray/Desktop/data/BDS/metro_nonmetro/python_outputs/exit_plot.png')
 plt.show()
 
 # plot ratio
 legacy2.plot(x='Year', y=['metro_ratio_birth_exit', 'nonmetro_ratio_birth_exit'], figsize=(7,5), grid=True)
 plt.title('The ratio of establishment births to exits in metro and nonmetro areas')
-plt.savefig('/Users/hmurray/Desktop/data/BDS/ratio_plot.png')
+plt.savefig('/Users/hmurray/Desktop/data/BDS/metro_nonmetro/python_outputs/ratio_plot.png')
 plt.show()
 

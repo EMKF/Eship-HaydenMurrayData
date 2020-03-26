@@ -21,7 +21,7 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 
 # REASONS FOR BUSINESS ADVICE OR MENTORING
-reasons = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/ASE_2016_00CSCB35_with_ann.csv')
+reasons = pd.read_csv('/Users/hmurray/Desktop/data/ASE/MO/mentor/ASE_2016_00CSCB35_with_ann.csv')
 # keep vars
 reasons = reasons[['GEO.display-label', 'NAICS.display-label', 'ASECB.display-label', 'YIBSZFI.display-label',
          'SEEKADV.display-label', 'FIRMPDEMP', 'FIRMPDEMP_PCT']]
@@ -41,7 +41,7 @@ reasons.reset_index(inplace=True, drop=True)
 
 
 # SOURCE OF BUSINESS ADVICE OR MENTORING
-source = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/ASE_2016_00CSCB36_with_ann.csv')
+source = pd.read_csv('/Users/hmurray/Desktop/data/ASE/MO/mentor/ASE_2016_00CSCB36_with_ann.csv')
 # keep vars
 source = source[['GEO.display-label', 'NAICS.display-label', 'ASECB.display-label', 'YIBSZFI.display-label',
          'PROVADV.display-label', 'FIRMPDEMP', 'FIRMPDEMP_PCT']]
@@ -66,7 +66,7 @@ source["source"]= source["source"].str.replace("Business sought advice or mentor
 
 
 # OUTCOME OF BUSINESS ADVICE OR MENTORING
-outcome = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/ASE_2016_00CSCB37_with_ann.csv')
+outcome = pd.read_csv('/Users/hmurray/Desktop/data/ASE/MO/mentor/ASE_2016_00CSCB37_with_ann.csv')
 # keep vars
 outcome = outcome[['GEO.display-label', 'NAICS.display-label', 'ASECB.display-label', 'YIBSZFI.display-label',
          'ADVOUTCOME.display-label', 'FIRMPDEMP', 'FIRMPDEMP_PCT']]
@@ -151,9 +151,9 @@ def saver(df, save=None):
     if save:
         df.to_excel(save, index=False)
 
-saver(reasons,'/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/age_reasons_mentor.xlsx')
-saver(source,'/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/age_sources_mentor.xlsx')
-saver(outcome,'/Users/hmurray/Desktop/Data_Briefs/ASE/Why_seek_business_advice/Data/age_outcomes_mentor.xlsx')
+saver(reasons,'/Users/hmurray/Desktop/data/ASE/MO/mentor/mentor_out/age_reasons_mentor.xlsx')
+saver(source,'/Users/hmurray/Desktop/data/ASE/MO/mentor/mentor_out/age_sources_mentor.xlsx')
+saver(outcome,'/Users/hmurray/Desktop/data/ASE/MO/mentor/mentor_out/age_outcomes_mentor.xlsx')
 
 sys.exit()
 

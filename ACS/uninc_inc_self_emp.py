@@ -16,7 +16,7 @@ pd.options.mode.chained_assignment = None
 
 
 # pull,
-df_all = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/ACS/uninc_inc_self_emp/median_earnings_2005_2018_gender.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+df_all = pd.read_csv('/Users/hmurray/Desktop/data/ACS/uninc_inc_self_emp/median_earnings_2005_2018_gender.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
 print(df_all)
 # rename strings
 df_all['employment_type'] = df_all['employment_type'].str.replace("private_self_employed", "inc_self", case = True)
@@ -34,11 +34,13 @@ print(df_gender)
 # unstack
 df_overall = df_overall.pivot(index='employment_type', columns='year', values='median_earnings')
 print (df_overall)
-df_overall.to_excel('/Users/hmurray/Desktop/Data_Briefs/ACS/uninc_inc_self_emp/total_in_un.xlsx', index=False)
+df_overall.to_excel('/Users/hmurray/Desktop/data/ACS/uninc_inc_self_emp/total_in_un.xlsx', index=False)
 
 # df_gender = df_gender.pivot(index=('employment_type', 'gender'), columns='year', values='median_earnings')
 df_gender = (df_gender.pivot_table(index=['employment_type','gender'],columns='year', values='median_earnings')
        .reset_index()
        .rename_axis(None, axis=1))
 print(df_gender)
-df_gender.to_excel('/Users/hmurray/Desktop/Data_Briefs/ACS/uninc_inc_self_emp/gender_in_un.xlsx', index=False)
+df_gender.to_excel('/Users/hmurray/Desktop/data/ACS/uninc_inc_self_emp/gender_in_un.xlsx', index=False)
+
+sys.exit()
