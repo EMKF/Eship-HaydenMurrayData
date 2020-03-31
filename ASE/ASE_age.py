@@ -1,4 +1,4 @@
-# data dowmloaded manually from https://factfinder.census.gov/bkmk/table/1.0/en/ASE/2016/00CSCB21
+# data dowmloaded manually from https://factfinder.census.gov/bkmk/table/1.0/en/ASE/2016/0CSCBO08
 
 import os
 import sys
@@ -18,7 +18,6 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 
 # load PEP data
-df = pd.read_csv('/Users/hmurray/Desktop/data/ASE/ASE_employer_benefits/ASE_2016_00CSCB21/ASE_2016_00CSCB21_with_ann.csv')
+df = pd.read_csv('/Users/hmurray/Desktop/data/ASE/ASE_edu/ASE_2016_00CSCBO07_with_ann.csv')
 print(df.head())
-
 
