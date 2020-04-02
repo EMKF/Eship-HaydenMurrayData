@@ -47,19 +47,6 @@ df = df.loc[(df.county == 11001) | (df.county == 24031) | (df.county == 24033) |
 df.reset_index(inplace=True)
 print(df)
 
-# Create a Pandas Excel writer using XlsxWriter as the engine.
-writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/percent_returns_self_emp.xlsx', engine='xlsxwriter')
-
-# Convert the dataframe to an XlsxWriter Excel object.
-df.to_excel(writer, sheet_name='percent_returns_self_emp', index=False)
-
-# Get the xlsxwriter workbook and worksheet objects.
-workbook  = writer.book
-worksheet = writer.sheets['percent_returns_self_emp']
-
-# save to excel
-writer.save()
-
 
 #########################################################################################################################
 ################################################ POP, UNEMP, POV ANALYSIS ###############################################
@@ -88,18 +75,24 @@ print(pop.head())
 print(unemp.head())
 print(pov.head())
 
+# Create a Pandas Excel writer using XlsxWriter as the engine.
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/percent_returns_self_emp.xlsx', engine='xlsxwriter')
+
 # concat, subset, export table 1
 df = pd.concat([pop,unemp,pov],sort=True, axis=1)
 df = df[['County', 'FIPS*', 'Pop. 2010',  'Pop. 2018' , 'Change 2010-18', 'Median Household Income (2018)', '% of State Median HH Income', 'Percent in Poverty']]
 data = df.iloc[:, np.r_[2, 4:11]]
+
+# export table 1 to excel sheet 1
 data.to_excel(writer, sheet_name='pop_unemp_pov', index=False)
 
 # subset and export unemp data for table 2
-unemp.columns = ['Unemployment ' + str(col) for col in unemp.columns]
 unemp = unemp.iloc[:, np.r_[0:11]]
-print(unemp)
+
+# export table 2 to excel sheet 2
 unemp.to_excel(writer, sheet_name='unemployment', index=False)
-workbook.close()
+
+# save and closer writer
 writer.save()
 
 sys.exit()
