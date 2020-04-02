@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import xlsxwriter
 from textwrap import wrap
+from kauffman_data import bfs, pep
 
 pd.set_option('max_columns', 1000)
 pd.set_option('max_info_columns', 1000)
@@ -20,12 +21,13 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
+
 #########################################################################################################################
 ############################################## IRS SELF-EMPLOYMENT ANALYSIS #############################################
 #########################################################################################################################
 
 # pull county level self-employment
-self = pd.read_csv('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/IRSSelfEmployment.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+self = pd.read_csv('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/IRSSelfEmployment.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
 
 
 # slice df for total returns and returns with self-employment
@@ -46,7 +48,7 @@ df.reset_index(inplace=True)
 print(df)
 
 # Create a Pandas Excel writer using XlsxWriter as the engine.
-writer = pd.ExcelWriter('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/percent_returns_self_emp.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/percent_returns_self_emp.xlsx', engine='xlsxwriter')
 
 # Convert the dataframe to an XlsxWriter Excel object.
 df.to_excel(writer, sheet_name='percent_returns_self_emp', index=False)
@@ -55,11 +57,8 @@ df.to_excel(writer, sheet_name='percent_returns_self_emp', index=False)
 workbook  = writer.book
 worksheet = writer.sheets['percent_returns_self_emp']
 
-# Apply a conditional format to the cell range.
-# worksheet.conditional_format('A1:E8', {'type': '3_color_scale'})
-
-# Close the Pandas Excel writer and output the Excel file.
-
+# save to excel
+writer.save()
 
 
 #########################################################################################################################
@@ -67,9 +66,9 @@ worksheet = writer.sheets['percent_returns_self_emp']
 #########################################################################################################################
 
 # pull sjc  and NEB
-pop = pd.read_excel('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/pop_unemp_pov_NCR.xlsx', sheet_name='Population')
-unemp = pd.read_excel('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/pop_unemp_pov_NCR.xlsx', sheet_name='Unemployment')
-pov = pd.read_excel('/Users/hmurray/Desktop/Data_Briefs/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/pop_unemp_pov_NCR.xlsx', sheet_name='Poverty')
+pop = pd.read_excel('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/pop_unemp_pov_NCR.xlsx', sheet_name='Population')
+unemp = pd.read_excel('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/pop_unemp_pov_NCR.xlsx', sheet_name='Unemployment')
+pov = pd.read_excel('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/pop_unemp_pov_NCR.xlsx', sheet_name='Poverty')
 
 def _filter(df):
     df = df[(df.County == 'District of Columbia') | (df.County == 'Montgomery County')| (df.County == 'Prince George\'s County') | (df.County == 'Arlington County') |\
@@ -82,21 +81,24 @@ unemp = _filter(unemp)
 pov = _filter(pov)
 
 # rename unemp columns
-unemp.rename(columns={"2010": "Unemployment 2010", "2018": "Unemployment 2018"},inplace=True)
+# unemp.rename(columns={"2010": "Unemployment 2010", "2018": "Unemployment 2018"},inplace=True)
 pov.rename(columns={"Percent": "Percent in Poverty"},inplace=True)
 
 print(pop.head())
 print(unemp.head())
 print(pov.head())
 
-
+# concat, subset, export table 1
 df = pd.concat([pop,unemp,pov],sort=True, axis=1)
-df = df[['County', 'FIPS*', 'Pop. 2010',  'Pop. 2018' , 'Change 2010-18', 'Unemployment 2010', 'Unemployment 2018', 'Median Household Income (2018)', '% of State Median HH Income', 'Percent in Poverty']]
-data = df.iloc[:, np.r_[2, 4:13]]
-print(data)
-
-
+df = df[['County', 'FIPS*', 'Pop. 2010',  'Pop. 2018' , 'Change 2010-18', 'Median Household Income (2018)', '% of State Median HH Income', 'Percent in Poverty']]
+data = df.iloc[:, np.r_[2, 4:11]]
 data.to_excel(writer, sheet_name='pop_unemp_pov', index=False)
+
+# subset and export unemp data for table 2
+unemp.columns = ['Unemployment ' + str(col) for col in unemp.columns]
+unemp = unemp.iloc[:, np.r_[0:11]]
+print(unemp)
+unemp.to_excel(writer, sheet_name='unemployment', index=False)
 workbook.close()
 writer.save()
 
