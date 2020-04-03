@@ -27,25 +27,27 @@ pd.options.mode.chained_assignment = None
 #########################################################################################################################
 
 # pull county level self-employment
-self = pd.read_csv('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/IRSSelfEmployment.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
-
+self = pd.read_csv('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/IRSSelfEmployment (1).csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
 
 # slice df for total returns and returns with self-employment
-self = self[['county', 'State', 'Returns', 'Returns_with_Self_Tax', 'percent_returns_self_emp']]
+self = self[['county', 'year', 'AGI', 'State', 'Returns', 'Returns_with_Self_Tax']]
 
-# rename columns
-self.rename(columns={"N1": "Returns", "N03300": "Returns_with_Self_employment", "A03300": "Self_employment",\
-                     "DP03_HC01_VC69": "estimate_uninc_se", "DP03_HC03_VC69": "percent_uninc_se"},inplace=True)
-
-df = self.groupby(['county'])['Returns', 'Returns_with_Self_Tax'].agg('sum').reset_index()
-df['percent_returns_self_emp'] = (df['Returns_with_Self_Tax']/df['Returns'])*100
-
+# groupby
+self = self.groupby(['county', 'year', 'AGI'])['Returns', 'Returns_with_Self_Tax'].agg('sum').reset_index()
 
 # filter, reset index, take a look
-df = df.loc[(df.county == 11001) | (df.county == 24031) | (df.county == 24033) |\
-            (df.county == 51013) | (df.county == 51059) | (df.county == 51107) | (df.county == 51153)]
-df.reset_index(inplace=True)
-print(df)
+self = self.loc[(self.county == 11001) | (self.county == 24031) | (self.county == 24033) |\
+            (self.county == 51013) | (self.county == 51059) | (self.county == 51107) | (self.county == 51153)]
+self.reset_index(inplace=True)
+
+# calculate
+returns = self.groupby(['county', 'year'])['Returns'].agg('sum').reset_index()
+print(returns)
+with_tax = self.groupby(['county', 'year'])['Returns_with_Self_Tax'].agg('sum').reset_index()
+print(with_tax)
+self = pd.merge(returns, with_tax, on=['county', 'year'])
+self['percent_returns_self_emp'] = (self['Returns_with_Self_Tax']/self['Returns'])*100
+print(self)
 
 
 #########################################################################################################################
@@ -75,13 +77,16 @@ print(pop.head())
 print(unemp.head())
 print(pov.head())
 
-# Create a Pandas Excel writer using XlsxWriter as the engine.
-writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/pop_unemp_pov_NCR/percent_returns_self_emp.xlsx', engine='xlsxwriter')
-
 # concat, subset, export table 1
 df = pd.concat([pop,unemp,pov],sort=True, axis=1)
 df = df[['County', 'FIPS*', 'Pop. 2010',  'Pop. 2018' , 'Change 2010-18', 'Median Household Income (2018)', '% of State Median HH Income', 'Percent in Poverty']]
 data = df.iloc[:, np.r_[2, 4:11]]
+
+# Create a Pandas Excel writer using XlsxWriter as the engine.
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/DC_Abnormality/python_edits/percent_returns_self_emp.xlsx', engine='xlsxwriter')
+
+# export self-employment data
+self.to_excel(writer, sheet_name='self_emp_tax', index=False)
 
 # export table 1 to excel sheet 1
 data.to_excel(writer, sheet_name='pop_unemp_pov', index=False)
