@@ -70,7 +70,8 @@ unemp = _filter(unemp)
 pov = _filter(pov)
 
 # rename unemp columns
-# unemp.rename(columns={"2010": "Unemployment 2010", "2018": "Unemployment 2018"},inplace=True)
+year_lst = range(2010, 2019)
+unemp = unemp.rename(columns=dict(zip(year_lst, map(lambda x: str(x) + '_unemployment', year_lst))))
 pov.rename(columns={"Percent": "Percent in Poverty"},inplace=True)
 
 print(pop.head())
