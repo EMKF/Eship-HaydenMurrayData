@@ -6,6 +6,8 @@ from urllib.error import URLError, HTTPError
 import getpass
 import json
 
+# API KEY = '5518A0D1-62E9-4CCA-9FB0-527E27A0A3BB'
+
 JOBSEQ_URL = 'http://jobseq.eqsuite.com'
 
 
@@ -43,6 +45,7 @@ def get_token(username=None, password=None):
     # exit if an error has occurred
     exit()
 
+
 def run_analytic(auth_token, analytic_id, analytic_params):
     """Call the JobsEQ API run_analytic endpoint with the provided
     params and return the analytic response as a Python dictionary"""
@@ -69,6 +72,6 @@ def run_analytic(auth_token, analytic_id, analytic_params):
     except URLError as error:
         print('We failed to reach a server.')
         print('Reason: ', error.reason)
-    
+
     # exit if an error has occurred
     exit()
