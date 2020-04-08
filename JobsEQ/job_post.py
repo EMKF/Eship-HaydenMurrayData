@@ -52,6 +52,5 @@ analytic_response = jobseq.run_analytic(token, analytic_id, analytic_params)
 df = pd.DataFrame((analytic_response['data']))
 print(df)
 
-
 sys.exit()
 

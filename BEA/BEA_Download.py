@@ -62,10 +62,6 @@ df_inc.sort_values(by=['GeoName'],ascending = True, inplace = True)
 df_inc.reset_index(inplace=True, drop=True)
 df_emp.reset_index(inplace=True, drop=True)
 
-# check data
-print(df_emp)
-print(df_inc)
-
 # convert type to integer
 df_inc['2018'] = pd.to_numeric(df_inc['2018'])
 df_emp['2018'] = pd.to_numeric(df_emp['2018'])

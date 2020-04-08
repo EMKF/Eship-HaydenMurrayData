@@ -18,6 +18,8 @@ pd.options.mode.chained_assignment = None
 
 # pull,
 df_all = pd.read_csv('/Users/hmurray/Desktop/data/ACS/uninc_inc_self_emp/pull/median_earnings_2005_2018_gender.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+print(df_all)
+sys.exit()
 
 # rename strings
 df_all['employment_type'] = df_all['employment_type'].str.replace("private_self_employed", "inc_self", case = True)
@@ -37,7 +39,7 @@ def con_plot_saver(df, save1, title, save2):
        df.pivot_table(index=['year'], columns=['type'], values='median_earnings').plot()
        plt.title("\n".join(wrap(title, 50)))
        plt.savefig(save2)
-       plt.show()
+       # plt.show()
 
 # define paths to shorten function inputs
 gender_save1 = '/Users/hmurray/Desktop/data/ACS/uninc_inc_self_emp/gender_se_earnings.xlsx'
