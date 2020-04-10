@@ -80,13 +80,16 @@ col = ('wage_salary_emp', 'prop_emp', 'wage_salary', 'prop_inc')
 numberer(df, col)
 
 # calculate average income
-df['avg_inc'] = ((df['wage_salary']/df['wage_salary_emp'])* 1000)
-df['avg_prop_inc'] = ((df['prop_inc']/df['prop_emp'])* 1000)
+df['wage_salary'] = df['wage_salary']*1000
+df['prop_inc'] = df['prop_inc']*1000
+df['avg_inc'] = ((df['wage_salary']/df['wage_salary_emp']))
+df['avg_prop_inc'] = ((df['prop_inc']/df['prop_emp']))
 print(df)
 
 # plot avg proprietor income
 df.plot(x='year', y=['avg_prop_inc', 'avg_inc'])
 plt.title('Average Income of Employees and Proprietors in the United States')
+plt.show()
 
 # export df and plot
 df.to_excel('/Users/hmurray/Desktop/data/BEA/BEA_Data/avg_prop_inc.xlsx')
