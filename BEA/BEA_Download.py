@@ -14,11 +14,11 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 # pull BEA employment data
-df1 = pd.read_csv('/Users/hmurray/Desktop/data/BEA/BEA_Data/BEA_employment.csv')
+df1 = pd.read_csv('/Users/hmurray/Desktop/data/BEA/BEA_Data/locally_saved/BEA_employment.csv')
 df_emp = df1[['GeoName','Description','2018']]
 
 # pull BEA income data
-df2 = pd.read_csv('/Users/hmurray/Desktop/data/BEA/BEA_Data/BEA_income.csv')
+df2 = pd.read_csv('/Users/hmurray/Desktop/data/BEA/BEA_Data/locally_saved/BEA_income.csv')
 df_inc = df2[['GeoName','Description','2018:Q1','2018:Q2','2018:Q3','2018:Q4']]
 
 # drop rows with missing values (NaN)
@@ -29,7 +29,6 @@ df_inc = df_inc.dropna()
 df_emp = df_emp[df_emp['2018'] != '(D)']
 df_inc = df_inc[df_inc['2018:Q1'] != '(D)']
 
-# reset index
 df_inc.reset_index(inplace=True, drop=True)
 df_emp.reset_index(inplace=True, drop=True)
 
