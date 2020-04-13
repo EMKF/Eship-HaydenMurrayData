@@ -19,7 +19,7 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 pd.options.mode.chained_assignment = None
 
 # pull google data
-searches = ('US_business_loan_90days', 'US_self_employed_90', 'US_open_bus_5_years', 'US_small_bus_5_years', 'US_bus_app_5_years')
+searches = ('new_business_loan_year', 'new_self_employed_year', 'open_bus_year', 'new_small_business_year')
 trends = {}
 for x in searches:
     trends[x] = pd.read_csv('/Users/hmurray/Desktop/data/google/google_data/' + str(x) + '.csv', skiprows=2)
@@ -31,10 +31,10 @@ def trender(dict, time, col):
     plt.savefig('/Users/hmurray/Desktop/data/google/google_data/plots/' + str(col) + '.png')
     plt.show()
 
-trender(trends['US_business_loan_90days'], 'Day', 'business loan: (United States)')
-trender(trends['US_self_employed_90'],'Day', 'self employed: (United States)')
-trender(trends['US_open_bus_5_years'], 'Week', 'open a business: (United States)')
-trender(trends['US_small_bus_5_years'], 'Week', 'small business: (United States)')
+trender(trends['new_business_loan_year'], 'Week', 'new business loan: (United States)')
+trender(trends['new_self_employed_year'],'Week', 'new self employed: (United States)')
+trender(trends['open_bus_year'], 'Week', 'open a business: (United States)')
+trender(trends['new_small_business_year'], 'Week', 'new small business: (United States)')
 
 sys.exit()
 
