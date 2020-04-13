@@ -1,6 +1,6 @@
 # data downloaded manually from tab, "Person Income (state and local)" option, "Annual Personal Income by State"
 # url: https://apps.bea.gov/regional/downloadzip.cfm
-# glossary: https://apps.bea.gov/iTable/definitions.cfm?did=2320&reqId=70
+# glossary: https://apps.bea.gov/regional/definitions/?regexp=personal
 
 import os
 import sys
@@ -39,10 +39,17 @@ inc = filterer(inc)
 emp = emp[(emp['Description'] == ' Proprietors employment') | (emp['Description'] == '  Nonfarm proprietors employment 2/') |\
           (emp['Description'] == ' Wage and salary employment')]
 inc = inc[(inc['Description'] == ' Proprietors\' income 8/') | (inc['Description'] == '  Nonfarm proprietors\' income') |\
-          (inc['Description'] == ' Wages and salaries')]
-
+          (inc['Description'] == ' Wages and salaries') | (inc['Description'] == 'Personal income (thousands of dollars)')\
+    | (inc['Description'] == ' Earnings by place of work')]
 
 # Definitions of variables (https://apps.bea.gov/regional/definitions/)
+personal_income = "Consists of the income that persons receive in return for their provision of labor, land, and capital\
+ used in current production as well as other income, such as personal current transfer receipts. In the state and local\
+  personal income accounts the personal income of an area represents the income received by or on behalf of the persons\
+   residing in that area. It is calculated as the sum of wages and salaries, supplements to wages and salaries, proprietors'\
+    income with inventory valuation (IVA) and capital consumption adjustments (CCAdj), rental income of persons with capital\
+     consumption adjustment (CCAdj), personal dividend income, personal interest income, and personal current transfer receipts,\
+      less contributions for government social insurance plus the adjustment for residence."
 wage_salary = "The remuneration receivable by employees (including corporate officers) from employers for the provision\
  of labor services. It includes commissions, tips, and bonuses; employee gains from exercising stock options; and\
  pay-in-kind. Judicial fees paid to jurors and witnesses are classified as wages and salaries. Wages and salaries are\
@@ -82,6 +89,9 @@ nonfarm_prop_inc = "Nonfarm Proprietors' Income consists of the income that is r
                   from the Federal Emergency Management Agency."
 
 # show definitions
+print()
+print(personal_income)
+print()
 print(wage_salary)
 print()
 print(wage_salary_emp)
@@ -96,36 +106,67 @@ print(nonfarm_prop_inc)
 
 # drop unnecessary columns, transpose, reset index, rename columns, and sum quarterly values of income
 emp = emp.drop(['GeoName', 'Description'], axis=1).transpose().reset_index(drop=False).rename(columns={'index':'year', 1:'wage_salary_emp', 2:'prop_emp', 4:'nonfarm_prop_emp'})
-inc = inc.drop(['GeoName', 'Description'], axis=1).transpose().reset_index(drop=False).rename(columns={'index':'year', 11: 'wage_salary', 15:'prop_inc', 17:'nonfarm_prop_inc'})
+inc = inc.drop(['GeoName', 'Description'], axis=1).transpose().reset_index(drop=False).rename(columns={'index':'year', 11: 'wage_salary', 15:'prop_inc', 17:'nonfarm_prop_inc', 0:'personal_inc', 3:'earns_place'})
 
 # merge dataframes
 df = pd.merge(emp, inc, on='year')
-print(df.head())
 
 # change to numeric
 def numberer(df, col):
     for x in col:
         df[x] = pd.to_numeric((df[x]))
-col = ('wage_salary_emp', 'prop_emp', 'wage_salary', 'prop_inc', 'nonfarm_prop_emp', 'nonfarm_prop_inc')
+col = ('wage_salary_emp', 'prop_emp', 'wage_salary', 'prop_inc', 'nonfarm_prop_emp', 'nonfarm_prop_inc', 'personal_inc', 'earns_place')
 numberer(df, col)
 
-# calculate average income
+# *1000 since data is in thousands of dollars
+df['personal_inc'] = df['personal_inc']*1000
+df['earns_place'] = df['earns_place']*1000
 df['wage_salary'] = df['wage_salary']*1000
 df['prop_inc'] = df['prop_inc']*1000
 df['nonfarm_prop_inc'] = df['nonfarm_prop_inc']*1000
-df['avg_inc'] = ((df['wage_salary']/df['wage_salary_emp']))
-df['avg_prop_inc'] = ((df['prop_inc']/df['prop_emp']))
-df['avg_nonfarm_prop_inc'] = ((df['nonfarm_prop_inc']/df['nonfarm_prop_emp']))
-print(df)
 
-# plot avg proprietor income
-df.plot(x='year', y=['avg_prop_inc', 'avg_inc', 'avg_nonfarm_prop_inc'])
-title = "Average Median Income of Employees, Proprietors, & Nonfarm Proprietors in the United States"
+# calculate average median wage and salary
+df['avg_inc'] = ((df['wage_salary']/df['wage_salary_emp']))
+
+# calculate average median proprietor income
+df['avg_prop_inc'] = ((df['prop_inc']/df['prop_emp']))
+
+# calculate average median nonfarm proprietor income
+df['avg_nonfarm_prop_inc'] = ((df['nonfarm_prop_inc']/df['nonfarm_prop_emp']))
+
+# calculate wage and salary share of personal income
+df['percent_ws_inc'] = ((df['wage_salary']/df['personal_inc']))
+
+# calculate nonfarm proprietor share of personal income
+df['percent_nonfarm_inc'] = ((df['nonfarm_prop_inc']/df['personal_inc'])*100)
+
+# calculate wage and salary share of earnings by place of work
+df['percent_ws_inc_earn'] = ((df['wage_salary']/df['earns_place'])*100)
+
+# calculate wage and salary share of earnings by place of work
+df['percent_nonfarm_inc_earn'] = ((df['nonfarm_prop_inc']/df['earns_place'])*100)
+
+# plot avg nonfarm proprietor income
+df.plot(x='year', y=['avg_inc', 'avg_nonfarm_prop_inc'])
 plt.title("\n".join(wrap("Average Median Income of Employees, Proprietors, & Nonfarm Proprietors in the United States", 50)))
+plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/plot_avg_prop_inc.png')
+plt.show()
+
+# plot avg nonfarm proprietor income as share of personal income
+df.plot(x='year', y=['percent_ws_inc', 'percent_nonfarm_inc'])
+plt.title("\n".join(wrap("Nonfarm Proprietor Income and Wage and Salary as a Share of Total Personal Income", 50)))
+plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/prop_share.png')
+plt.show()
+
+# plot avg nonfarm proprietor income as share of earnings by place of work
+df.plot(x='year', y=['percent_nonfarm_inc_earn'])
+plt.title("\n".join(wrap("Nonfarm Proprietor Income as a Share of All Earnings by Place of Work", 50)))
+axes = plt.gca()
+axes.set_ylim([0,20])
+plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/prop_share_earn.png')
 plt.show()
 
 # export df and plot
 df.to_excel('/Users/hmurray/Desktop/data/BEA/BEA_Data/avg_prop_inc.xlsx')
-plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/plot_avg_prop_inc.png')
 
 
