@@ -103,6 +103,7 @@ print()
 print(nonfarm_prop_emp)
 print()
 print(nonfarm_prop_inc)
+print()
 
 # drop unnecessary columns, transpose, reset index, rename columns, and sum quarterly values of income
 emp = emp.drop(['GeoName', 'Description'], axis=1).transpose().reset_index(drop=False).rename(columns={'index':'year', 1:'wage_salary_emp', 2:'prop_emp', 4:'nonfarm_prop_emp'})
@@ -146,16 +147,14 @@ df['percent_ws_inc_earn'] = ((df['wage_salary']/df['earns_place'])*100)
 # calculate wage and salary share of earnings by place of work
 df['percent_nonfarm_inc_earn'] = ((df['nonfarm_prop_inc']/df['earns_place'])*100)
 
-# plot avg nonfarm proprietor income
-df.plot(x='year', y=['avg_inc', 'avg_nonfarm_prop_inc'])
-plt.title("\n".join(wrap("Average Median Income of Employees, Proprietors, & Nonfarm Proprietors in the United States", 50)))
-plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/plot_avg_prop_inc.png')
-plt.show()
+print(df)
 
-# plot avg nonfarm proprietor income as share of personal income
-df.plot(x='year', y=['percent_ws_inc', 'percent_nonfarm_inc'])
-plt.title("\n".join(wrap("Nonfarm Proprietor Income and Wage and Salary as a Share of Total Personal Income", 50)))
-plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/prop_share.png')
+# plot avg nonfarm proprietor income as share of earnings by place of work
+df.plot(x='year', y=['prop_inc', 'wage_salary'])
+plt.title("\n".join(wrap("Nonfarm Proprietor and Wage and Salary Income in the United States (in Trillions of 2018 dollars)", 50)))
+axes = plt.gca()
+# axes.set_ylim([0,20])
+plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/prop_ws_inc.png')
 plt.show()
 
 # plot avg nonfarm proprietor income as share of earnings by place of work
@@ -163,7 +162,13 @@ df.plot(x='year', y=['percent_nonfarm_inc_earn'])
 plt.title("\n".join(wrap("Nonfarm Proprietor Income as a Share of All Earnings by Place of Work", 50)))
 axes = plt.gca()
 axes.set_ylim([0,20])
-plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/prop_share_earn.png')
+plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/prop_inc_share_earn.png')
+plt.show()
+
+# plot avg nonfarm proprietor income
+df.plot(x='year', y=['avg_inc', 'avg_nonfarm_prop_inc'])
+plt.title("\n".join(wrap("Average Income of Employees, Proprietors, & Nonfarm Proprietors in the United States", 50)))
+plt.savefig('/Users/hmurray/Desktop/data/BEA/BEA_Data/ws_prop_avg_inc.png')
 plt.show()
 
 # export df and plot
