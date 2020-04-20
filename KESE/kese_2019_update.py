@@ -157,7 +157,7 @@ fig_9 = fig_9[['STATE', 'year', 'RATE OF NEW ENTREPRENEURS']]
 fig_9['STATE'] = fig_9['STATE'].str.replace("New York", "Median", case = True)
 fig_9 = fig_9.pivot_table(index=['year'], columns='STATE', values='RATE OF NEW ENTREPRENEURS').reset_index()
 fig_9.plot(x='year', y=['Rhode Island', 'Florida', 'Median'])
-plt.title("\n".join(wrap("FIGURE 9 RATE OF NEW ENTREPRENEURS OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 19 RATE OF NEW ENTREPRENEURS OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([0,.5])
@@ -174,8 +174,9 @@ plt.savefig('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots
 # Figure 10
 fig_10 = kese[(kese['STATE'] =='United States') & (kese['type']=='Total')].reset_index(drop=True)
 fig_10 = fig_10[['STATE', 'year', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
+fig_10.to_excel('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/fig_10.xlsx', index=False)
 fig_10.plot(x='year', y=['OPPORTUNITY SHARE OF NEW ENTREPRENEURS'])
-plt.title("\n".join(wrap("FIGURE 10 OPPORTUNITY SHARE OF NEW ENTREPRENEURS OVER TIME (1996–2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 8 OPPORTUNITY SHARE OF NEW ENTREPRENEURS OVER TIME (1996–2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -187,7 +188,7 @@ fig_11 = kese[(kese['category'] =='Female') | (kese['category'] =='Male') | (kes
 fig_11 = fig_11[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_11 = fig_11.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
 fig_11.plot(x='year', y=['Female', 'Male'])
-plt.title("\n".join(wrap("FIGURE 11 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY SEX (1998–2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 9 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY SEX (1998–2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -200,7 +201,7 @@ fig_12 = kese[(kese['category'] =='White') | (kese['category'] =='Black') | (kes
 fig_12 = fig_12[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_12 = fig_12.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
 fig_12.plot(x='year', y=['White', 'Asian', 'Black', 'Latino'])
-plt.title("\n".join(wrap("FIGURE 12 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY RACE AND ETHNICITY (1998–2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 10 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY RACE AND ETHNICITY (1998–2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -212,7 +213,7 @@ fig_13 = kese[(kese['category'] =='Native-Born') | (kese['category'] =='Immigran
 fig_13 = fig_13[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_13 = fig_13.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
 fig_13.plot(x='year', y=['Immigrant', 'Native-Born'])
-plt.title("\n".join(wrap("FIGURE 13 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY NATIVITY(1998–2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 11 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY NATIVITY(1998–2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -225,7 +226,7 @@ fig_14 = kese[(kese['category'] =='Ages 20-34') | (kese['category'] =='Ages 35-4
 fig_14 = fig_14[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_14 = fig_14.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
 fig_14.plot(x='year', y=['Ages 20-34', 'Ages 35-44', 'Ages 45-54', 'Ages 55-64'])
-plt.title("\n".join(wrap("FIGURE 14 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY AGE (1998–2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 12 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY AGE (1998–2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -238,7 +239,7 @@ fig_15 = kese[(kese['category'] =='Less than High School') | (kese['category'] =
 fig_15 = fig_15[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_15 = fig_15.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
 fig_15.plot(x='year', y=['Less than High School', 'High School Graduate', 'Some College', 'College Graduate'])
-plt.title("\n".join(wrap("FIGURE 15 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY EDUCATION (1998–2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 13 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY EDUCATION (1998–2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -250,7 +251,7 @@ fig_16 = kese[(kese['category'] =='Veterans') | (kese['category'] =='Non-Veteran
 fig_16 = fig_16[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_16 = fig_16.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
 fig_16.plot(x='year', y=['Non-Veterans', 'Veterans'])
-plt.title("\n".join(wrap("FIGURE 16 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY VETERAN STATUS (1998–2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 14 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY VETERAN STATUS (1998–2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -267,7 +268,7 @@ fig_18 = fig_18[['STATE', 'year', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_18['STATE'] = fig_18['STATE'].str.replace("Maryland", "Median", case = True)
 fig_18 = fig_18.pivot_table(index=['year'], columns='STATE', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
 fig_18.plot(x='year', y=['South Dakota', 'District of Columbia', 'Median'])
-plt.title("\n".join(wrap("FIGURE 18 OPPORTUNITY SHARE OF NEW ENTREPRENEURS OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 21 OPPORTUNITY SHARE OF NEW ENTREPRENEURS OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -283,7 +284,7 @@ plt.savefig('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots
 fig_19 = kese[(kese['STATE'] =='United States') & (kese['type']=='Total')].reset_index(drop=True)
 fig_19 = fig_19[['STATE', 'year', 'STARTUP EARLY JOB CREATION']]
 fig_19.plot(x='year', y=['STARTUP EARLY JOB CREATION'])
-plt.title("\n".join(wrap("FIGURE 19 STARTUP EARLY JOB CREATION OVER TIME (1996–2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 15 STARTUP EARLY JOB CREATION OVER TIME (1996–2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([0,10])
@@ -300,7 +301,7 @@ fig_21 = fig_21[['STATE', 'year', 'STARTUP EARLY JOB CREATION']]
 fig_21['STATE'] = fig_21['STATE'].str.replace("Alabama", "Median", case = True)
 fig_21 = fig_21.pivot_table(index=['year'], columns='STATE', values='STARTUP EARLY JOB CREATION').reset_index()
 fig_21.plot(x='year', y=['South Dakota', 'District of Columbia', 'Median'])
-plt.title("\n".join(wrap("FIGURE 21 STARTUP EARLY JOB CREATION OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 23 STARTUP EARLY JOB CREATION OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([0,25])
@@ -314,7 +315,7 @@ plt.savefig('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots
 fig_22 = kese[(kese['STATE'] =='United States') & (kese['type']=='Total')].reset_index(drop=True)
 fig_22 = fig_22[['STATE', 'year', 'STARTUP EARLY SURVIVAL RATE']]
 fig_22.plot(x='year', y=['STARTUP EARLY SURVIVAL RATE'])
-plt.title("\n".join(wrap("FIGURE 22 STARTUP EARLY SURVIVAL RATE OVER TIME (1996–2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 16 STARTUP EARLY SURVIVAL RATE OVER TIME (1996–2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -331,7 +332,7 @@ fig_24 = fig_24[['STATE', 'year', 'STARTUP EARLY SURVIVAL RATE']]
 fig_24['STATE'] = fig_24['STATE'].str.replace("Tennessee", "Median", case = True)
 fig_24 = fig_24.pivot_table(index=['year'], columns='STATE', values='STARTUP EARLY SURVIVAL RATE').reset_index()
 fig_24.plot(x='year', y=['Connecticut', 'Virginia', 'Median'])
-plt.title("\n".join(wrap("FIGURE 24 STARTUP EARLY SURVIVAL RATE OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 25 STARTUP EARLY SURVIVAL RATE OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([50,100])
@@ -351,6 +352,17 @@ fig_25_26.to_excel('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/table
 
 plt.close('all')
 
+# Figure 17 and Table 8
+fig_7_tab_8 = kese[(kese['type'] =='Total') & (kese['STATE']=='United States')].reset_index(drop=True)
+fig_7_tab_8 = fig_7_tab_8[['STATE', 'year', 'KAUFFMAN EARLY-STAGE ENREPRENEURSHIP (KESE) INDEX']]
+fig_7_tab_8.to_excel('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/fig_7_tab_8.xlsx', index=False)
+fig_7_tab_8.plot(x='year', y=['KAUFFMAN EARLY-STAGE ENREPRENEURSHIP (KESE) INDEX'])
+plt.title("\n".join(wrap("FIGURE 17 KAUFFMAN EARLY-STAGE ENTREPRENEURSHIP (KESE) INDEX OVER TIME (1998–2019)", 50)))
+axes = plt.gca()
+plt.tight_layout()
+axes.set_ylim([-10,10])
+plt.savefig('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/fig_7_tab_8.png')
+
 # Figure 27
 fig_27 = kese[(kese['type'] =='Total') & (kese['STATE']=='California') | (kese['STATE']=='Connecticut') | (kese['STATE']=='Nebraska')].reset_index(drop=True)
 fig_27 = fig_27[['STATE', 'year', 'KAUFFMAN EARLY-STAGE ENREPRENEURSHIP (KESE) INDEX']]
@@ -358,7 +370,7 @@ fig_27['STATE'] = fig_27['STATE'].str.replace("Nebraska", "Median", case = True)
 fig_27 = fig_27.pivot_table(index=['year'], columns='STATE', values='KAUFFMAN EARLY-STAGE ENREPRENEURSHIP (KESE) INDEX').reset_index()
 fig_27['year'] = pd.to_datetime(fig_27['year'], format='%Y')
 fig_27.plot(x='year', y=['California', 'Connecticut', 'Median'])
-plt.title("\n".join(wrap("FIGURE 27 KAUFFMAN EARLY-STAGE ENREPRENEURSHIP (KESE) INDEX OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
+plt.title("\n".join(wrap("FIGURE 26 KAUFFMAN EARLY-STAGE ENREPRENEURSHIP (KESE) INDEX OVER TIME (1998–2019) (LOWEST, HIGHEST, AND MEDIAN LEVELS IN 2019)", 50)))
 axes = plt.gca()
 plt.tight_layout()
 axes.set_ylim([-10,10])

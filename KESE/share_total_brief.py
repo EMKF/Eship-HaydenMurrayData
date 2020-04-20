@@ -16,29 +16,37 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.4f' % x)
 pd.options.mode.chained_assignment = None
 
+# # define directory
+# kese_download = '/Users/hmurray/Desktop/KESE/KESE_2019_Update/2019_data_download/kese_2019_download.csv'
+#
+# # pull national data
+# kese = pd.read_csv(kese_download)
+#
+# # convert to percent, as necessary
+# kese['rne'] = kese['rne']*100
+# kese['ose'] = kese['ose']*100
+# kese['ssr'] = kese['ssr']*100
+#
+# # Rename columns
+# kese.rename(columns={"name": "STATE", "rne": "RATE OF NEW ENTREPRENEURS", "ose": "OPPORTUNITY SHARE OF NEW ENTREPRENEURS"\
+#     ,"sjc": "STARTUP EARL JOB CREATION", "ssr": "STARTUP EARLY SURVIVAL RATE", "zindex": "KAUFFMAN EARLY-STAGE ENREPRENEURSHIP (KESE) INDEX"},inplace=True)
+#
+# # Figure 4, 6, 8 calculated from US -n values
+
 # define directory
-kese_download = '/Users/hmurray/Desktop/KESE/KESE_2019_Update/2019_data_download/kese_2019_download.csv'
+df = '/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/kese_change_share_demo.xlsx'
+df = pd.read_excel(df, sheet_name='rne')
+df = df[df.columns[pd.Series(df.columns).str.startswith(('demo', 'n'))]]
+df = df[(df['demographic'] =='White') | (df['demographic'] =='Black') | (df['demographic'] =='Asian') |\
+             (df['demographic'] =='Latino') | (df['demographic'] =='Total')].reset_index(drop=True)
+df = df.set_index('demographic').transpose()
+print(df)
+sys.exit()
 
-# pull national data
-kese = pd.read_csv(kese_download)
 
-# convert to percent, as necessary
-kese['rne'] = kese['rne']*100
-kese['ose'] = kese['ose']*100
-kese['ssr'] = kese['ssr']*100
 
-# Rename columns
-kese.rename(columns={"name": "STATE", "rne": "RATE OF NEW ENTREPRENEURS", "ose": "OPPORTUNITY SHARE OF NEW ENTREPRENEURS"\
-    ,"sjc": "STARTUP EARL JOB CREATION", "ssr": "STARTUP EARLY SURVIVAL RATE", "zindex": "KAUFFMAN EARLY-STAGE ENREPRENEURSHIP (KESE) INDEX"},inplace=True)
-
-# Figure 4, 6, 8 calculated from US -n values
-# define directory
-kese_change = '/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/kese_change_share_demo.xlsx'
-kese_change = pd.read_excel(kese_change, sheet_name='rne')
-kese_change = kese_change[kese_change.columns[pd.Series(kese_change.columns).str.startswith(('d', 'n'))]]
 # fig_4
-fig_4 = kese_change[(kese_change['demographic'] =='White') | (kese_change['demographic'] =='Black') | (kese_change['demographic'] =='Asian') |\
-             (kese_change['demographic'] =='Latino') | (kese_change['demographic'] =='Total')].reset_index(drop=True)
+
 fig_4 = fig_4[['demographic', 'n_1996', 'n_2019']]
 fig_4.set_index('demographic', inplace=True)
 fig_4 = fig_4.transpose().reset_index(drop=True)
