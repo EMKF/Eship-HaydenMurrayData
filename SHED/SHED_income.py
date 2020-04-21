@@ -16,9 +16,6 @@ pd.set_option('display.float_format', lambda x: '%.4f' % x)
 pd.options.mode.chained_assignment = None
 
 
-# DRAFT 2 (MULTIPLE SCRIPTS IN THIS .py FILE)
-
-
 # pull,
 df_agg = pd.read_csv('/Users/hmurray/Desktop/data/SHED/2018_SHED_data.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
 

@@ -376,17 +376,4 @@ plt.tight_layout()
 axes.set_ylim([-10,10])
 plt.savefig('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/fig_27.png')
 
-# # Create a Pandas Excel writer using XlsxWriter as the engine.
-# writer = pd.ExcelWriter('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/table_1.xlsx', engine='xlsxwriter')
-#
-# def crosser(list):
-#     for k in list:
-#         xtab = pd.crosstab(df[k], df['D3A'], normalize='columns').round(4)*100
-#         print(xtab)
-#         print('')
-#         # export crosstabs to excel sheets
-#         xtab.to_excel(writer, sheet_name=str(k), index=True)
-# list = list(df.columns)
-# print(list)
-# crosser(list)
-# writer.save()
+
