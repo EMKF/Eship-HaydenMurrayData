@@ -51,7 +51,7 @@ def racer(sheet, filt, title):
     plt.tight_layout()
     plt.savefig('/Users/hmurray/Desktop/data/KESE/share_total/plots/separate/' + str(title) + '.png')
     df.merge(df, on='year')
-    # df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/' + str(title) + '.xlsx', index=False)
+    df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/tables/individual/' + str(title) + '.xlsx', index=False)
 racer('rne', 'Total', "Share of New Entrepreneurs by Race and Ethnicity (1996-2019)")
 racer('ose', '3YR MA', "Share of Opportunity Entrepreneurs by Race and Ethnicity (1996-2019)")
 
@@ -88,7 +88,7 @@ def genderer(sheet, filt, title):
                         loc=6, fontsize='medium', fancybox=True)
     plt.tight_layout()
     plt.savefig('/Users/hmurray/Desktop/data/KESE/share_total/plots/separate/' + str(title) + '.png')
-    # df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/' + str(title) + '.xlsx', index=False)
+    df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/tables/individual/' + str(title) + '.xlsx', index=False)
 genderer('rne', 'Total', "Share of New Entrepreneurs by Gender (1996-2019)")
 genderer('ose', '3YR MA', "Share of Opportunity Entrepreneurs by Gender (1996-2019)")
 
@@ -125,7 +125,7 @@ def nativitier(sheet, filt, title):
                         loc=6, fontsize='medium', fancybox=True)
     plt.tight_layout()
     plt.savefig('/Users/hmurray/Desktop/data/KESE/share_total/plots/separate/' + str(title) + '.png')
-    # df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/' + str(title) + '.xlsx', index=False)
+    df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/tables/individual/' + str(title) + '.xlsx', index=False)
 nativitier('rne', 'Total', "Share of New Entrepreneurs by Nativity (1996-2019)")
 nativitier('ose', '3YR MA', "Share of Opportunity Entrepreneurs by Nativity (1996-2019)")
 
@@ -163,7 +163,7 @@ def ager(sheet, filt, title):
                         loc=6, fontsize='medium', fancybox=True)
     plt.tight_layout()
     plt.savefig('/Users/hmurray/Desktop/data/KESE/share_total/plots/separate/' + str(title) + '.png')
-    # df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/' + str(title) + '.xlsx', index=False)
+    df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/tables/individual/' + str(title) + '.xlsx', index=False)
 ager('rne', 'Total', "Share of New Entrepreneurs by Age (1996-2019)")
 ager('ose', '3YR MA', "Share of Opportunity Entrepreneurs by Age (1996-2019)")
 
@@ -201,7 +201,7 @@ def educator(sheet, filt, title):
                         loc=6, fontsize='medium', fancybox=True)
     plt.tight_layout()
     plt.savefig('/Users/hmurray/Desktop/data/KESE/share_total/plots/separate/' + str(title) + '.png')
-    df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/' + str(title) + '.xlsx', index=False)
+    df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/tables/individual/' + str(title) + '.xlsx', index=False)
 educator('rne', 'Total', "Share of New Entrepreneurs by Education (1996-2019)")
 educator('ose', '3YR MA', "Share of Opportunity Entrepreneurs by Education (1996-2019)")
 
@@ -237,7 +237,7 @@ def veteraner(sheet, filt, title):
                         loc=6, fontsize='medium', fancybox=True)
     plt.tight_layout()
     plt.savefig('/Users/hmurray/Desktop/data/KESE/share_total/plots/separate/' + str(title) + '.png')
-    # df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/' + str(title) + '.xlsx', index=False)
+    df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/tables/individual/' + str(title) + '.xlsx', index=False)
 veteraner('rne', 'Total', "Share of New Entrepreneurs by Veteran Status (1996-2019)")
 veteraner('ose', '3YR MA', "Share of Opportunity Entrepreneurs by Veteran Status (1996-2019)")
 
