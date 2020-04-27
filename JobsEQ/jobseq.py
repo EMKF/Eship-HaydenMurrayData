@@ -5,11 +5,14 @@ from urllib.request import Request, urlopen, quote
 from urllib.error import URLError, HTTPError
 import getpass
 import json
+import os
 
 # API KEY = '5518A0D1-62E9-4CCA-9FB0-527E27A0A3BB'
 
 JOBSEQ_URL = 'http://jobseq.eqsuite.com'
 
+jobseq_username = os.getenv('JOBSEQ_USERNAME')
+jobseq_password = os.getenv('JOBSEQ_USERNAME')
 
 def get_token(username=None, password=None):
     """Get auth token that is valid for 1 day from JobsEQ

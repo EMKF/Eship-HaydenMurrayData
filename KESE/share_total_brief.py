@@ -18,7 +18,7 @@ pd.options.mode.chained_assignment = None
 
 
 
-def racer(sheet, filt, title):
+def racer(sheet, filt, title, title2):
     # define directory
     df = '/Users/hmurray/Desktop/data/KESE/kese_change_share_demo.xlsx'
     # read in data
@@ -50,12 +50,21 @@ def racer(sheet, filt, title):
                         loc=6, fontsize='medium', fancybox=True)
     plt.tight_layout()
     plt.savefig('/Users/hmurray/Desktop/data/KESE/share_total/plots/separate/' + str(title) + '.png')
+    recession = df[(df['year'] == '2006') | (df['year'] == '2007') | (df['year'] == '2008') | (df['year'] == '2009') |\
+                   (df['year'] == '2010') | (df['year'] == '2011') | (df['year'] == '2012')].reset_index(drop=True)
     df.merge(df, on='year')
     df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/tables/individual/' + str(title) + '.xlsx', index=False)
-racer('rne', 'Total', "Share of New Entrepreneurs by Race and Ethnicity (1996-2019)")
-racer('ose', '3YR MA', "Share of Opportunity Entrepreneurs by Race and Ethnicity (1996-2019)")
-
-
+    ################################################ RECESSION YEARS ####################################################
+    recession = df[(df['year'] == '2006') | (df['year'] == '2007') | (df['year'] == '2008') | (df['year'] == '2009') |\
+                   (df['year'] == '2010') | (df['year'] == '2011') | (df['year'] == '2012')].reset_index(drop=True)
+    recession.plot(x='year', y=['White', 'Black', 'Latino', 'Asian'])
+    plt.title("\n".join(wrap(title, 35)))
+    legend = plt.legend(title=None,
+                        loc=6, fontsize='medium', fancybox=True)
+    plt.tight_layout()
+    plt.savefig('/Users/hmurray/Desktop/data/KESE/share_total/plots/separate/' + str(title2) + '.png')
+racer('rne', 'Total', "Share of New Entrepreneurs by Race and Ethnicity (1996-2019)", "Share of New Entrepreneurs by Race and Ethnicity (Recession Years)")
+racer('ose', '3YR MA', "Share of Opportunity Entrepreneurs by Race and Ethnicity (1996-2019)", "Share of Opportunity Entrepreneurs by Race and Ethnicity (Recession Years)")
 
 def genderer(sheet, filt, title):
     # define directory

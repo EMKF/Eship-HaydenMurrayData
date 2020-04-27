@@ -187,6 +187,7 @@ fig_11 = kese[(kese['STATE']=='United States')].reset_index(drop=True)
 fig_11 = kese[(kese['category'] =='Female') | (kese['category'] =='Male') | (kese['category'] =='Total')].reset_index(drop=True)
 fig_11 = fig_11[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_11 = fig_11.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
+fig_11.to_excel('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/opp_sex.xlsx', index=False)
 fig_11.plot(x='year', y=['Female', 'Male'])
 plt.title("\n".join(wrap("FIGURE 9 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY SEX (1998–2019)", 50)))
 axes = plt.gca()
@@ -200,6 +201,7 @@ fig_12 = kese[(kese['category'] =='White') | (kese['category'] =='Black') | (kes
              (kese['category'] =='Latino') | (kese['category'] =='Total')].reset_index(drop=True)
 fig_12 = fig_12[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_12 = fig_12.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
+fig_12.to_excel('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/opp_race.xlsx', index=False)
 fig_12.plot(x='year', y=['White', 'Asian', 'Black', 'Latino'])
 plt.title("\n".join(wrap("FIGURE 10 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY RACE AND ETHNICITY (1998–2019)", 50)))
 axes = plt.gca()
@@ -212,6 +214,7 @@ fig_13 = kese[(kese['STATE']=='United States')].reset_index(drop=True)
 fig_13 = kese[(kese['category'] =='Native-Born') | (kese['category'] =='Immigrant') | (kese['category'] =='Total')].reset_index(drop=True)
 fig_13 = fig_13[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_13 = fig_13.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
+fig_13.to_excel('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/opp_nativity.xlsx', index=False)
 fig_13.plot(x='year', y=['Immigrant', 'Native-Born'])
 plt.title("\n".join(wrap("FIGURE 11 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY NATIVITY(1998–2019)", 50)))
 axes = plt.gca()
@@ -225,6 +228,7 @@ fig_14 = kese[(kese['category'] =='Ages 20-34') | (kese['category'] =='Ages 35-4
              (kese['category'] =='Ages 55-64') | (kese['category'] =='Total')].reset_index(drop=True)
 fig_14 = fig_14[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_14 = fig_14.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
+fig_14.to_excel('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/opp_age.xlsx', index=False)
 fig_14.plot(x='year', y=['Ages 20-34', 'Ages 35-44', 'Ages 45-54', 'Ages 55-64'])
 plt.title("\n".join(wrap("FIGURE 12 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY AGE (1998–2019)", 50)))
 axes = plt.gca()
@@ -238,6 +242,7 @@ fig_15 = kese[(kese['category'] =='Less than High School') | (kese['category'] =
              (kese['category'] =='College Graduate') | (kese['category'] =='Total')].reset_index(drop=True)
 fig_15 = fig_15[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_15 = fig_15.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
+fig_15.to_excel('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/opp_edu.xlsx', index=False)
 fig_15.plot(x='year', y=['Less than High School', 'High School Graduate', 'Some College', 'College Graduate'])
 plt.title("\n".join(wrap("FIGURE 13 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY EDUCATION (1998–2019)", 50)))
 axes = plt.gca()
@@ -250,6 +255,7 @@ fig_16 = kese[(kese['STATE']=='United States')].reset_index(drop=True)
 fig_16 = kese[(kese['category'] =='Veterans') | (kese['category'] =='Non-Veterans') | (kese['category'] =='Total')].reset_index(drop=True)
 fig_16 = fig_16[['STATE', 'year', 'category', 'OPPORTUNITY SHARE OF NEW ENTREPRENEURS']]
 fig_16 = fig_16.pivot_table(index=['year'], columns='category', values='OPPORTUNITY SHARE OF NEW ENTREPRENEURS').reset_index()
+fig_16.to_excel('/Users/hmurray/Desktop/KESE/KESE_2019_Update/hm_drafts/tables_plots/opp_veteran.xlsx', index=False)
 fig_16.plot(x='year', y=['Non-Veterans', 'Veterans'])
 plt.title("\n".join(wrap("FIGURE 14 OPPORTUNITY SHARE OF NEW ENTREPRENEURS BY VETERAN STATUS (1998–2019)", 50)))
 axes = plt.gca()

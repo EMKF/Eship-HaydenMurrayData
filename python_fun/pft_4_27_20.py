@@ -34,15 +34,5 @@ def trender(share, col, title):
     plt.savefig('/Users/hmurray/Desktop/data/KESE/share_total/plots/agg/' + str(title) + '.png')
     plt.show()
 race = ['White', 'White-Opp', 'Black', 'Black-Opp', 'Latino', 'Latino-Opp', 'Asian', 'Asian-Opp']
-gender = ['Male_RNE', 'Male_OSE', 'Female_RNE', 'Female_OSE']
-veteran = ['Veterans-RNE', 'Veterans-Opp', 'Non-Veterans', 'Non-Veterans-Opp']
-nativity = ['Native_Born_RNE', 'Native_Born_OSE', 'Immigrant_RNE', 'Immigrant_OSE']
-age = ['20_34_RNE', '20_34_OSE', '35_44_RNE', '35_44_OSE', '45_54_RNE', '45_54_OSE', '55_64_RNE', '55_64_OSE']
-edu = ['Less than High School RNE', 'Less than High School OSE', 'High School Graduate RNE', 'High School Graduate OSE',\
-       'Some College RNE', 'Some College OSE', 'College Graduate RNE', 'College Graduate OSE']
 trender(share['race'], race, 'Share of New and Opportunity Entrepreneurs by Race and Ethnicity')
-trender(share['gender'], gender, 'Share of New and Opportunity Entrepreneurs by Gender')
-trender(share['veteran'], veteran, 'Share of New and Opportunity Entrepreneurs by Veteran Status')
-trender(share['nativity'], nativity, 'Share of New and Opportunity Entrepreneurs by Nativity')
-trender(share['age'], age, 'Share of New and Opportunity Entrepreneurs by Age')
-trender(share['edu'], edu, 'Share of New and Opportunity Entrepreneurs by Edu')
+
