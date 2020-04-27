@@ -28,6 +28,8 @@ def racer(sheet, filt, title, title2):
     # filter for relevant demographics
     df = df[(df['demographic'] =='White') | (df['demographic'] =='Black') | (df['demographic'] =='Asian') |\
                  (df['demographic'] =='Latino') | (df['demographic'] ==filt)].reset_index(drop=True)
+    print(df)
+    sys.exit()
     # transpose
     df = df.transpose().reset_index(drop=False)
     # set new column headers as first row
