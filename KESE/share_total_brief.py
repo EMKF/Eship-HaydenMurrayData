@@ -28,8 +28,6 @@ def racer(sheet, filt, title, title2):
     # filter for relevant demographics
     df = df[(df['demographic'] =='White') | (df['demographic'] =='Black') | (df['demographic'] =='Asian') |\
                  (df['demographic'] =='Latino') | (df['demographic'] ==filt)].reset_index(drop=True)
-    print(df)
-    sys.exit()
     # transpose
     df = df.transpose().reset_index(drop=False)
     # set new column headers as first row
@@ -56,6 +54,7 @@ def racer(sheet, filt, title, title2):
                    (df['year'] == '2010') | (df['year'] == '2011') | (df['year'] == '2012')].reset_index(drop=True)
     df.merge(df, on='year')
     df.to_excel('/Users/hmurray/Desktop/data/KESE/share_total/tables/individual/' + str(title) + '.xlsx', index=False)
+    print(df)
     ################################################ RECESSION YEARS ####################################################
     recession = df[(df['year'] == '2006') | (df['year'] == '2007') | (df['year'] == '2008') | (df['year'] == '2009') |\
                    (df['year'] == '2010') | (df['year'] == '2011') | (df['year'] == '2012')].reset_index(drop=True)
