@@ -1,11 +1,7 @@
 # data obtained manually from Rob Fairlie on 3.27.20 @ 12:29pm
 
-import os
-import sys
-import shutil
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 from textwrap import wrap
 
 pd.set_option('max_columns', 1000)

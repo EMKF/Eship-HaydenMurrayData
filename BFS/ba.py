@@ -1,12 +1,5 @@
-import os
 import sys
-import shutil
-import xlrd
 import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
-import xlsxwriter
-from textwrap import wrap
 from kauffman_data import bfs, pep
 
 pd.set_option('max_columns', 1000)
