@@ -18,13 +18,14 @@ def puller(topic, folder, title, save):
     for x in topic:
         trends[x] = pd.read_csv('/Users/hmurray/Desktop/data/google/google_data/pulls/' + str(folder) + str(x) + '.csv', skiprows=2)
         trends[x].columns = ["Week", x]
-        print(trends[x].head())
+        # print(trends[x].head())
     df = {i: j.set_index('Week') for i, j in trends.items()}
     df = pd.concat(df, axis=1, sort=True).reset_index(drop=False)
     df.columns = df.columns.droplevel(1)
     print(df)
     df.plot(x='Week', y=topic)
     plt.xlabel('Week')
+    plt.xticks(rotation=45)
     plt.ylabel('Search Popularity Index')
     plt.legend(title='Search Terms')
     plt.title(title)
