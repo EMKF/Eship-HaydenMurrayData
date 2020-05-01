@@ -1,11 +1,5 @@
-import os
-import sys
-import time
-import zipfile
-import numpy as np
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
+
 
 pd.set_option('max_columns', 1000)
 pd.set_option('max_info_columns', 1000)
@@ -19,7 +13,6 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 df = pd.read_csv('/Users/hmurray/Downloads/SE1600CSCB27.dat', sep='|', low_memory=False)
 print(df.head(100))
 # df.to_excel('/Users/hmurray/Desktop/Alyse_Table.xlsx', index=False)
-sys.exit()
 
 
 # BRIEF2 - Regulations and Profitability - pull .dta and export xlsx

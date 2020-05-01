@@ -23,6 +23,7 @@ def puller(topic, folder, title, save):
     df = pd.concat(df, axis=1, sort=True).reset_index(drop=False)
     df.columns = df.columns.droplevel(1)
     print(df)
+    df.to_excel('/Users/hmurray/Desktop/calc.xlsx')
     df.plot(x='Week', y=topic)
     plt.xlabel('Week')
     plt.xticks(rotation=45)
