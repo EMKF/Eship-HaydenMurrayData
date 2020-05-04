@@ -1,16 +1,7 @@
 import jobseq
-import json
-from pandas.io.json import json_normalize
 import os
 import sys
-import shutil
-import xlrd
 import pandas as pd
-import matplotlib.pyplot as plt
-import numpy as np
-import xlsxwriter
-from textwrap import wrap
-from kauffman_data import bfs, pep
 import requests
 
 pd.set_option('max_columns', 1000)
@@ -21,7 +12,7 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
-COMPANY_NAME = ''
+COMPANY_NAME = 'Kauffman Foundation'
 
 # Retrieve our auth token from JobsEQ using the jobseq module
 
@@ -82,7 +73,7 @@ params = pd.DataFrame(r.json()).\
     }
 )
     # assign(region_type=lambda x: x['region_type'].map(_region_type_dict()))
-# print(params)
+print(params.head(100))
 
 sys.exit()
 

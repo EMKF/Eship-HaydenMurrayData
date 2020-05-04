@@ -2,7 +2,8 @@
 
 import sys
 import pandas as pd
-import matplotlib.pyplot as plt
+import
+as plt
 
 pd.set_option('max_columns', 1000)
 pd.set_option('max_info_columns', 1000)
