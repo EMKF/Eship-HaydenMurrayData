@@ -33,6 +33,8 @@ data['WBA_POP'] = (data['WBA_BA']/data['population'])*100000
 data['BA_POP'] = (data['BA_BA']/data['population'])*100000
 print(data)
 
+sys.exit()
+
 # plot 'em
 data.plot(x='time', y=['BF4Q_POP', 'BF8Q_POP', 'WBA_POP', 'BA_POP'])
 plt.xlabel('Year')
