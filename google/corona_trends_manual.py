@@ -13,7 +13,7 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 pd.options.mode.chained_assignment = None
 
 df = pd.DataFrame
-def puller(topic, folder, title, save):
+def puller(topic, folder, title, save1, save2):
     trends = {}
     for x in topic:
         trends[x] = pd.read_csv('/Users/hmurray/Desktop/data/google/google_data/pulls/' + str(folder) + str(x) + '.csv', skiprows=2)
@@ -23,7 +23,7 @@ def puller(topic, folder, title, save):
     df = pd.concat(df, axis=1, sort=True).reset_index(drop=False)
     df.columns = df.columns.droplevel(1)
     print(df)
-    df.to_excel('/Users/hmurray/Desktop/calc.xlsx')
+    df.to_excel(save1)
     df.plot(x='Week', y=topic)
     plt.xlabel('Week')
     plt.xticks(rotation=45)
@@ -31,7 +31,7 @@ def puller(topic, folder, title, save):
     plt.legend(title='Search Terms')
     plt.title(title)
     plt.tight_layout()
-    plt.savefig(save)
+    plt.savefig(save2)
     plt.show()
 
 # names of searches/files that are pulled into each topic
@@ -41,9 +41,9 @@ new_bus_opportunity = ['open_a_business', 'new_self_employed', 'new_small_busine
 
 
 # call the function for each topic
-puller(new_bus_help, 'new_bus_help/', 'Search Terms Related to New Business Help', '/Users/hmurray/Desktop/data/google/google_data/plots/new_bus_help.png')
-puller(new_bus_exit, 'new_bus_exit/', 'Search Terms Related to New Business Exit', '/Users/hmurray/Desktop/data/google/google_data/plots/new_bus_exit.png')
-puller(new_bus_opportunity, 'new_bus_opportunity/', 'Search Terms Related to New Business Opportunities', '/Users/hmurray/Desktop/data/google/google_data/plots/new_bus_opportunity.png')
+puller(new_bus_help, 'new_bus_help/', 'Search Terms Related to New Business Help', '/Users/hmurray/Desktop/data/google/google_data/tables_plots/new_bus_help.xlsx', '/Users/hmurray/Desktop/data/google/google_data/tables_plots/new_bus_help.png')
+puller(new_bus_exit, 'new_bus_exit/', 'Search Terms Related to New Business Exit', '/Users/hmurray/Desktop/data/google/google_data/tables_plots/new_bus_exit.xlsx', '/Users/hmurray/Desktop/data/google/google_data/tables_plots/new_bus_exit.png')
+puller(new_bus_opportunity, 'new_bus_opportunity/', 'Search Terms Related to New Business Opportunities', '/Users/hmurray/Desktop/data/google/google_data/tables_plots/new_bus_opportunity.xlsx', '/Users/hmurray/Desktop/data/google/google_data/tables_plots/new_bus_opportunity.png')
 sys.exit()
 
 

@@ -1,5 +1,6 @@
 # data obtained manually from Rob Fairlie on 3.27.20 @ 12:29pm
 
+import sys
 import pandas as pd
 import matplotlib.pyplot as plt
 from textwrap import wrap
