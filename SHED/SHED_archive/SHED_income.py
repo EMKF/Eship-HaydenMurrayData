@@ -32,7 +32,7 @@ df = df_agg[df_agg.columns[pd.Series(df_agg.columns).str.startswith(('D3A', 'I4'
 print(df.head())
 
 # Create a Pandas Excel writer using XlsxWriter as the engine.
-writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/SHED/vulnerability_bus_own/SHED_income/crosstabs/inc_crosstabs.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/inc_crosstabs.xlsx', engine='xlsxwriter')
 
 def crosser(attributelist):
     for k in attributelist:

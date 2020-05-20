@@ -20,7 +20,20 @@ code["ID"] = code["INSTRUMENT_ID"].astype(str) + ' - ' + code["ANSWER_ID"].astyp
 
 # combine question - answer code column and merge
 df = raw.merge(code, on='ID', how='left', indicator=True)
-df = df[['QUESTION_TEXT', 'ANSWER_TEXT', 'ESTIMATE_PERCENTAGE', '_merge', 'ID']]
-print(df)
+df = df[['INSTRUMENT_ID_y', 'QUESTION_TEXT', 'ANSWER_TEXT', 'ESTIMATE_PERCENTAGE']]
+df.rename(columns={"INSTRUMENT_ID_y": "QUESTION_ID"},inplace=True)
 
+# Create a Pandas Excel writer using XlsxWriter as the engine.
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/financial_means/small_business_pulse/clean_survey_data.xlsx', engine='xlsxwriter')
+
+# unstack reasons
+book = {}
+for q in df['QUESTION_ID'].unique():
+    book[q] = df[df['QUESTION_ID'] == q]
+    print(book[q].head())
+    book[q].to_excel(writer, sheet_name=str(q), index=False)
+
+writer.save()
 sys.exit()
+
+
