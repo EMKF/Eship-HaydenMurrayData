@@ -43,3 +43,16 @@ analytic_response = jobseq.run_analytic(token, analytic_id, analytic_params)
 # print("Analytic Response Received:\n{0}".format(analytic_response))
 df = pd.DataFrame((analytic_response['data']))
 print(df)
+
+
+# MIKE LISTED THE FILTERS (COPIED BELOW)
+    # Occupation - SOC. IS. type = occ.
+    # Location - raw location from the job posting. IS || CONTAINS. type = loc.
+    # Employer. IS || CONTAINS. type = comp.
+    # Certification. IS || CONTAINS. type = cert.
+    # Hard Skill. IS || CONTAINS. type = hardSkills.
+    # Soft Skill. IS || CONTAINS. type = softSkills.
+    # Job Title. IS || CONTAINS. type = title.
+    # Education Level. IS. type = degreeType.
+    # Program. IS || CONTAINS. type = program.
+    # Job Type - full-time vs part-time, etc. IS. type = jobType.

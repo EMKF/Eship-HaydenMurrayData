@@ -10,15 +10,15 @@ pd.set_option('max_info_columns', 1000)
 pd.set_option('expand_frame_repr', False)
 pd.set_option('display.max_rows', 30000)
 pd.set_option('max_colwidth', 4000)
-pd.set_option('display.float_format', lambda x: '%.2f' % x)
+pd.set_option('display.float_format', lambda x: '%.f' % x)
 pd.options.mode.chained_assignment = None
 
 
 # BFS
-bfs = bfs.get_data(['BA_BA', 'BA_WBA', 'BA_CBA', 'BA_HBA', 'BF_SBF4Q', 'BF_SBF8Q'], 'us', 2005, end_year=2019, annualize=True)
+bfs = bfs.get_data(['BA_BA', 'BA_WBA', 'BA_CBA', 'BA_HBA', 'BF_SBF4Q', 'BF_SBF8Q'], 'us', 2005, annualize=True)
 
 # Pep
-pep = pep.get_data('us', 2005, 2018)
+pep = pep.get_data('us', 2005, 2019)
 pep.rename(columns={"year": "time"},inplace=True)
 
 # merge bfs and pep
@@ -55,12 +55,12 @@ print(data)
 
 
 # New Business Applications and New Employer Businesses
-data.plot(x='time', y=['BA_POP', 'BF8Q_POP'])
+data.plot(x='time', y=['BA_BA', 'BF_SBF8Q'])
 plt.xlabel('Year')
 plt.xticks(rotation=45)
-plt.xlim(2005, 2018)
+plt.xlim(2005, 2019)
 plt.ylabel('Number per 100,000 people')
-plt.yticks(np.arange(0, 1150, step=100), rotation=45)
+# plt.yticks(np.arange(0, 1150, step=100), rotation=45)
 leg_1_labels = ['Business Applications', 'New Employer Businesses']
 plt.legend(labels=leg_1_labels, loc=7)
 title = ('Business Applications are Increasing & New Employer Businesses are Decreasing')
@@ -82,10 +82,10 @@ plt.show()
 data.plot(x='time', y=['wba_share', '8Q_act'])
 plt.xlabel('Year')
 plt.xticks(rotation=45)
-plt.xlim(2005, 2018)
+plt.xlim(2005, 2019)
 plt.ylabel('Percent')
 plt.yticks(np.arange(0, 40, step=5), rotation=45)
-leg_2_labels = ['Share of Business Applications that intend to hire ','Share of Business Applications that went on to hire']
+leg_2_labels = ['Share of business applications with intent to hire','Share of business applications that actually hire']
 plt.legend(labels=leg_2_labels, loc=0)
 title = ('The share of business applications that intend to hire are declining faster than the share of business applications that went on to hire')
 plt.title("\n".join(wrap(title, 75)))
