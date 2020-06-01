@@ -59,7 +59,7 @@ data.plot(x='time', y=['BA_BA', 'BF_SBF8Q'])
 plt.xlabel('Year')
 plt.xticks(rotation=45)
 plt.xlim(2005, 2019)
-plt.ylabel('Number per 100,000 people')
+plt.ylabel('Count')
 # plt.yticks(np.arange(0, 1150, step=100), rotation=45)
 leg_1_labels = ['Business Applications', 'New Employer Businesses']
 plt.legend(labels=leg_1_labels, loc=7)
