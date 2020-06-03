@@ -3,6 +3,7 @@
 import pandas as pd
 import sys
 import numpy as np
+import quantipy as qp
 
 pd.set_option('max_columns', 1000)
 pd.set_option('max_info_columns', 1000)
@@ -35,8 +36,6 @@ tab_list = ['Q2', 'Q3', 'Q4', 'Q7', 'Q8', 'Q9', 'Q56_15_1', 'Q7']
 for x in tab_list:
     crosser(x)
 
-
 writer.save()
 sys.exit()
 
-sys.exit()
