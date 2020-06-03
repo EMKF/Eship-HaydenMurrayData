@@ -33,7 +33,7 @@ analytic_params = {
         "filterType": "contains", # Filter comparison type
         "key": COMPANY_NAME   # Company name to filter results for
     }],
-    "timeframe": 7,     # Last 90 days
+    "timeframe": 180,     # Last 90 days
     "rawOnly": True
 }
 

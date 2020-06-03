@@ -25,4 +25,6 @@ for x in names:
 df_weight['DRACE'] = df_weight['DRACE'] / df_weight['WEIGHT']
 print(df_weight.head())
 df_weight.to_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/weighted_gsg_5.26.xlsx')
+
+
 sys.exit()
