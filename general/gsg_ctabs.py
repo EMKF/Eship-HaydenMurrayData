@@ -14,28 +14,42 @@ pd.set_option('display.float_format', lambda x: '%.4f' % x)
 pd.options.mode.chained_assignment = None
 
 # read in data
-df = pd.read_csv('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/raw_gsg_5.26.csv')
-print(df.head())
+all_df = pd.read_csv('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/raw_gsg_6.3.csv')
+young_df = all_df.loc[all_df['Q4']==1]
+old_df = all_df.loc[all_df['Q4']!=1]
+closed = all_df.loc[all_df['Q4']!=1]
+opened = all_df.loc[all_df['Q4']!=1]
+print(all_df.head())
+print(young_df.head())
+print(old_df.head())
 
 # Create a Pandas Excel writer using XlsxWriter as the engine.
-writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/ctabs_priorities.xlsx', engine='xlsxwriter')
+all_writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/all_ctabs_priorities.xlsx', engine='xlsxwriter')
+young_writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/young_ctabs_priorities.xlsx', engine='xlsxwriter')
+old_writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/old_ctabs_priorities.xlsx', engine='xlsxwriter')
 
-# crosstabs
-priorities = pd.DataFrame()
-def crosser(var):
+# prep crosstabs
+freq = pd.DataFrame()
+ctabs = pd.DataFrame()
+
+def crosser(df, var, writer):
     print()
-    print(df[var].value_counts(normalize=True))
+    freq = pd.crosstab(df[var], df[var], values=df['WEIGHT'], aggfunc='sum', normalize='columns', margins=True)
+    freq.rename(columns={"All": var},inplace=True)
+    freq = freq[var]
+    print(freq)
     print()
-    priorities = pd.crosstab(df[var], df['Q4'], normalize='columns').round(4)
+    priorities = pd.crosstab(df[var], df['Q2'], values=df['WEIGHT'], aggfunc='sum', normalize='columns', margins=True)
     print(priorities)
-    print()
     priorities.to_excel(writer, sheet_name=str(var), index=True)
-    return priorities
 
-tab_list = ['Q2', 'Q3', 'Q4', 'Q7', 'Q8', 'Q9', 'Q56_15_1', 'Q7']
+tab_list = ['Q2', 'Q7', 'Q8', 'Q9']
 for x in tab_list:
-    crosser(x)
+    crosser(all_df, x, all_writer)
+    crosser(young_df, x, young_writer)
+    crosser(old_df, x, old_writer)
 
-writer.save()
+all_writer.save()
+young_writer.save()
 sys.exit()
 

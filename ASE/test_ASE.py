@@ -25,10 +25,10 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 #
 # # BRIEF4 - funding and capital - pull .dta and export xlsx
 #     # funding
-# df = pd.read_csv('/Users/hmurray/Desktop/data/ASE/ASE_funding_capital/funding/SE1600CSCB09.dat', sep='|', low_memory=False)
+# df = pd.read_csv('/Users/hmurray/Desktop/data/ASE/ASE_funding_capital/conversions/funding/SE1600CSCB09.dat', sep='|', low_memory=False)
 # df.to_excel('/Users/hmurray/Desktop/data/ASE/ASE_funding_capital/funding/funding.xlsx', index=False)
 #     # capital source
-# df = pd.read_csv('/Users/hmurray/Desktop/data/ASE/ASE_funding_capital/capital/SE1600CSCB07.dat', sep='|', low_memory=False)
+# df = pd.read_csv('/Users/hmurray/Desktop/data/ASE/ASE_funding_capital/conversions/capital/SE1600CSCB07.dat', sep='|', low_memory=False)
 # df.to_excel('/Users/hmurray/Desktop/data/ASE/ASE_funding_capital/capital/source_capital.xlsx', index=False)
 #     # capital amount
 # df = pd.read_csv('/Users/hmurray/Desktop/data/ASE/ASE_funding_capital/capital/SE1600CSCB08.dat', sep='|', low_memory=False)
