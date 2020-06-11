@@ -45,6 +45,7 @@ print(us)
 # THIS IS PULLING 2018. NEED TO LOOP OVER PARAMETERS TO PULL IN RANGE OF YEARS
 # THIS IS PULLING 2018. NEED TO LOOP OVER PARAMETERS TO PULL IN RANGE OF YEARS
 # THIS IS PULLING 2018. NEED TO LOOP OVER PARAMETERS TO PULL IN RANGE OF YEARS
+
 state18 = pd.DataFrame([])
 for num in range(4,5):
     data = 'https://api.census.gov/data/2018/pep/population?get=GEONAME,POP,DATE_DESC&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e'.format(num=num)
