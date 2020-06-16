@@ -14,6 +14,8 @@ pd.options.mode.chained_assignment = None
 
 # read in data
 data = pd.read_csv('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/raw_gsg_6.3.csv')
+print(data)
+sys.exit()
 
 # create new datasets to manipulate
 data = data[['Q2', 'Q56_15_1', 'Q4', 'Q7', 'Q8', 'Q9', 'WEIGHT']]
