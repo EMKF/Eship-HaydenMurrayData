@@ -98,6 +98,6 @@ data['creation'] = (data['FrmJbC_x'] / data['Emp_y'])
 
 data = data[['geography', 'year', 'firmage', 'contribution', 'compensation', 'constancy', 'creation']]
 print(data.head())
-data.to_excel('/Users/hmurray/Desktop/jobs_QC.xlsx', index=False)
+data.to_excel('/Users/hmurray/Desktop/Jobs_Indicators/data_check/jobs_qc_output/jobs_QC.xlsx', index=False)
 
 sys.exit()
