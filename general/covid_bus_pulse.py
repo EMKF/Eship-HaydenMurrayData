@@ -10,7 +10,7 @@ pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
 # pull raw data
-raw = pd.read_excel('https://portal.census.gov/pulse/data/downloads/6/national_sector_31May20_06Jun20.xls', na_values='-')
+raw = pd.read_excel('https://portal.census.gov/pulse/data/downloads/7/national_sector_07Jun20_13Jun20.xls', na_values='-')
 raw = raw[pd.isnull(raw['NAICS_SECTOR'])]
 raw["ID"] = raw["INSTRUMENT_ID"].astype(str) + ' - ' + raw["ANSWER_ID"].astype(float).astype(str)
 

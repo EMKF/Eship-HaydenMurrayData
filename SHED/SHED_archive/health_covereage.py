@@ -18,7 +18,7 @@ pd.options.mode.chained_assignment = None
 
 
 # pull,
-data = pd.read_csv('/Users/hmurray/Desktop/data/SHED/2018_SHED_data.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+data = pd.read_csv('/Users/hmurray/Desktop/data/SHED/2018_shed/2018_SHED_data.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
 
 # replace "Refused" with NaN
 data.replace('Refused', np.nan, inplace=True)

@@ -87,7 +87,7 @@ plt.ylabel('Percent')
 plt.yticks(np.arange(0, 40, step=5), rotation=45)
 leg_2_labels = ['Share of business applications with intent to hire','Share of business applications that actually hire']
 plt.legend(labels=leg_2_labels, loc=0)
-title = ('The share of business applications that intend to hire are declining faster than the share of business applications that went on to hire')
+title = ('The share of business applications that intend to hire declined faster than the share of business applications that went on to hire')
 plt.title("\n".join(wrap(title, 75)))
 plt.tight_layout()
 plt.grid()

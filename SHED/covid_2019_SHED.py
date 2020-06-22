@@ -1,6 +1,7 @@
 # data was downloaded from: https://www.federalreserve.gov/consumerscommunities/shed_data.htm
 
 import pandas as pd
+import numpy as np
 from zipfile import ZipFile
 from urllib.request import urlopen
 from io import BytesIO
@@ -21,6 +22,9 @@ myzip = ZipFile(BytesIO(z.read())).extract('publicApril2020.csv')
 df = pd.read_csv(myzip)
 print(df.head())
 
+# replace the refused with NaNs
+df.replace('Refused', np.nan, inplace=True)
+
 # Create a Pandas Excel writer using XlsxWriter as the engine.
 dir = '/Users/hmurray/Desktop/data/SHED/covid_shed/python_outputs/covid_SHED_ctabs.xlsx'
 writer = pd.ExcelWriter(dir, engine='xlsxwriter')
@@ -30,23 +34,24 @@ freq = pd.DataFrame()
 ctabs = pd.DataFrame()
 output = pd.DataFrame()
 def ctabber(var):
-    # frequencies
     print()
+    # frequencies
     freq = df.groupby(var)['weight'].sum().reset_index()
     freq['percent'] = freq['weight'] / df['weight'].sum()
     freq.rename(columns={"weight": "count"}, inplace=True)
-    # print(freq)
-    print()
+
     # cross tabs
-    ctabs = pd.crosstab(df[var], df['CV1'], values=df['weight'], aggfunc='sum', normalize='columns', margins=True)
-    # print(ctabs)
-    print()
+    ctabs = pd.crosstab(df[var], df['CV1'], values=df['weight'], aggfunc='sum', normalize='columns')
+
+    # merge frequencies and crosstabs
     output = freq.merge(ctabs, on=var)
     print(output)
-    ctabs.to_excel(writer, sheet_name=str(var), index=True)
+
+    # export to excel
+    output.to_excel(writer, sheet_name=str(var), index=False)
 
 # create list of vars to analyze
-var_list = df[df.columns[pd.Series(df.columns).str.startswith(('B2', 'EF'))]]
+var_list = df[df.columns[pd.Series(df.columns).str.startswith(('B2', 'EF', 'CV'))]]
 
 # loop over list of relevant variables and pass each through frequency and cross tab function
 for x in var_list:

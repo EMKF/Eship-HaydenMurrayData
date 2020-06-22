@@ -14,11 +14,12 @@ pd.options.mode.chained_assignment = None
 
 # read in data
 data = pd.read_csv('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/raw_gsg_6.3.csv')
-print(data)
+tabs = pd.crosstab(data['Q4'], data['Q29'], values=data['WEIGHT'], aggfunc='sum', normalize='index', margins=True)
+print(tabs)
 sys.exit()
 
 # create new datasets to manipulate
-data = data[['Q2', 'Q56_15_1', 'Q4', 'Q7', 'Q8', 'Q9', 'WEIGHT']]
+data = data[['Q2', 'Q56_15_1', 'Q4', 'Q7', 'Q8', 'Q9', 'Q29', 'Q30', 'WEIGHT']]
 data['NEW'] = data['Q4']
 data['YOUNG'] = data['Q4']
 
@@ -69,9 +70,9 @@ def crosser(df, var):
     young = pd.crosstab(df['Q56_15_1'], [df['YOUNG'], df[var]], values=df['WEIGHT'], aggfunc='sum', normalize='columns')
     young = young.transpose().reset_index(drop=False)
     print(young)
-    young.to_excel(young_writer, sheet_name=str(var), index=True)
+    # young.to_excel(young_writer, sheet_name=str(var), index=True)
 
-tab_list = ['Q7', 'Q8', 'Q9']
+tab_list = ['Q7', 'Q8', 'Q9', 'Q29', 'Q30']
 for x in tab_list:
     crosser(data, x)
 
