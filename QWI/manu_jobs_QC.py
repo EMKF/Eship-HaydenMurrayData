@@ -56,29 +56,35 @@ for csv in os.listdir('/Users/hmurray/Desktop/Jobs_Indicators/data_check/qwi_pul
     df = pd.read_csv('/Users/hmurray/Desktop/Jobs_Indicators/data_check/qwi_pulls/' + str(csv))
     jobs = jobs.append(df, sort=True)
 
-jobs = jobs[['geography', 'year', 'quarter', 'firmage', 'Emp', 'EmpS', 'FrmJbC', 'Payroll']]
-jobs = jobs.groupby(['geography', 'year', 'firmage']).agg({'Emp': 'sum', 'EmpS':'sum', 'FrmJbC':'sum', 'Payroll':'sum'}).reset_index()
+jobs = jobs[['geography', 'year', 'quarter', 'firmage', 'Emp', 'EmpEnd', 'EmpS', 'FrmJbC', 'EarnBeg']]
+jobs = jobs.groupby(['geography', 'year', 'firmage']).agg({'Emp': 'sum', 'EmpEnd':'sum', 'EmpS':'sum', 'FrmJbC':'sum', 'EarnBeg':'sum'}).reset_index()
 
 Emp_total = jobs.groupby(['geography', 'year']).agg({'Emp': 'sum'})
+EmpEnd_total = jobs.groupby(['geography', 'year']).agg({'EmpEnd': 'sum'})
 EmpS_total = jobs.groupby(['geography', 'year']).agg({'EmpS': 'sum'})
 FrmJbC_total = jobs.groupby(['geography', 'year']).agg({'FrmJbC': 'sum'})
-Payroll_total = jobs.groupby(['geography', 'year']).agg({'Payroll': 'sum'})
+EarnBeg_total = jobs.groupby(['geography', 'year']).agg({'EarnBeg': 'sum'}).reset_index()
+us_EarnBeg = EarnBeg_total.loc[EarnBeg_total['geography'] == 0]
 
 # merge Emp
 emps = jobs.merge(Emp_total, on=['geography', 'year'])
-emps = emps[['geography', 'year', 'firmage', 'Emp_x', 'Emp_y', 'EmpS', 'FrmJbC', 'Payroll']]
+emps = emps[['geography', 'year', 'firmage', 'Emp_x', 'Emp_y', 'EmpEnd', 'EmpS', 'FrmJbC', 'EarnBeg']]
+
+# merge EmpEnd
+EmpEnd = emps.merge(EmpEnd_total, on=['geography', 'year'])
+EmpEnd = EmpEnd[['geography', 'year', 'firmage', 'Emp_x', 'Emp_y', 'EmpEnd_x', 'EmpEnd_y', 'EmpS', 'FrmJbC', 'EarnBeg']]
 
 # merge EmpS
-emps_empSs = emps.merge(EmpS_total, on=['geography', 'year'])
-emps_empSs = emps_empSs[['geography', 'year', 'firmage', 'Emp_x', 'Emp_y', 'EmpS_x', 'EmpS_y', 'FrmJbC', 'Payroll']]
+emps_empSs = EmpEnd.merge(EmpS_total, on=['geography', 'year'])
+emps_empSs = emps_empSs[['geography', 'year', 'firmage', 'Emp_x', 'Emp_y', 'EmpEnd_x', 'EmpEnd_y', 'EmpS_x', 'EmpS_y', 'FrmJbC', 'EarnBeg']]
 
 # merge FrmJbC
 emps_empSs_FrmJbC = emps_empSs.merge(FrmJbC_total, on=['geography', 'year'])
-emps_empSs_FrmJbC = emps_empSs_FrmJbC[['geography', 'year', 'firmage', 'Emp_x', 'Emp_y', 'EmpS_x', 'EmpS_y', 'FrmJbC_x', 'FrmJbC_y', 'Payroll']]
+emps_empSs_FrmJbC = emps_empSs_FrmJbC[['geography', 'year', 'firmage', 'Emp_x', 'Emp_y', 'EmpEnd_x', 'EmpEnd_y', 'EmpS_x', 'EmpS_y', 'FrmJbC_x', 'FrmJbC_y', 'EarnBeg']]
 
 # merge payroll
-emps_empSs_FrmJbC_Payroll = emps_empSs_FrmJbC.merge(Payroll_total, on=['geography', 'year'])
-emps_empSs_FrmJbC_Payroll = emps_empSs_FrmJbC_Payroll[['geography', 'year', 'firmage', 'Emp_x', 'Emp_y', 'EmpS_x', 'EmpS_y', 'FrmJbC_x', 'FrmJbC_y', 'Payroll_x', 'Payroll_y']]
+emps_empSs_FrmJbC_EarnBeg = emps_empSs_FrmJbC.merge(us_EarnBeg, on=['geography', 'year'])
+emps_empSs_FrmJbC_EarnBeg = emps_empSs_FrmJbC_EarnBeg[['geography', 'year', 'firmage', 'Emp_x', 'Emp_y', 'EmpEnd_x', 'EmpEnd_y', 'EmpS_x', 'EmpS_y', 'FrmJbC_x', 'FrmJbC_y', 'EarnBeg_x', 'EarnBeg_y']]
 
 # get some unemp
 pep = pd.read_excel('/Users/hmurray/Desktop/Jobs_Indicators/data_check/pep/us_pep.xlsx', skiprows=11)
@@ -88,16 +94,16 @@ pep.rename(columns={'Year': 'year'}, inplace=True)
 pep = pep[['year', 'unemp_rate']]
 
 # merge pep
-data = emps_empSs_FrmJbC_Payroll.merge(pep, on=['year'])
-
+data = emps_empSs_FrmJbC_EarnBeg.merge(pep, on=['year'])
+print(data.head(100))
 # calculate indicators
-data['contribution'] = (data['Emp_x'] / data['Emp_y'])
-data['compensation'] = (data['Payroll_x'] / data['Payroll_y'])
-data['constancy'] = (data['EmpS_x'] / data['Emp_x']) * data['unemp_rate']
+data['contribution'] = (data['Emp_x'] + data['EmpEnd_x']) / (data['Emp_y'] + data['EmpEnd_y'])
+data['compensation'] = (data['EarnBeg_x'] / data['EarnBeg_y'])
+data['constancy'] = (data['EmpS_x'] / data['EmpS_y'])
 data['creation'] = (data['FrmJbC_x'] / data['Emp_y'])
 
 data = data[['geography', 'year', 'firmage', 'contribution', 'compensation', 'constancy', 'creation']]
-print(data.head())
+print(data)
 data.to_excel('/Users/hmurray/Desktop/Jobs_Indicators/data_check/jobs_qc_output/jobs_QC.xlsx', index=False)
 
 sys.exit()

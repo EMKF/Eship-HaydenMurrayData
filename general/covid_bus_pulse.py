@@ -10,12 +10,12 @@ pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
 # pull raw data
-raw = pd.read_excel('https://portal.census.gov/pulse/data/downloads/7/national_sector_07Jun20_13Jun20.xls', na_values='-')
+raw = pd.read_excel('https://portal.census.gov/pulse/data/downloads/8/national_sector_14Jun20_20Jun20.xls', na_values='-')
 raw = raw[pd.isnull(raw['NAICS_SECTOR'])]
 raw["ID"] = raw["INSTRUMENT_ID"].astype(str) + ' - ' + raw["ANSWER_ID"].astype(float).astype(str)
 
 # pull codebook
-code = pd.read_excel('https://portal.census.gov/pulse/data/downloads/4/codebook.xls')
+code = pd.read_excel('https://portal.census.gov/pulse/data/downloads/codebook_5_17.xls')
 code["ID"] = code["QUESTION_ID"].astype(str) + ' - ' + code["ANSWER_ID"].astype(str)
 
 # combine question - answer code column and merge
@@ -24,7 +24,7 @@ df = df[['INSTRUMENT_ID', 'QUESTION', 'ANSWER_TEXT', 'ESTIMATE_PERCENTAGE']]
 # df.rename(columns={"INSTRUMENT_ID_y": "QUESTION_ID"},inplace=True)
 
 # Create a Pandas Excel writer using XlsxWriter as the engine.
-writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/python/small_bus_pulse/clean_survey_data.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/python/small_bus_pulse/clean_bus_pulse_data.xlsx', engine='xlsxwriter')
 
 # unstack reasons
 book = {}
