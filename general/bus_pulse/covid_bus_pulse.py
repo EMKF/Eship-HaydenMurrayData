@@ -1,3 +1,5 @@
+# Data downloaded from: https://portal.census.gov/pulse/data/#downloads
+
 import pandas as pd
 import sys
 
@@ -10,7 +12,7 @@ pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
 # pull raw data
-raw = pd.read_excel('https://portal.census.gov/pulse/data/downloads/8/national_sector_14Jun20_20Jun20.xls', na_values='-')
+raw = pd.read_excel('https://portal.census.gov/pulse/data/downloads/9/national_sector_21Jun20_27Jun20.xls', na_values='-')
 raw = raw[pd.isnull(raw['NAICS_SECTOR'])]
 raw["ID"] = raw["INSTRUMENT_ID"].astype(str) + ' - ' + raw["ANSWER_ID"].astype(float).astype(str)
 

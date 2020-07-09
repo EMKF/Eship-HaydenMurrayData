@@ -19,12 +19,12 @@ df = pd.DataFrame()
 for xlsx in os.listdir('/Users/hmurray/Desktop/data/jobsEQ/job_posts/emp_database/MSAs/'):
     print(xlsx)
     if xlsx != '.DS_Store':
-        data = pd.read_excel('/Users/hmurray/Desktop/data/jobsEQ/job_posts/emp_database/MSAs/' + str(xlsx), skiprows=1)
+        data = pd.read_excel('/Users/hmurray/Desktop/data/jobsEQ/job_posts/emp_database/MSAs/' + str(xlsx), header=1)
         data = data[:-4]
         df = df.append(data, sort=False)
 
 
-print(df.head())
+print(df.info())
 
-df.to_excel('/Users/hmurray/Desktop/emp_merge_test.xlsx', index=False)
+df.to_excel('/Users/hmurray/Desktop/data/jobsEQ/job_posts/emp_database/merged_MSAs/emp_merge_test.xlsx', index=False)
 sys.exit()
