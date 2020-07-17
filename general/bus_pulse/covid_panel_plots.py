@@ -35,7 +35,7 @@ def date_format(x):
 df = pd.read_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/python/small_bus_pulse/clean_bus_pulse_data.xlsx').\
     assign(
         week_end=lambda x: date_format(x['WEEK']),
-        outcome=lambda x: x['ESTIMATE_PERCENTAGE'].str.replace('%', '').astype(float)
+        outcome=lambda x: x['ESTIMATE_PERCENTAGE']
     )
 
 
@@ -54,7 +54,7 @@ for question in range(1, 16):
     # plt.title("\n".join(wrap(question, 50)))
     plt.grid()
     plt.savefig('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/python/small_bus_pulse/plots/pulse_survey_{question}.png'.format(question=question))
-    # plt.show()
+    plt.show()
 
 
 sys.exit()

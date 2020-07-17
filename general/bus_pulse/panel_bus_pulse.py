@@ -38,17 +38,29 @@ code["ID"] = code["QUESTION_ID"].astype(str) + ' - ' + code["ANSWER_ID"].astype(
 # combine question - answer code column and merge
 df = pulse.merge(code, on='ID', how='left', indicator=True)
 
+# convert the estimate percentage to a float so you can export in a clean way
+df['ESTIMATE_PERCENTAGE'] = df['ESTIMATE_PERCENTAGE'].map(lambda x: x.rstrip('%'))
+df['ESTIMATE_PERCENTAGE'] = df['ESTIMATE_PERCENTAGE'].astype(float)
+
+# subset the dataframe
 df = df[['WEEK', 'INSTRUMENT_ID', 'ID', 'QUESTION', 'ANSWER_TEXT', 'ESTIMATE_PERCENTAGE']]
-print(df)
+
+# export xlsx for plots
 df.to_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/python/small_bus_pulse/clean_bus_pulse_data.xlsx', index=False)
+
+# create and export xlsx for
+data = df.pivot_table(index=['INSTRUMENT_ID', 'QUESTION', 'ANSWER_TEXT'], columns='WEEK', values='ESTIMATE_PERCENTAGE').reset_index()
+data.to_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/python/small_bus_pulse/long_clean_bus_pulse_data.xlsx', index=False)
 
 # Create a Pandas Excel writer using XlsxWriter as the engine.
 writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/python/small_bus_pulse/tabbed_clean_bus_pulse_data.xlsx', engine='xlsxwriter')
 
-# Export cleaned file to Excel
+# export each question to a different tab
 book = {}
 for q in df['INSTRUMENT_ID'].unique():
     book[q] = df[df['INSTRUMENT_ID'] == q]
+    book[q] = book[q].pivot_table(index=['INSTRUMENT_ID', 'QUESTION', 'ANSWER_TEXT'], columns='WEEK', values='ESTIMATE_PERCENTAGE').reset_index()
+    print(book[q])
     book[q].to_excel(writer, sheet_name=str(q), index=False)
 writer.save()
 
