@@ -86,26 +86,49 @@ df["fips"].replace(msa_fips_codes_names_dic, inplace=True)
 # replace age number with string
 df['firmage'] = df['firmage'].astype(str)
 df["firmage"].replace(age_categories, inplace=True)
-print(df.head())
+
+# export local copy of cleaned data
+# df.to_excel('/Users/hmurray/Desktop/Jobs_Indicators/hm_draft/cleaned_msa_data.xlsx', index=False)
 
 # subset for table 1
 msa_2017_all = df[df['time'] == 2017]
 
 # subset for table 2 and sort by contribution
 msa_contribution = df.pivot_table(index=['fips', 'firmage'], columns='time', values='contribution').reset_index()
-msa_contribution = msa_contribution.sort_values(by=[2017], ascending=False).reset_index(drop=True)
+msa_contribution = msa_contribution.sort_values(by=['fips'], ascending=True).reset_index(drop=True)
+
+# subset for table 2 and sort by compensation
+msa_compensation = df.pivot_table(index=['fips', 'firmage'], columns='time', values='compensation').reset_index()
+msa_compensation = msa_compensation.sort_values(by=['fips'], ascending=True).reset_index(drop=True)
+
+# subset for table 2 and sort by constancy
+msa_constancy = df.pivot_table(index=['fips', 'firmage'], columns='time', values='constancy').reset_index()
+msa_constancy = msa_constancy.sort_values(by=['fips'], ascending=True).reset_index(drop=True)
+
+# subset for table 2 and sort by creation
+msa_creation = df.pivot_table(index=['fips', 'firmage'], columns='time', values='creation').reset_index()
+msa_creation = msa_creation.sort_values(by=['fips'], ascending=True).reset_index(drop=True)
+
+# subset for table 2 and sort by q2_index
+msa_q2_index = df.pivot_table(index=['fips', 'firmage'], columns='time', values='q2_index').reset_index()
+msa_q2_index = msa_q2_index.sort_values(by=['fips'], ascending=True).reset_index(drop=True)
 
 # Create a Pandas Excel writer using XlsxWriter as the engine.
 writer = pd.ExcelWriter('/Users/hmurray/Desktop/Jobs_Indicators/hm_draft/msa_report_tables.xlsx', engine='xlsxwriter')
 
 # write each table to excel file
 def msa_report_writer(table, tab_name):
-    print(table.head())
+    # print(table.head())
     table.to_excel(writer, sheet_name=str(tab_name), index=False)
 
 msa_report_writer(msa_2017_all, 'table_1')
 msa_report_writer(msa_contribution, 'table_2')
+msa_report_writer(msa_compensation, 'table_3')
+msa_report_writer(msa_constancy, 'table_4')
+msa_report_writer(msa_creation, 'table_5')
+msa_report_writer(msa_q2_index, 'table_6')
 
 writer.save()
 sys.exit()
+
 
