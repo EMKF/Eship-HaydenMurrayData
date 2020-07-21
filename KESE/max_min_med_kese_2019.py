@@ -67,10 +67,15 @@ med_index = pivoter(med_index, 'KAUFFMAN EARLY-STAGE ENREPRENEURSHIP (KESE) INDE
 # rne_max_min_med
 rne_max_min_med = kese[(kese['type'] =='Total') & (kese['STATE']=='Rhode Island') | (kese['STATE']=='Florida')].reset_index(drop=True)
 rne_max_min_med = rne_max_min_med[['STATE', 'year', 'RATE OF NEW ENTREPRENEURS']]
+print(rne_max_min_med)
 rne_max_min_med = rne_max_min_med.pivot_table(index=['year'], columns='STATE', values='RATE OF NEW ENTREPRENEURS').reset_index()
+print(rne_max_min_med)
+
 rne_plot = rne_max_min_med.merge(med_rne, on='year')
 rne_plot.rename(columns={"RATE OF NEW ENTREPRENEURS": "Yearly Median"},inplace=True)
 rne_plot['year'] = rne_plot['year'].astype(str)
+print(rne_plot)
+sys.exit()
 rne_plot.plot(x='year', y=['Rhode Island', 'Florida', 'Yearly Median'])
 plt.title("\n".join(wrap("FIGURE 19 RATE OF NEW ENTREPRENEURS OVER TIME (1998–2019) (LOWEST AND HIGHEST IN 2019 AND YEARLY MEDIAN)", 50)))
 axes = plt.gca()
