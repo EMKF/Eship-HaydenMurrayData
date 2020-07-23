@@ -124,8 +124,8 @@ def msa_report_writer(table, tab_name):
 msa_report_writer(msa_2017_all, 'table_1')
 msa_report_writer(msa_contribution, 'table_2')
 msa_report_writer(msa_compensation, 'table_3')
-msa_report_writer(msa_constancy, 'table_4')
-msa_report_writer(msa_creation, 'table_5')
+msa_report_writer(msa_constancy, 'table_5')
+msa_report_writer(msa_creation, 'table_4')
 msa_report_writer(msa_q2_index, 'table_6')
 
 writer.save()
