@@ -1,4 +1,5 @@
 import pandas as pd
+import sys
 import matplotlib.pyplot as plt
 import requests
 import numpy as np
@@ -17,7 +18,7 @@ pd.options.mode.chained_assignment = None
 df = pd.read_csv('s3://emkf.data.research/indicators/nej/data_outputs/nej_download_names_2020.06.24.csv')
 
 # subset for creation and contribution analysis
-df = df[['name', 'fips', 'year', 'category', 'contribution', 'creation']]
+df = df[['name', 'fips', 'year', 'category', 'contribution', 'creation', 'compensation', 'constancy']]
 
 # rename columns
 df.rename(columns={'category': 'age_category'}, inplace=True)
