@@ -14,7 +14,7 @@ pd.set_option('display.float_format', lambda x: '%.4f' % x)
 pd.options.mode.chained_assignment = None
 
 # define directory
-kese_download = '/Users/hmurray/Desktop/KESE/KESE_2019_Update/2019_data_download/kese_2019_download.csv'
+kese_download = '/Users/hmurray/Desktop/KESE/KESE_2019_Update/2019_data_download/kese_download_2020.07.23.csv'
 
 # pull national data
 kese = pd.read_csv(kese_download)
