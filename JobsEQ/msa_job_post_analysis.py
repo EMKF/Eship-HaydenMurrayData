@@ -33,51 +33,27 @@ df.loc[(df['year_established'] >= 2019), 'age'] = 'new'
 df.loc[(df['year_established'] >= 2015) & (df['year_established'] <= 2018), 'age'] = 'young'
 df.loc[(df['year_established'] <= 2014), 'age'] = 'mature'
 
-# reduce to 2-digit NAICS
-df['naics01'] = df['naics01'].astype(str).str[:-6]
-df['naics02'] = df['naics02'].astype(str).str[:-6]
-df['naics03'] = df['naics03'].astype(str).str[:-6]
-df['naics04'] = df['naics04'].astype(str).str[:-6]
-df['naics05'] = df['naics05'].astype(str).str[:-6]
-
-# # recode to 4 naics categories, pull in naics02
-# df['naics01'].replace({'45': '44', '33': '31', '42': '44', '32': '31'}, inplace=True)
-#
-# # replace all naics values not equal to 31, 44, 62, and 72 with naics02
-# keepers = ['31', '44', '62', '72']
-# df.loc[~df["naics01"].isin(keepers), "naics01"] = df['naics02']
-#
-# # recode to 4 naics categories, pull in naics03
-# df['naics01'].replace({'45': '44', '33': '31', '42': '44', '32': '31'}, inplace=True)
-# df.loc[~df["naics01"].isin(keepers), "naics01"] = df['naics03']
-#
-# # recode to 4 naics categories, pull in naics04
-# df['naics01'].replace({'45': '44', '33': '31', '42': '44', '32': '31'}, inplace=True)
-# print(df['naics01'].value_counts())
-
-
 def replacer(col):
+    df[col] = df[col].astype(str).str[:-6]
     df['naics01'].replace({'45': '44', '33': '31', '42': '44', '32': '31'}, inplace=True)
     keepers = ['31', '44', '62', '72']
     df.loc[~df["naics01"].isin(keepers), "naics01"] = df[col]
     df['naics01'].replace({'45': '44', '33': '31', '42': '44', '32': '31'}, inplace=True)
-    print(df['naics01'].value_counts())
-replacer('naics02')
-replacer('naics03')
-print(df['naics01'].value_counts())
-sys.exit()
+    # print(df['naics01'].value_counts())
+industries = ('naics01', 'naics02', 'naics03', 'naics04', 'naics05')
+for col in industries:
+    replacer(col)
 
 # recode to NAICS categories
 naics_categories = {
-    '31': 'manufacturing',
+    '31': 'Manufacturing',
     '44': 'Retail Trade',
     '62': 'Health Care and Social Assistance',
     '72': 'Accommodation and Food Services'
 }
 
 # replace age number with string
-df['naics_cat'] = df['naics'].astype(str)
-df["naics_cat"].replace(naics_categories, inplace=True)
+df["naics01"].replace(naics_categories, inplace=True)
 
 # remove time from startDate
 df['month_post_start'] = df['dateStart'].str[:7]
@@ -129,36 +105,15 @@ plt.show()
 
 ### ind_post_month ###
 # table
-ind_post_month = pd.crosstab(df['month_post_start'], df['physical_state'], margins=False).reset_index(drop=False)
-ind_post_month.to_excel('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/tables/ind_post_month.xlsx')
-print(ind_post_month)
+naics_post_month = pd.crosstab(df['month_post_start'], df['naics01'], margins=False).reset_index(drop=False)
+naics_post_month.to_excel('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/tables/naics_post_month.xlsx')
+print(naics_post_month)
 # plot
-ind_post_month.plot(x='month_post_start', y=['IA', 'IL', 'KS', 'MO', 'NE', 'OK'])
+naics_post_month.plot(x='month_post_start', y=['Accommodation and Food Services', 'Health Care and Social Assistance', 'Retail Trade', 'Manufacturing'])
 plt.xticks(rotation=45)
-plt.title('Freq 2020 Online Job Postings by Region')
+plt.title('Freq 2020 Online Job Postings by Industry')
 plt.tight_layout()
-plt.savefig('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/plots/ind_post_month.png')
-plt.show()
-sys.exit()
-
-
-
-
-
-
-
-overall_post_month = df['month_post_start'].value_counts()
-overall_post_month.plot()
-plt.title('Freq 2020 Online Job Postings for Companies Founded in 2019')
-overall_post_month.to_excel('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/overall_post_month.xlsx')
-plt.show()
-
-# plot distribution of job postings by state over time
-overall_post_month = df.query('year_established >= 2019')['month_post_start'].value_counts()
-overall_post_month.to_excel('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/overall_post_month.xlsx')
-overall_post_month.plot()
-plt.title('Freq 2020 Online Job Postings for Companies Founded in 2019')
-plt.savefig('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/2020_job_posts.png')
+plt.savefig('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/plots/naics01_post_month.png')
 plt.show()
 sys.exit()
 
@@ -170,85 +125,6 @@ sys.exit()
 
 
 
-# pull in merged rti job postings and employer database file
-df = pd.read_csv('s3://emkf.data.research/other_data/chmura/rti_databaseUSA_2020-07-08.csv', low_memory=False)
-
-# convert dateStart to int
-df['dateStart'] = df['dateStart'].str[:7]
-df[['year_post_start', 'month_post_start']] = df.dateStart.str.split("-", expand=True,).astype(int)
-
-# # remove time from startDate
-# df['month_post_start'] = df['dateStart'].str[:7]
-# df['year_post_start'] = df['dateStart'].str[:4]
-
-# # convert startDate to DateTime
-# df['dateStart'] = pd.to_datetime(df['dateStart'])
-# df['month_post_start'] = pd.to_datetime(df['month_post_start'])
-# df['year_post_start'] = pd.to_datetime(df['year_post_start'])
-
-# # subset by firms with founding date between 1995-2019
-# df = df.query('year_established <= 2019').query('year_established >= 1994')
-#
-# # subset by job postings between January 2020 and July 2020
-# df = df.query('year_post_start >= 2020').query('month_post_start <= 6')
-
-# frequencies
-print(df['year_established'].value_counts())
-print(df['month_post_start'].value_counts())
-print(df['year_post_start'].value_counts())
-print(df['physical_state'].value_counts())
-
-# drop duplicates
-unique_bus = df
-unique_bus.drop_duplicates(subset ="id", inplace = True)
-unique_bus = unique_bus.reset_index(drop=True)
-
-# crosstab unique businesses by state
-unique_bus = pd.crosstab(unique_bus['id'], unique_bus['physical_state'], margins=True).reset_index()
-unique_bus = unique_bus[unique_bus['id'] == 'All']
-print(unique_bus)
-
-# crosstab job postings by state
-post_state_month = pd.crosstab(df['month_post_start'], df['physical_state'], margins=False)
-post_state_month.to_excel('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/monthly_job_posts_state.xlsx')
-print(post_state_month)
-
-# overall plot - subset by firms with founding date in 2019
-print(df.query('year_established >= 2019').query('year_post_start == 2020')['month_post_start'].value_counts().plot())
-plt.title('Freq 2020 Online Job Postings for Companies Founded in 2019')
-plt.savefig('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/2020_job_posts.png')
-plt.show()
-sys.exit()
-
-# state plots
-post_state_month.plot()
-plt.title("\n".join(wrap("Count of Online Job Postings for X Industries in X MSAs", 50)))
-plt.tight_layout()
-plt.savefig('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/state_posts.png')
-plt.show()
-sys.exit()
 
 
-# filter for job postings between january 2020 and June 2020
-jan_june = df
-jan_june = jan_june[jan_june['month_post_start'].isin(pd.date_range(start='20200101', end='20200601'))]
-
-# plot distribution of job postings over time
-jan_june = jan_june.query('year_established <= 2019')
-print(df.head())
-df['month_post_start'].value_counts().plot()
-plt.title('Freq 2020 Online Job Postings for Companies Founded in 2019')
-plt.savefig('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/2020_job_posts.png')
-plt.show()
-
-# state plots
-post_state_month.plot()
-plt.title("\n".join(wrap("Count of Online Job Postings for X Industries in X MSAs", 50)))
-plt.tight_layout()
-plt.savefig('/Users/hmurray/Desktop/data/jobsEQ/job_posts/job_post_analysis/state_posts.png')
-plt.show()
-sys.exit()
-
-
-sys.exit()
 
