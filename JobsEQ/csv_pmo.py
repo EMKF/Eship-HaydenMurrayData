@@ -3,7 +3,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import requests
-from io import BytesIO
+import seaborn as ax
 import numpy as np
 import zipfile
 import urlopen
@@ -43,12 +43,12 @@ cow_cats = {
 # replace age number with string
 df["cow_recode"].replace(cow_cats, inplace=True)
 
-# inspect pincp and cow
-# print(df['cow_recode'].value_counts(dropna=False))
-print(df.head(250))
-df['pincp'].hist(bins=150, align='mid')
-plt.title('Histogram of Total Person\'s Income (PINCP) in MO')
-plt.show()
+# # inspect pincp and cow
+# # print(df['cow_recode'].value_counts(dropna=False))
+# print(df.head(250))
+# df['pincp'].hist(bins=150, align='mid')
+# plt.title('Histogram of Total Person\'s Income (PINCP) in MO')
+# plt.show()
 
 # calculate percentiles for all cow
 print(df['pincp'].quantile([.1, .2, .3, .4, .5, .6, .7, .8, .9]))
@@ -59,6 +59,7 @@ df = df.reset_index()
 df["id"] = df.index + 1
 cow_df = df.pivot_table(index=['id', 'st'], columns='cow_recode', values='pincp')
 print(cow_df.head())
+cow_df.to_excel('/Users/hmurray/Desktop/data/PUMS/p90_p10/csv_pmo/mo_cow_table.xlsx', index=False)
 
 # inspect cow income
 print(cow_df['Employee'].quantile([.1, .2, .3, .4, .5, .6, .7, .8, .9]))
@@ -67,13 +68,12 @@ print(cow_df['Self_Employed'].quantile([.1, .2, .3, .4, .5, .6, .7, .8, .9]))
 print(cow_df['Self_Employed'].mean())
 
 # plot histograms for cow
-### Employee
-cow_df['Employee'].hist(bins=150, align='mid')
-plt.title('Histogram of Employee Income in MO')
-plt.show()
-### Self-Employed
-cow_df['Self_Employed'].hist(bins=150, align='mid')
-plt.title('Histogram of Self_Employed Income in MO')
+## Employee
+cow_df['Employee'].hist(bins=100, align='mid', histtype='stepfilled', density=True)
+cow_df['Self_Employed'].hist(bins=100, align='mid', histtype='stepfilled', density=True)
+plt.title('Histograms of Self_Employed and Employed Income in MO')
+plt.legend()
+plt.savefig('/Users/hmurray/Desktop/data/PUMS/p90_p10/csv_pmo/mo_cow_hist.png')
 plt.show()
 
 sys.exit()
