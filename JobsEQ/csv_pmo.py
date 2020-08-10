@@ -1,4 +1,5 @@
-# data downloaded from https://www2.census.gov/programs-surveys/acs/data/pums/2018/5-Year/
+# data download: https://www2.census.gov/programs-surveys/acs/data/pums/2018/5-Year/
+# data dictionary: https://www.census.gov/programs-surveys/acs/technical-documentation/pums/documentation.html
 
 import pandas as pd
 import matplotlib.pyplot as plt
