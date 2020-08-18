@@ -1,9 +1,16 @@
-# NETS2017_Misc.txt - use 'firstyear' as business age
-# NETS2017_Emp.txt - emp90 and empc90 tells you employees in business in 1990
+# data pulled from: https://www.census.gov/data/developers/data-sets/popest-popproj/popest.html#:~:text=Each%20year%2C%20the%20Census%20Bureau's,of%20change%2C%20and%20housing%20units.
+# state fips: http://code.activestate.com/recipes/577775-state-fips-codes-dict/
 
 import pandas as pd
-import time
+import matplotlib.pyplot as plt
+import requests
+import numpy as np
+import seaborn as sns
+from textwrap import wrap
+from pandas.io.json import json_normalize
 import sys
+import io
+
 pd.set_option('max_columns', 1000)
 pd.set_option('max_info_columns', 1000)
 pd.set_option('expand_frame_repr', False)
@@ -12,6 +19,13 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
+# pull from API
+r = requests.get('https://api.census.gov/data/2019/pep/population?get=POP&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e')
+j = r.json()
+df = pd.DataFrame(j, columns=j.pop(0))
+print(df)
+
+# recode state_codes
 state_codes = {
     'WA': '53', 'DE': '10', 'DC': '11', 'WI': '55', 'WV': '54', 'HI': '15',
     'FL': '12', 'WY': '56', 'PR': '72', 'NJ': '34', 'NM': '35', 'TX': '48',
@@ -23,24 +37,8 @@ state_codes = {
     'MN': '27', 'MI': '26', 'RI': '44', 'KS': '20', 'MT': '30', 'MS': '28',
     'SC': '45', 'KY': '21', 'OR': '41', 'SD': '46'
 }
+
+# recode to state strings
 inv_state_codes = {v: k for k, v in state_codes.items()}
-start = time.time()
-pd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Misc/NETS2017_Misc.txt', sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1'). \
-    query('FipsCounty == FipsCounty').\
-    assign(
-        fips=lambda x: x['FipsCounty'].astype(int).astype(str).str.zfill(5),
-        state_fips=lambda x: x['fips'].str[:2].map(inv_state_codes)
-    ) \
-    [['DunsNumber', 'state_fips', 'FirstYear']].\
-    groupby(['state_fips', 'FirstYear']).count().\
-    reset_index().\
-    rename(columns={'DunsNumber': 'est_count'}).\
-    to_csv('/Users/hmurray/Desktop/data/NETS/st_est_counts.csv', index=False)
-print((time.time() / 60) - (start / 60))
-
-
-sys.exit()
-
-
-
-
+df["state"].replace(inv_state_codes, inplace=True)
+print(df)

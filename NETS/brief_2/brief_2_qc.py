@@ -19,10 +19,10 @@ start = time.time()
 
 # # pull from S3
 employment = pd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Emp_SIC/NETS2017_Emp.txt',\
-                 sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1')
+                 sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1', low_memory=False)
 
 misc = pd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Misc/NETS2017_Misc.txt',\
-                 sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1')
+                 sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1', low_memory=False)
 
 # merge to get fips
 df = employment.merge(misc, on='DunsNumber')
@@ -73,18 +73,21 @@ data.rename(columns={"index": "state"}, inplace=True)
 
 # melt so we can easily merge
 data = pd.melt(data, id_vars =['state'], value_vars = (range(2004, 2017)), var_name ='year', value_name ='nets_employment')
+data.to_excel('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/Brief_2/qc/emp_per_state_saver.xlsx')
 
-# pull business applications data
-ba = pd.read_csv('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/underlying_data_sent_to_danny/KESE_NEB_merge.csv',\
-                   usecols=['state', 'year', 'ba'])
-
-# merge ba and nets employment
-final = pd.merge(ba, data, on=['state', 'year'])
-
-# calculate the emp per estab ratio
-final['ratio_estab_ba'] = final['ba'] / final['nets_employment']
-print(final)
-
+# # pull business applications data
+# ba = pd.read_csv('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/underlying_data_sent_to_danny/KESE_NEB_merge.csv',\
+#                    usecols=['state', 'year', 'ba'])
+#
+# # merge ba and nets employment
+# final = pd.merge(ba, data, on=['state', 'year'])
+#
+# # calculate the emp per estab ratio
+# final['ratio_estab_ba'] = final['ba'] / final['nets_employment']
+# print(final)
+#
+# # export locally
+# final.to_excel('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/Brief_2/qc/emp_per_ba_qc.xlsx')
 # check how long it takes to run
 end = time.time()
 print((end/60) - (start/60))

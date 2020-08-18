@@ -15,7 +15,7 @@ pd.set_option('display.float_format', lambda x: '%.2f' % x)
 pd.options.mode.chained_assignment = None
 
 # pull in nets est_counts that we generated in brief_1_qc.py
-nets = pd.read_excel('/Users/hmurray/Desktop/data/NETS/st_est_counts.xlsx')
+nets = pd.read_csv('/Users/hmurray/Desktop/data/NETS/st_est_counts.csv')
 nets.rename(columns = {'state_fips':'region', 'FirstYear':'year'}, inplace = True)
 
 # pull in pep that we saved locally (faster)

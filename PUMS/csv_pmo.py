@@ -70,10 +70,11 @@ print(cow_df['Self_Employed'].mean())
 
 # plot histograms for cow
 ## Employee
-cow_df['Employee'].hist(bins=100, align='mid', histtype='stepfilled', density=True)
-cow_df['Self_Employed'].hist(bins=100, align='mid', histtype='stepfilled', density=True)
+Employee = cow_df['Employee'].hist(bins=100, alpha=.3, align='mid', histtype='stepfilled', density=True)
+Self_Employed = cow_df['Self_Employed'].hist(bins=100, alpha=.3, align='mid', histtype='stepfilled', density=True)
 plt.title('Histograms of Self_Employed and Employed Income in MO')
-plt.legend()
+plt.xlim(xmin=-10000, xmax = 300000)
+# plt.legend([Employee, Self_Employed], ['Employee','Self_Employed'])
 plt.savefig('/Users/hmurray/Desktop/data/PUMS/p90_p10/csv_pmo/mo_cow_hist.png')
 plt.show()
 
