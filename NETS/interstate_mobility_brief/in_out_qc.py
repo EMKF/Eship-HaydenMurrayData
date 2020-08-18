@@ -21,40 +21,31 @@ df = pd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Mov
 df['left'] = np.where(df['OriginState'] == df['DestState'], 'stayed', 'left')
 
 # subset by move-outs
-df = df[df['left'] == 'left'].reset_index()
-
-# subset by active
-df = df[df['Active'] == 'Yes'].reset_index()
+df = df[df['left'] == 'left'].reset_index(drop=True)
 
 # value_counts
-move_in = df.groupby(['OriginState', 'MoveYear']).size().reset_index()
-move_in.rename(columns={"OriginState": "region"}, inplace=True)
-move_out = df.groupby(['DestState', 'MoveYear']).size().reset_index()
-move_out.rename(columns={"DestState": "region"}, inplace=True)
+move_in = df.groupby(['DestState', 'MoveYear']).size().reset_index()
+move_in.rename(columns={"DestState": "region", 0: "move_in"}, inplace=True)
+move_out = df.groupby(['OriginState', 'MoveYear']).size().reset_index()
+move_out.rename(columns={"OriginState": "region", 0: "move_out"}, inplace=True)
 
 # merge value_counts and rename columns
 in_out = move_in.merge(move_out, on=['region', 'MoveYear'])
 
-# rename
-in_out.rename(columns={"0_x": "move_out", "0_y": "move_in" }, inplace=True)
-
 # calculate ratio
 in_out['ratio'] = in_out['move_in'] / in_out['move_out']
 
-# check and export to excel
-print(in_out)
-# in_out.to_excel('/Users/hmurray/Desktop/data/NETS/in_out.xlsx', index=False)
-
 # Create a Pandas Excel writer using XlsxWriter as the engine.
-writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/NETS/in_out.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/NETS/In_Out_Project/qc/in_out.xlsx', engine='xlsxwriter')
 
 # export each question to a different tab
-def exporter(df, tab):
-    df.to_excel(writer, sheet_name=tab, index=False)
+def exporter(df, var):
+    df = df.pivot_table(index='region', columns='MoveYear', values=var)
+    df.to_excel(writer, sheet_name=var, index=True)
 
 exporter(move_in, 'move_in')
 exporter(move_out, 'move_out')
-exporter(in_out, 'in_out_ratio')
+exporter(in_out, 'ratio')
 
 writer.save()
 sys.exit()
