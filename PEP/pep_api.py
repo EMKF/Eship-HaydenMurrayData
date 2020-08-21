@@ -23,7 +23,6 @@ pd.options.mode.chained_assignment = None
 r = requests.get('https://api.census.gov/data/2019/pep/population?get=POP&for=state:*&key=4530f6af9e686fe2f12b443f4c7d9246ffbc503e')
 j = r.json()
 df = pd.DataFrame(j, columns=j.pop(0))
-print(df)
 
 # recode state_codes
 state_codes = {

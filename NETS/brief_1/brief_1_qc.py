@@ -35,7 +35,7 @@ pd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Misc/NET
     groupby(['state_fips', 'FirstYear']).count().\
     reset_index().\
     rename(columns={'DunsNumber': 'est_count'}).\
-    to_csv('/Users/hmurray/Desktop/data/NETS/st_est_counts.csv', index=False)
+    to_csv('/Users/hmurray/Desktop/data/NETS/Danny_Smith_briefs/Four_Brief_Assignments/Brief_1/st_est_counts.csv', index=False)
 print((time.time() / 60) - (start / 60))
 
 
