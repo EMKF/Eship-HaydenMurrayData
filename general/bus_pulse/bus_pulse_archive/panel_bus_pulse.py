@@ -16,6 +16,7 @@ dates1 = {'1': '26Apr20_2May20', '2': '3May20_9May20', '3': '10May20_16May20', '
 pulse = pd.DataFrame()
 for key, value in dates1.items():
     df = pd.read_excel('https://portal.census.gov/pulse/data/downloads/' + str(key) + '/national_sector_' + str(value) + '.xls', na_values='-')
+    df.rename(columns={'NAICS_SECTOR': 'NAICS2'}, inplace=True)
     df = df[pd.isnull(df['NAICS2'])].reset_index(drop=True)
     df['WEEK'] = value
     df["ID"] = df["INSTRUMENT_ID"].astype(str) + ' - ' + df["ANSWER_ID"].astype(float).astype(str)

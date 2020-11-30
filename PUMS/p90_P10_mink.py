@@ -48,6 +48,7 @@ def data_manipulator(df):
     }
     # replace age number with string
     df["cow_recode"].replace(cow_cats, inplace=True)
+    print(df[df.pernp < 0])
     return df
 
 def unstacker(df):
