@@ -18,6 +18,7 @@ print(data.head())
 print(data['POP_1'].value_counts())
 print(data['POP_8'].value_counts())
 print(pd.crosstab(data['POP_8'], data['POP_8'], values=data['WEIGHT'], aggfunc='sum', margins=True))
+print(pd.crosstab(data['POP_9'], data['POP_9'], values=data['WEIGHT'], aggfunc='sum', normalize='index', margins=True))
 form_want = pd.crosstab(data['POP_8'], data['POP_8'], values=data['WEIGHT'], aggfunc='sum', normalize='index', margins=True)
 print(form_want)
 
