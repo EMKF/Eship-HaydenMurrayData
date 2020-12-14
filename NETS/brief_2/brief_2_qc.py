@@ -19,11 +19,13 @@ pd.options.mode.chained_assignment = None
 start = time.time()
 
 # # pull from S3
-employment = dd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Emp_SIC/NETS2017_Emp.txt',\
-                 sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1')
-df_chunk = dd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Emp_SIC/NETS2017_Emp.txt',\
-                 sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1', chunksize=5000, nrows=500000)
+employment = pd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Emp_SIC/NETS2017_Emp.txt',\
+                 sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1', chunksize=500, nrows=500)
+df_chunk = pd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Emp_SIC/NETS2017_Emp.txt',\
+                 sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1', chunksize=500, nrows=500)
 employment = pd.concat(df_chunk, ignore_index=True)
+print(employment.head())
+sys.exit()
 
 
 # subset before merging to save memory

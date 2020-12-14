@@ -9,6 +9,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from textwrap import wrap
 import sys
+import ssl
+ssl._create_default_https_context = ssl._create_stdlib_context
 
 pd.set_option('max_columns', 1000)
 pd.set_option('max_info_columns', 1000)
@@ -70,7 +72,7 @@ def phaser2():
         # append each weekly df
         pulse = pulse.append(df, sort=True).reset_index(drop=True)
     # pull codebook
-    phase2 = pd.read_excel('https://portal.census.gov/pulse/data/downloads/codebook_5_17.xls')
+    phase2 = pd.read_excel('https://portal.census.gov/pulse/data/downloads/codebook_2020_08_10.xlsx')
     phase2.rename(columns={'QUESTION': 'QUESTION_TEXT'}, inplace=True)
     phase2["ID"] = phase2["QUESTION_ID"].astype(str) + ' - ' + phase2["ANSWER_ID"].astype(str)
     # combine question - answer code column and merge
@@ -125,50 +127,54 @@ if __name__ == '__main__':
 # append each of the 3 phases and create one large dataframe
 temp = p1.append(p2, sort=True).reset_index(drop=True)
 df = temp.append(p3, sort=True).reset_index(drop=True)
+
+df['week_end'] = df['WEEK']
+df['week_end'] = df['WEEK'].str.strip().str[8:15]
+print(df.head(50))
+
 # export the appended dataframe
 df.to_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/2020_bus_pulse/all_phases.xlsx',index=False)
 
-# create dict to recode survey weeks into a datatime variable
-short_month = {
-    'Jan': '01',
-    'Feb': '02',
-    'Mar': '03',
-    'Apr': '04',
-    'May': '05',
-    'Jun': '06',
-    'Jul': '07',
-    'Aug': '08',
-    'Sep': '09',
-    'Oct': '10',
-    'Nov': '11',
-    'Dec': '12'
-}
-
-#
-def date_format(x):
-    return pd.to_datetime(x.str[-5: -2].map(short_month) + '-' + x.str[-7: -5].apply(lambda x: x if x[0] != '_' else '0' + x[-1]) + '-' + '2020')
-df = pd.read_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/2020_bus_pulse/all_phases.xlsx').\
-    assign(
-        week_end=lambda x: date_format(x['WEEK']),
-        outcome=lambda x: x['ESTIMATE_PERCENTAGE']
-    )
-
-print(df.head())
-for question in range(1, 20):
-    sns.set_style("whitegrid")
-    fig = plt.figure(figsize=(12, 8))
-    ax = fig.add_subplot(1, 1, 1)
-    df_question = df.query('INSTRUMENT_ID == {}'.format(question))
-    pd.plotting.register_matplotlib_converters()
-    for group in df_question[['week_end', 'outcome', 'ANSWER_TEXT']].groupby('ANSWER_TEXT'):
-        ax.plot(group[1]['week_end'], group[1]['outcome'], label=group[0])
-    plt.legend()
-    plt.title('{}'.format(df_question['QUESTION_TEXT'].iloc[0]))
-    # plt.title("\n".join(wrap(question, 50)))
-    plt.grid()
-    plt.savefig('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/2020_bus_pulse/plots/pulse_survey_{question}.png'.format(question=question))
-    # plt.show()
-
-
-
 sys.exit()
+
+# # create dict to recode survey weeks into a datatime variable
+# short_month = {
+#     'Jan': '01',
+#     'Feb': '02',
+#     'Mar': '03',
+#     'Apr': '04',
+#     'May': '05',
+#     'Jun': '06',
+#     'Jul': '07',
+#     'Aug': '08',
+#     'Sep': '09',
+#     'Oct': '10',
+#     'Nov': '11',
+#     'Dec': '12'
+# }
+#
+# #
+# def date_format(x):
+#     return pd.to_datetime(x.str[-5: -2].map(short_month) + '-' + x.str[-7: -5].apply(lambda x: x if x[0] != '_' else '0' + x[-1]) + '-' + '2020')
+# df = pd.read_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/2020_bus_pulse/all_phases.xlsx').\
+#     assign(week_end=lambda x: date_format(x['WEEK']), outcome=lambda x: x['ESTIMATE_PERCENTAGE']
+#     )
+#
+#
+
+# for question in range(1, 20):
+#     sns.set_style("whitegrid")
+#     fig = plt.figure(figsize=(12, 8))
+#     ax = fig.add_subplot(1, 1, 1)
+#     df_question = df.query('INSTRUMENT_ID == {}'.format(question))
+#     pd.plotting.register_matplotlib_converters()
+#     for group in df_question[['week_end', 'outcome', 'ANSWER_TEXT']].groupby('ANSWER_TEXT'):
+#         ax.plot(group[1]['week_end'], group[1]['outcome'], label=group[0])
+#     plt.legend()
+#     plt.title('{}'.format(df_question['QUESTION_TEXT'].iloc[0]))
+#     # plt.title("\n".join(wrap(question, 50)))
+#     plt.grid()
+#     plt.savefig('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/2020_bus_pulse/plots/pulse_survey_{question}.png'.format(question=question))
+#     # plt.show()
+
+

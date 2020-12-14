@@ -13,7 +13,7 @@ pd.set_option('display.float_format', lambda x: '%.4f' % x)
 pd.options.mode.chained_assignment = None
 
 # read in data
-data = pd.read_csv('/Users/hmurray/Desktop/data/EPOP/epop_raw_8.11.csv', low_memory=False)
+data = pd.read_csv('/Users/hmurray/Desktop/data/EPOP/survey_documentation/epop_raw_8.11.csv', low_memory=False)
 print(data.head())
 print(data['POP_1'].value_counts())
 print(data['POP_8'].value_counts())
@@ -49,10 +49,10 @@ for x in structure_list:
     data[x] = data[x].astype(str).replace(str(1), '1 Just myself and co-owners, no other employees').replace(str(2), '2 1-10')\
 .replace(str(3), '3-5 10+').replace(str(4), '3-5 10+').replace(str(5), '3-5 10+')
 
-# Create a Pandas Excel writer using XlsxWriter as the engine.
-freq_writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/freq_priorities.xlsx', engine='xlsxwriter')
-two_writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/two_ctabs_priorities.xlsx', engine='xlsxwriter')
-three_writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/three_ctabs_priorities.xlsx', engine='xlsxwriter')
+# # Create a Pandas Excel writer using XlsxWriter as the engine.
+# freq_writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/freq_priorities.xlsx', engine='xlsxwriter')
+# two_writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/two_ctabs_priorities.xlsx', engine='xlsxwriter')
+# three_writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/jessica/data/three_ctabs_priorities.xlsx', engine='xlsxwriter')
 
 # prep crosstabs
 freq = pd.DataFrame()
