@@ -1,5 +1,3 @@
-# data was provided by Jessica on June 3rd, 2020
-
 import pandas as pd
 import sys
 import numpy as np
@@ -21,6 +19,7 @@ print(pd.crosstab(data['POP_8'], data['POP_8'], values=data['WEIGHT'], aggfunc='
 print(pd.crosstab(data['POP_9'], data['POP_9'], values=data['WEIGHT'], aggfunc='sum', normalize='index', margins=True))
 form_want = pd.crosstab(data['POP_8'], data['POP_8'], values=data['WEIGHT'], aggfunc='sum', normalize='index', margins=True)
 print(form_want)
+print(data['DRACE'].value_counts())
 
 sys.exit()
 
@@ -66,3 +65,4 @@ def crosser(df, var):
     print(freq)
     freq.to_excel(freq_writer, sheet_name=str(var), index=True)
     print()
+
