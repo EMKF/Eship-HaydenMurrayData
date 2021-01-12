@@ -134,7 +134,10 @@ print(df.head(50))
 
 # export the appended dataframe
 df.to_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/2020_bus_pulse/all_phases.xlsx',index=False)
-
+# pivot and export
+pivot = pd.pivot_table(df, values='ESTIMATE_PERCENTAGE', index=['QUESTION_TEXT', 'ANSWER_TEXT'], columns=['week_end'])
+print(pivot.head())
+pivot.to_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/2020_bus_pulse/pivot_all_phases.xlsx', index=True)
 sys.exit()
 
 # # create dict to recode survey weeks into a datatime variable
