@@ -17,18 +17,27 @@ pd.options.mode.chained_assignment = None
 start = time.time()
 
 # pull sales data for each year
-sales2013 = pd.read_csv('s3://emkf.data.research/sandbox/sales_2013.txt', low_memory=False, nrows=50000)
+sales2013 = pd.read_csv('s3://emkf.data.research/sandbox/sales_2013.txt', low_memory=False, nrows=10000)
 print(sales2013.describe())
 print(sales2013.head())
-# sys.exit()
+
+
+df = pd.DataFrame
+def histogramer(topic, folder, title, save1, save2):
+    trends = {}
+    for x in topic:
+        trends[x] = pd.read_csv('/Users/hmurray/Desktop/data/google/g
+
 # sales2013 = pd.read_csv('/Users/hmurray/Downloads/sales_2013.txt', low_memory=False, nrows=10000)
 # print(sales2013.head())
 
 
-sales2013['Sales13'].hist(bins=5)
+# sales2013['Sales13'].hist(bins=1000)
+sales2013.query('Sales13<1_000_000',inplace=True)
+sales2013['Sales13'].hist(bins=10)
 title = 'Distribution of Sales in year _______'
 plt.title("\n".join(wrap(title, 50)))
-plt.xlim(xmin=-0, xmax = 3500000)
+
 plt.savefig('/Users/hmurray/Desktop/data/NETS/inequality/fat_tails/sales2013.png')
 plt.show()
 

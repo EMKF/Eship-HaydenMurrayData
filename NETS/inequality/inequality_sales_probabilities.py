@@ -19,7 +19,7 @@ pd.options.mode.chained_assignment = None
 start = time.time()
 
 # pull sales data from S3
-sales = pd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2017/NETS2017_Sales_Ratings/NETS2017_Sales.txt',\
+sales = pd.read_csv('s3://emkf.data.research/other_data/nets/NETS_2019/NETS2019_Sales.txt',\
             sep='\t', na_values=' ', lineterminator='\r', error_bad_lines=False, encoding='latin1', nrows=500)
 print(sales.head())
 
