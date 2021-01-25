@@ -86,9 +86,11 @@ def phaser2():
     p2.to_excel('/Users/hmurray/Desktop/data/general_content/covid_bus_pulse_SHED_fin_means/2020_bus_pulse/phase2.xlsx',index=False)
     return p2
 
+
 def phaser3():
     # pull data for Phase One, Two, and Three by looping over each url parameter
-    p3dates = {'19': '09Nov20_15Nov20', '20': '16Nov20_22Nov20'}
+    p3dates = {'19': '09Nov20_15Nov20', '20': '16Nov20_22Nov20', '21': '23Nov20_29Nov20', '22': '30Nov20_06Dec20', '23': '07Dec20_13Dec20'\
+               , '24': '14Dec20_20Dec20', '25': '21Dec20_27Dec20', '26': '28Dec20_03Jan21', '27': '04Jan21_10Jan21'}
     pulse = pd.DataFrame()
     for key, value in p3dates.items():
         # pull in each df by looping over url for each week
@@ -129,7 +131,7 @@ temp = p1.append(p2, sort=True).reset_index(drop=True)
 df = temp.append(p3, sort=True).reset_index(drop=True)
 
 df['week_end'] = df['WEEK']
-df['week_end'] = df['WEEK'].str.strip().str[8:15]
+# df['week_end'] = df['WEEK'].str.strip().str[8:15]
 print(df.head(50))
 
 # export the appended dataframe
