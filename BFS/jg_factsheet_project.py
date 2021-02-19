@@ -13,7 +13,8 @@ pd.options.mode.chained_assignment = None
 # get ba
 ba = bfs.get_data(['BA_BA', 'BA_WBA'], 'state', 2004, annualize=True)
 
-# rename Period to year
+print(ba.head())
+sys.exit()
 
 # merge ba and pep
 ba['percent_wba'] = ba['BA_WBA']/ba['BA_BA']
