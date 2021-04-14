@@ -23,9 +23,10 @@ def data_create():
     # calculate percent BA_WBA and percent BA_CBA
     df['percent_wba'] = df['BA_WBA'] / df['BA_BA']
     df['percent_cba'] = df['BA_CBA'] / df['BA_BA']
+    df['percent_SBF8Q'] = df['BF_SBF8Q'] / df['BA_BA']
     print(df)
     # Create a Pandas Excel writer using XlsxWriter as the engine.
-    location = '/Users/hmurray/Desktop/data/BFS/ba_wba_4bf_8bf/2021/bfs_data_kauffman_library.xlsx'
+    location = '/Users/hmurray/Desktop/data/general_content/state_factsheet/4.6.21_BFS.xlsx'
     writer = pd.ExcelWriter(location, engine='xlsxwriter')
 
     # export each df to sepeerate sheet
