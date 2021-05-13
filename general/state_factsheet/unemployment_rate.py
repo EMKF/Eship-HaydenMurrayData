@@ -17,11 +17,11 @@ pd.options.mode.chained_assignment = None
 
 
 # writer
-writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/state_factsheet/unemployment_cleaner.xlsx', engine='xlsxwriter')
+writer = pd.ExcelWriter('/Users/hmurray/Desktop/data/general_content/state_factsheet/original_drafts/unemployment_cleaner.xlsx', engine='xlsxwriter')
 
 def data_create():
     # pull from s3
-    df = pd.read_excel('/Users/hmurray/Desktop/data/general_content/state_factsheet/python_puller.xlsx', sheet_name='ststdsadata')
+    df = pd.read_excel('/Users/hmurray/Desktop/data/general_content/state_factsheet/original_drafts/python_puller.xlsx', sheet_name='ststdsadata')
     print(df.head())
     df = df[['state', 'year', 'civ_non_inst_pop', 'labor_force',\
              'employment', 'unemployment']]
