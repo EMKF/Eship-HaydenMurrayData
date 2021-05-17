@@ -17,13 +17,25 @@ pd.options.mode.chained_assignment = None
 
 # read in ba and wba
 def data_create():
-    # download covid-SHED data from url
-    z = urlopen('https://www.federalreserve.gov/consumerscommunities/files/SHED_public_use_data_2019_(CSV).zip')
-
-    myzip = ZipFile(BytesIO(z.read())).extract('publicJuly2020.csv')
-    shed_year = pd.read_csv(myzip)
+    # pull data for Phase One, Two, and Three by looping over each url parameter
+    shed_links = {
+        'data_2013_(CSV)': 'SHED_public_use_data_2013.csv',
+        'public_use_data_2014_(CSV)': 'SHED_public_use_data_2014_update (occupation industry).csv',
+        'public_use_data_2015_(CSV)': 'SHED 2015 public use.csv',
+        'public_use_data_2016_(CSV)': 'SHED_2016_Public_Data.csv',
+        'public_use_data_2017_(CSV)': 'SHED_2017_Public_Use.csv',
+        'public_use_data_2018_(CSV)': 'public2018.csv',
+        'public_use_data_2019_(CSV)': 'public2019.csv',
+    }
     df = pd.DataFrame()
-    df = df.append(shed_year, ignore_index=True)
+    for key, value in shed_links.items():
+        # pull in each df by looping over url for each shed year
+        z = urlopen('https://www.federalreserve.gov/consumerscommunities/files/SHED_' + str(key) + '.zip')
+        myzip = ZipFile(BytesIO(z.read())).extract(value)
+        shed_year = pd.read_csv(myzip, low_memory=False, encoding='cp1252')
+        print(shed_year.head())
+        # append each year of shed to df
+        df = shed_year.append(shed_year, ignore_index=True)
     print(df.head())
     return df
 
