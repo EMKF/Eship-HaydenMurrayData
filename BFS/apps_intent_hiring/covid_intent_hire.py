@@ -58,7 +58,7 @@ def plotter_1(df):
 
 def plotter_2(df):
     # New Business Applications and New Employer Businesses
-    df2.plot(x='time', y=['BA_BA', 'BA_CBA', 'BA_WBA', 'BF_SBF8Q'])
+    df.plot(x='time', y=['BA_BA', 'BA_CBA', 'BA_WBA', 'BF_SBF8Q'])
     plt.xlabel('time')
     plt.xticks(rotation=45)
     # plt.xlim(2005, 2019)

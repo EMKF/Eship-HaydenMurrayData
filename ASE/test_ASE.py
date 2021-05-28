@@ -48,6 +48,12 @@ print(df.head(100))
 df.to_csv('/Users/hmurray/Desktop/data/ASE/ASE_5/ase_5.2.csv', index=False)
 #
 #
+
+# ASE, Employment Size https://www.census.gov/data/tables/2016/econ/ase/allcompanytables.html
+df = pd.read_csv('/Users/hmurray/Downloads/SE1600CSA04.dat', sep='|', low_memory=False)
+print(df.head(100))
+df.to_csv('/Users/hmurray/Desktop/data/presentation/data/ase_explorer.csv', index=False)
+
 #
 # # BRIEF 6 - - Table: "Owner Born a Citizen of the US" (under characteristics of business owners)
 # df = pd.read_csv('/Users/hmurray/Desktop/data/ASE/ASE_6/SE1600CSCBO09.dat', sep='|', low_memory=False)

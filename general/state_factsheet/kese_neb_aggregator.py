@@ -29,7 +29,7 @@ def data_create():
     print(neb.head())
     df = pd.merge(kese, neb, on=['name', 'year'], how='outer')
     print(df.head())
-    df.to_excel('/Users/hmurray/Desktop/data/general_content/state_factsheet/5.6.21/data/factsheet_data.xlsx')
+    df.to_excel('/Users/hmurray/Desktop/data/general_content/state_factsheet/5.26/5.26_factsheet_data.xlsx')
     return df
 
 def plotter_1(df):
