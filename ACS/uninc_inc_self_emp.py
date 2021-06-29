@@ -18,6 +18,9 @@ pd.options.mode.chained_assignment = None
 
 # pull,
 df_all = pd.read_csv('/Users/hmurray/Desktop/data/ACS/uninc_inc_self_emp/pull/median_earnings_2005_2018_gender.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
+print(df_all)
+sys.exit()
+
 
 # rename strings
 df_all['employment_type'] = df_all['employment_type'].str.replace("private_self_employed", "inc_self", case = True)

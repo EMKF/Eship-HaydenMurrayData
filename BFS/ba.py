@@ -14,6 +14,7 @@ pd.options.mode.chained_assignment = None
 # get ba
 ba = bfs.get_data(['BA_BA', 'BF_BF8Q'], 'state', 2004, annualize=True)
 
+
 # rename Period to year
 ba.rename( columns={'Period':'year'}, inplace=True )
 print(ba)

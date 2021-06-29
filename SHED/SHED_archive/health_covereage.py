@@ -17,6 +17,28 @@ pd.set_option('display.float_format', lambda x: '%.3f' % x)
 pd.options.mode.chained_assignment = None
 
 
+
+mei = pd.read_excel('/Users/hmurray/Desktop/data/SHED/2018_shed/2018_SHED_data.csv')
+print(mei)
+sys.exit()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # pull,
 data = pd.read_csv('/Users/hmurray/Desktop/data/SHED/2018_shed/2018_SHED_data.csv',header=0,encoding = 'unicode_escape', dtype={'user_id': int}, low_memory=False)
 

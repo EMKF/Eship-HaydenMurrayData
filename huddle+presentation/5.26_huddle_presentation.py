@@ -4,7 +4,7 @@
 
 import sys
 import pandas as pd
-import kauffman
+import kauffman.data as kauffman
 import matplotlib.pyplot as plt
 import datetime
 import numpy as np
