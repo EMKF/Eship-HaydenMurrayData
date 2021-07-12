@@ -22,14 +22,14 @@ pd.options.mode.chained_assignment = None
 # read in ba and wba
 def data_create():
     # pull from kauffman library
-    kese = pd.read_csv('/Users/hmurray/Desktop/data/general_content/state_factsheet/5.6.21/data/kese_download.csv')
-    neb = pd.read_csv('/Users/hmurray/Desktop/data/general_content/state_factsheet/5.6.21/data/neb_download.csv')
+    kese = pd.read_csv('/Users/hmurray/Desktop/data/KESE/state_factsheet/5.6.21/data/kese_download.csv')
+    neb = pd.read_csv('/Users/hmurray/Desktop/data/KESE/state_factsheet/5.6.21/data/neb_download.csv')
     kese = kese.loc[(kese['type'] == 'Total')]
     print(kese.head())
     print(neb.head())
     df = pd.merge(kese, neb, on=['name', 'year'], how='outer')
     print(df.head())
-    df.to_excel('/Users/hmurray/Desktop/data/general_content/state_factsheet/5.26/5.26_factsheet_data.xlsx')
+    df.to_excel('/Users/hmurray/Desktop/data/KESE/state_factsheet/5.26/5.26_factsheet_data.xlsx')
     return df
 
 def plotter_1(df):
@@ -48,7 +48,7 @@ def plotter_1(df):
     plt.title("\n".join(wrap(title, 70)))
     plt.tight_layout()
     plt.grid()
-    plt.savefig('/Users/hmurray/Desktop/data/general_content/state_factsheet/5.6.21/data/plots/rne_ks_us.png')
+    plt.savefig('/Users/hmurray/Desktop/data/KESE/state_factsheet/5.6.21/data/plots/rne_ks_us.png')
     plt.show()
     return df
 
@@ -68,7 +68,7 @@ def plotter_2(df):
     plt.title("\n".join(wrap(title, 70)))
     plt.tight_layout()
     plt.grid()
-    plt.savefig('/Users/hmurray/Desktop/data/general_content/state_factsheet/5.6.21/data/plots/actualization_ks_us.png')
+    plt.savefig('/Users/hmurray/Desktop/data/KESE/state_factsheet/5.6.21/data/plots/actualization_ks_us.png')
     plt.show()
     return df
 
@@ -89,7 +89,7 @@ def plotter_3(df):
     plt.title("\n".join(wrap(title, 70)))
     plt.tight_layout()
     plt.grid()
-    plt.savefig('/Users/hmurray/Desktop/data/general_content/state_factsheet/5.6.21/data/plots/sjc_ks_us.png')
+    plt.savefig('/Users/hmurray/Desktop/data/KESE/state_factsheet/5.6.21/data/plots/sjc_ks_us.png')
     plt.show()
     return df
 
@@ -110,7 +110,7 @@ def plotter_4(df):
     plt.title("\n".join(wrap(title, 70)))
     plt.tight_layout()
     plt.grid()
-    plt.savefig('/Users/hmurray/Desktop/data/general_content/state_factsheet/5.6.21/data/plots/ssr_ks_us.png')
+    plt.savefig('/Users/hmurray/Desktop/data/KESE/state_factsheet/5.6.21/data/plots/ssr_ks_us.png')
     plt.show()
     return df
 
