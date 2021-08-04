@@ -1,4 +1,4 @@
-# tutorial: https://realpython.com/python-web-scraping-practical-introduction/#scrape-and-parse-text-from-websites 
+# tutorial: https://realpython.com/python-web-scraping-practical-introduction/#scrape-and-parse-text-from-websites
 
 # import Python's standard library for working with URLs
 from urllib.request import urlopen
