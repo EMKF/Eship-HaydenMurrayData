@@ -37,7 +37,7 @@ def plotter(df, demo_col):
         plt.title("\n".join(wrap(title, 40)))
         plt.tight_layout()
         plt.grid()
-        plt.savefig('/Users/hmurray/Desktop/Jobs_Indicators/demos/demos_data/plots/' + str(demo_col) + '_' + str(indicator) + '.png')
+        plt.savefig('/Users/hmurray/Desktop/Jobs_Indicators/demos/demos_data/plots/' + str(indicator) + '_' + str(demo_col) + '.png')
         plt.show()
     return df
 
