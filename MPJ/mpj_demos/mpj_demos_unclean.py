@@ -8,7 +8,7 @@ pd.set_option('max_info_columns', 1000)
 pd.set_option('expand_frame_repr', False)
 pd.set_option('display.max_rows', 30000)
 pd.set_option('max_colwidth', 4000)
-pd.set_option('display.float_format', lambda x: '%.2f' % x)
+pd.set_option('display.float_format', lambda x: '%.1f' % x)
 pd.options.mode.chained_assignment = None
 
 def data_create():
@@ -20,12 +20,13 @@ def data_create():
 
 def plotter(df, demo_col):
     df = df[(df.firmage == '0-1 years').reset_index(drop=True)]
+    df['contribution'] = df['contribution'] * 100
     # print(df.head())
     unique_demos = (df[demo_col].unique())
-    indicators = ['contribution', 'constancy', 'creation']
+    indicators = ['contribution', 'creation', 'constancy']
     for indicator in indicators:
         df_temp = df.pivot_table(index=['time'], columns=[demo_col], values=indicator).reset_index()
-        # print(df_temp.head())
+        print(df_temp)
         df_temp.plot(x='time', y=unique_demos)
         plt.xlabel('time')
         plt.xticks(rotation=45)
@@ -38,7 +39,7 @@ def plotter(df, demo_col):
         plt.tight_layout()
         plt.grid()
         plt.savefig('/Users/hmurray/Desktop/Jobs_Indicators/demos/demos_data/plots/' + str(indicator) + '_' + str(demo_col) + '.png')
-        plt.show()
+        # plt.show()
     return df
 
 if __name__ == '__main__':
