@@ -8,7 +8,7 @@ pd.set_option('max_info_columns', 1000)
 pd.set_option('expand_frame_repr', False)
 pd.set_option('display.max_rows', 30000)
 pd.set_option('max_colwidth', 4000)
-pd.set_option('display.float_format', lambda x: '%.1f' % x)
+pd.set_option('display.float_format', lambda x: '%.4f' % x)
 pd.options.mode.chained_assignment = None
 
 def data_create():
@@ -30,7 +30,7 @@ def plotter(df, demo_col):
         df_temp.plot(x='time', y=unique_demos)
         plt.xlabel('time')
         plt.xticks(rotation=45)
-        plt.xlim(2004, 2019)
+        plt.xlim(2003, 2019)
         plt.ylabel(indicator)
         leg_1_labels = unique_demos
         plt.legend(labels=leg_1_labels, loc='upper left', fontsize='small', bbox_to_anchor=(1.05, 1))
