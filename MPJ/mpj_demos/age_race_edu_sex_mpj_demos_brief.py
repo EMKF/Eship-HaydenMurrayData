@@ -26,7 +26,7 @@ def plotter(df, demo_col):
     indicators = ['contribution', 'creation', 'constancy']
     for indicator in indicators:
         df_temp = df.pivot_table(index=['time'], columns=[demo_col], values=indicator).reset_index()
-        print(df_temp)
+        # print(df_temp)
         df_temp.plot(x='time', y=unique_demos)
         plt.xlabel('time')
         plt.xticks(rotation=45)
@@ -42,16 +42,30 @@ def plotter(df, demo_col):
         # plt.show()
     return df
 
+def comparer(demo_df):
+    age_overall = pd.read_csv('/Users/hmurray/Desktop/Jobs_Indicators/demos/demos_data/overalls/mpj_us_agegrp_overall.csv')
+    demo_df = demo_df[(demo_df.firmage == '0-1 years').reset_index(drop=True)]
+    indicators = ['contribution', 'creation', 'constancy']
+    merge = pd.merge(age_overall, demo_df, on=['time', 'fips', 'region', 'agegrp'])
+    merge = merge[(merge.time == 2019).reset_index(drop=True)]
+    print(merge.head())
+    for indicator in indicators:
+        merge.plot(x='agegrp', y=[indicator + str('_x'), indicator + str('_y')], kind="bar")
+        leg_1_labels = (indicator + str('_overall'), indicator + str('_startups'))
+        plt.legend(labels=leg_1_labels, loc='upper left', fontsize='small', bbox_to_anchor=(1.05, 1))
+        plt.tight_layout()
+        plt.show()
+    return demo_df
+
 if __name__ == '__main__':
     sex, race_eth, edu, age = data_create()
-    # mpj_files = [sex, race_eth, edu, age]
-    # for df in mpj_files:
-    #     print(df.head())
-    sex = plotter(sex, 'sex')
-    race_eth = plotter(race_eth, 'race_ethnicity')
-    edu = plotter(edu, 'education')
-    age = plotter(age, 'agegrp')
 
+    # sex = plotter(sex, 'sex')
+    # race_eth = plotter(race_eth, 'race_ethnicity')
+    # edu = plotter(edu, 'education')
+    # age = plotter(age, 'agegrp')
+
+    age = comparer(age)
 
     #     df = filterer(df)
     #     df = plotter(df, 'sex')

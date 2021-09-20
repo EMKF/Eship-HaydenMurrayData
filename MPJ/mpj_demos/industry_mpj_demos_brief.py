@@ -51,7 +51,6 @@ if __name__ == '__main__':
     df = data_create()
     df = filterer(df)
     df = plotter(df)
-    print(df)
 
 
 
