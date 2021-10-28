@@ -4,7 +4,7 @@
 
 import sys
 import pandas as pd
-import kauffman
+from kauffman.data import bfs
 
 
 pd.set_option('max_columns', 1000)
@@ -18,13 +18,15 @@ pd.options.mode.chained_assignment = None
 # read in ba and wba
 def data_create():
     # pull from kauffman library
-    df = kauffman.bfs(['BA_BA', 'BA_CBA', 'BA_HBA', 'BA_WBA', 'BF_BF4Q', 'BF_BF8Q', 'BF_PBF4Q', 'BF_PBF8Q', 'BF_SBF4Q', 'BF_SBF8Q', 'BF_DUR4Q', 'BF_DUR8Q'], 'states', annualize=True)
+    df = bfs(['BA_BA', 'BA_CBA', 'BA_HBA', 'BA_WBA', 'BF_BF4Q', 'BF_BF8Q', 'BF_PBF4Q',\
+              'BF_PBF8Q', 'BF_SBF4Q', 'BF_SBF8Q', 'BF_DUR4Q', 'BF_DUR8Q'],\
+             obs_level='us', industry='all')
 
     # calculate percent BA_WBA and percent BA_CBA
     df['percent_wba'] = df['BA_WBA'] / df['BA_BA']
     df['percent_cba'] = df['BA_CBA'] / df['BA_BA']
     df['percent_SBF8Q'] = df['BF_SBF8Q'] / df['BA_BA']
-    print(df)
+    print(df.head())
     # Create a Pandas Excel writer using XlsxWriter as the engine.
     location = '/Users/hmurray/Desktop/data/NEB/factsheet/neb_factsheet_data.xlsx'
     writer = pd.ExcelWriter(location, engine='xlsxwriter')

@@ -35,6 +35,7 @@ def plotter(df, state):
     return df
 
 
+
 if __name__ == '__main__':
     df = data_create()
     for state in df['name'].unique():
