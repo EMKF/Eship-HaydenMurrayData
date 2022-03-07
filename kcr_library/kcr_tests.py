@@ -11,8 +11,10 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 
 def bfs_tester():
-    df = bfs(['BA_BA'], obs_level='us', industry='all')
-    print(df.head())
+    df = bfs(['BA_BA', 'BA_CBA', 'BA_WBA', 'BF_SBF8Q'], \
+             obs_level='us', industry='all', annualize=False)
+    print(df)
+    df.to_excel('/Users/hmurray/Desktop/data/BFS/ba_wba_4bf_8bf/2021/updated_data/covid_intent_hire.xlsx')
     return df
 
 if __name__ == '__main__':

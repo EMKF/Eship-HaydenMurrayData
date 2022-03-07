@@ -2,6 +2,8 @@
 # methods: https://www2.census.gov/programs-surveys/bds/updates/bds2019-release-note.pdf
 # definitions: https://www.census.gov/programs-surveys/bds/documentation/methodology.html
 # API documentation: https://api.census.gov/data/timeseries/bds/variables.html
+# Possible metro/nonmetro population data? https://www.census.gov/data/datasets/time-series/demo/popest/2010s-total-metro-and-micro-statistical-areas.html
+# Possible metro/nonmetro population data?https://www.census.gov/programs-surveys/metro-micro/about.html
 
 import pandas as pd
 import matplotlib.pyplot as plt

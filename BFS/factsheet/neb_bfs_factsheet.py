@@ -20,7 +20,9 @@ def data_create():
     # pull from kauffman library
     df = bfs(['BA_BA', 'BA_CBA', 'BA_HBA', 'BA_WBA', 'BF_BF4Q', 'BF_BF8Q', 'BF_PBF4Q',\
               'BF_PBF8Q', 'BF_SBF4Q', 'BF_SBF8Q', 'BF_DUR4Q', 'BF_DUR8Q'],\
-             obs_level='us', industry='all')
+             obs_level='us', industry='all', annualize=False)
+    # df = bfs(['BA_BA'],\
+    #          obs_level='us', industry='all', annualize=True)
 
     # calculate percent BA_WBA and percent BA_CBA
     df['percent_wba'] = df['BA_WBA'] / df['BA_BA']
