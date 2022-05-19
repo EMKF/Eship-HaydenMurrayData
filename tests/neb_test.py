@@ -11,10 +11,20 @@ pd.set_option('max_colwidth', 4000)
 pd.set_option('display.float_format', lambda x: '%.3f' % x)
 pd.set_option('chained_assignment',None)
 
-df = bfs(series_lst=['BA_BA', 'BF_SBF8Q'], obs_level='us', industry='00', seasonally_adj=True, annualize=True, march_shift=False)
-print(df.head())
-print(df.tail())
-df.to_excel('/Users/hmurray/Desktop/NEB/2021/data/national_report/ba_reference.xlsx')
+
+quart_df = pd.read_csv('https://www.census.gov/econ/bfs/csv/bfs_quarterly.csv')
+print(quart_df.head())
+quart_df.to_excel('/Users/hmurray/Desktop/data/BFS/model/data/quarterly_bfs.xlsx', index=False)
+
+
+week_df = pd.read_csv('https://www.census.gov/econ/bfs/csv/bfs_monthly.csv')
+print(week_df.head())
+week_df.to_excel('/Users/hmurray/Desktop/data/BFS/model/data/monthly_ba.xlsx', index=False)
+
+bfs = bfs(series_lst=['BA_BA', 'BF_SBF8Q', 'BF_DUR8Q', 'BF_BF8Q'], obs_level='all', industry='all', seasonally_adj=True, annualize=True, march_shift=False)
+print(bfs.head())
+print(bfs.tail())
+bfs.to_excel('/Users/hmurray/Desktop/data/BFS/model/data/annual_ba_spf8q_dur8q.xlsx', index=False)
 sys.exit()
 #
 # df = pep('all')
